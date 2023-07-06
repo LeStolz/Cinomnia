@@ -1,0 +1,49 @@
+$primary: #ec2d4d;
+$secondary: #141619;
+$min-contrast-ratio: 3;
+
+@import "bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+@include color-mode(light) {
+  --bs-body-bg: var(--bs-light);
+
+  .bg-secondary {
+    background-color: var(--bs-white) !important;
+  }
+}
+
+.card {
+  border: 0;
+}
+
+.position-absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.w-sm {
+  width: 1.9125rem;
+}
+
+.h-sm {
+  height: 1.9125rem;
+}
+
+.w-md {
+  width: 2.35rem;
+}
+
+.h-md {
+  height: 2.35rem;
+}
+
+.w-lg {
+  width: 2.975rem;
+}
+
+.h-lg {
+  height: 2.975rem;
+}
