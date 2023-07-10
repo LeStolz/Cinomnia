@@ -5,13 +5,12 @@ export class LoginModel {
   async login(user: LoginModelProps) {
     const auth = useAuth();
 
-    if (user.email == null || user.password == null) {
+    if (user.email == null) {
       return;
     }
 
     await auth.signup({
-      email: user.email,
-      password: user.password,
+      email: user.email
     });
   }
 }

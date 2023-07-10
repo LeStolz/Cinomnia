@@ -4,13 +4,11 @@ import { LoginModel } from "./LoginModel";
 export type LoginViewProps = {
   onSubmit: (user: {
     email: string | undefined;
-    password: string | undefined;
   }) => void;
 };
 
 export type LoginModelProps = {
   email: string | undefined;
-  password: string | undefined;
 };
 
 export function Login() {

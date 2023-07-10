@@ -1,6 +1,13 @@
 import { SignupViewProps } from "./Signup";
 import { FormEvent, createRef, useState } from "react";
-import { Button, Card, Form, FloatingLabel } from "react-bootstrap";
+import { Container } from 'react-bootstrap';
+// import { Button, Card, Form, FloatingLabel } from "react-bootstrap";
+import {Button} from "react-bootstrap";
+import { Link } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
+import Col from 'react-bootstrap/Col';
 
 export function SignupView({ onSubmit }: SignupViewProps) {
   const [validated, setValidated] = useState(false);
@@ -28,58 +35,38 @@ export function SignupView({ onSubmit }: SignupViewProps) {
 
   return (
     <>
-      <Card.Title className="text-center mb-3">
-        <h1>Sign Up</h1>
-      </Card.Title>
-      <Card.Subtitle className="text-body-secondary text-center mx-sm-5 mb-3">
-        <small>Watch anything, anywhere, and anyhow.</small>
-      </Card.Subtitle>
-      <Card.Text>
-        <Form noValidate validated={validated} onSubmit={onSubmitWrapped}>
-          <Form.Group className="mb-3" controlId="email">
-            <FloatingLabel controlId="floatingEmail" label="Email">
-              <Form.Control
-                type="email"
-                ref={emailRef}
-                placeholder="Enter email"
-                required
-              />
-              <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-              <Form.Control.Feedback type="invalid">
-                Invalid email!
-              </Form.Control.Feedback>
-            </FloatingLabel>
-          </Form.Group>
+      <Container className='h-50'>
+        <Row className="mt-5 border border-1 bg-secondary">
+          <Col className='ps-0' xs={5}>
+            <Image src="/signup-background.png" className='pe-4 me-3'/>
+          </Col>
 
-          <Form.Group className="mb-3" controlId="password">
-            <FloatingLabel controlId="floatingPassword" label="Password">
-              <Form.Control
-                type="password"
-                ref={passwordRef}
-                placeholder="Enter password"
-                required
-              />
-              <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-              <Form.Control.Feedback type="invalid">
-                Invalid password!
-              </Form.Control.Feedback>
-            </FloatingLabel>
-          </Form.Group>
+          <Col className="pt-5 text-center" xs={7}>
+              <Image src="/logo.png" className='mb-3 h-lg'/>
+              <h2 className='fw-bold'>Sign Up</h2>
+              <p className='fw-bold'>Unlimited movies, TV shows, and more. Are you ready?</p>
 
-          <Form.Group className="mb-3" controlId="rememberMe">
-            <Form.Check type="switch" label="Remember me!" />
-          </Form.Group>
+              <Form noValidate validated={validated} onSubmit={onSubmitWrapped}>
+                <Form.Group className="mb-3 d-flex justify-content-center" controlId="email">
+                  <Form.Control type="email" ref={emailRef} placeholder='Enter your email here' className='w-50' required />
+                </Form.Group>
 
-          <Button variant="primary" type="submit" className="w-100 mb-3">
-            <h4>Sign Up</h4>
-          </Button>
-        </Form>
-      </Card.Text>
+                <Button type="submit" variant="danger" className="mb-2">Sign Up</Button>
+              </Form>
 
-      <Card.Footer className="d-flex bg-transparent">
-        <Card.Link className="me-auto">Login</Card.Link>
-        <Card.Link>Forgot Password</Card.Link>
-      </Card.Footer>
+              <p className='mt-1'>Or using</p>
+              
+              <h2>
+                <Link to=''><i className="bi bi-facebook me-3"></i></Link>
+                <Link to=''><i className="bi bi-google ms-3"></i></Link>
+              </h2>
+
+              <p className='mt-3'>Already have an account? <Link to="/login">Log in now!</Link></p>
+              <br/>
+              <small className='mt-5'>@2023 Cinomnia</small>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 }
