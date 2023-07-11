@@ -1,6 +1,5 @@
 import { SignupViewProps } from "./Signup";
 import { FormEvent, createRef, useState } from "react";
-import { Container } from 'react-bootstrap';
 // import { Button, Card, Form, FloatingLabel } from "react-bootstrap";
 import {Button} from "react-bootstrap";
 import { Link } from 'react-router-dom';
@@ -35,38 +34,36 @@ export function SignupView({ onSubmit }: SignupViewProps) {
 
   return (
     <>
-      <Container className='h-50'>
-        <Row className="mt-5 border border-1 bg-secondary">
-          <Col className='ps-0' xs={5}>
-            <Image src="/signup-background.png" className='pe-4 me-3'/>
+        <Row className="bg-secondary rounded">
+          <Col className='ps-0' md={5} sm={12}>
+            <Image src="/signup-background.png" className='ms-0 ps-0 me-0 pe-5'/>
           </Col>
 
-          <Col className="pt-5 text-center" xs={7}>
-              <Image src="/logo.png" className='mb-3 h-lg'/>
-              <h2 className='fw-bold'>Sign Up</h2>
-              <p className='fw-bold'>Unlimited movies, TV shows, and more. Are you ready?</p>
+          <Col className="pt-5 ms-5 ps-5 me-0 text-center" md={6} sm={12}>
+            <Image src="/logo.png" className='mb-3 mt-2 h-lg'/>
+            <h2 className='fw-bold'>Sign Up</h2>
+            <p className='fw-bold'>Watch anything, anywhere, and anyhow</p>
+            <p>We will send you a verification mail</p>
+            <Form noValidate validated={validated} onSubmit={onSubmitWrapped}>
+              <Form.Group className="ms-2 mb-3 d-flex justify-content-center" controlId="email">
+                <Form.Control type="email" ref={emailRef} placeholder='Enter your email here' className='h-100 w-75' size="lg" required />
+              </Form.Group>
 
-              <Form noValidate validated={validated} onSubmit={onSubmitWrapped}>
-                <Form.Group className="mb-3 d-flex justify-content-center" controlId="email">
-                  <Form.Control type="email" ref={emailRef} placeholder='Enter your email here' className='w-50' required />
-                </Form.Group>
-
-                <Button type="submit" variant="danger" className="mb-2">Sign Up</Button>
-              </Form>
-
-              <p className='mt-1'>Or using</p>
+              <div className="d-grid gap-3 ms-3">
+                <Button className='w-75 ms-5' type="submit" variant="danger">Continue</Button>
+              </div>
+            </Form>
               
-              <h2>
-                <Link to=''><i className="bi bi-facebook me-3"></i></Link>
-                <Link to=''><i className="bi bi-google ms-3"></i></Link>
-              </h2>
+            <h2 className="mt-4">
+              <Link to=''><i className="bi bi-facebook me-3"></i></Link>
+              <Link to=''><i className="bi bi-google ms-3"></i></Link>
+            </h2>
 
-              <p className='mt-3'>Already have an account? <Link to="/login">Log in now!</Link></p>
-              <br/>
-              <small className='mt-5'>@2023 Cinomnia</small>
+            <p className='mt-3'>Already have an account? <Link to="/login">Log in now!</Link></p>
+            <br/>
+            <small className='mt-5'>@2023 Cinomnia</small>
           </Col>
         </Row>
-      </Container>
     </>
   );
 }

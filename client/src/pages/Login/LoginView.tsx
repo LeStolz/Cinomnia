@@ -6,7 +6,7 @@ import Image from 'react-bootstrap/Image';
 import { Link } from 'react-router-dom';
 import { FormEvent, createRef, useState } from "react";
 import { LoginViewProps } from "./Login";
-import { Container } from 'react-bootstrap';
+import background from "/public/login-background.png";
 
 export function LoginView({ onSubmit }: LoginViewProps) {
   const [validated, setValidated] = useState(false);
@@ -32,31 +32,29 @@ export function LoginView({ onSubmit }: LoginViewProps) {
 
   return (
     <>
-      <Container className='h-50'>
-        <Row className='mt-5 border border-1 bg-secondary'>
-          <Col className="pt-5 text-center" xs={7}>
-            <Image src="/logo.png" className='mb-3 h-lg'/>
+      <div className='bg-image' style={{backgroundImage: `url("${background}")`}}>
+        <Row className='bg-secondary rounded'>
+          <Col sm={12} lg={6} className="ms-0 text-center pt-5">
+            <Image src="/logo.png" className='mb-3 mt-2 h-lg'/>
             <h2 className='fw-bold'>Log In</h2>
-            <p className='fw-bold'>Watch anything, anywhere, and anyhow.</p>
-
+            <p className='fw-bold'>Watch anything, anywhere, and anyhow</p>
             <Form noValidate validated={validated} onSubmit={onSubmitWrapped}>
-              <Form.Group className="mb-3 d-flex justify-content-center" controlId="email">
-                <Form.Control type="email" ref={emailRef} placeholder='Enter your email here' className='w-50' required />
+              <Form.Group className="ms-2 mb-2 d-flex justify-content-center" controlId="email">
+                <Form.Control type="email" ref={emailRef} placeholder='Enter your email here' className='h-100 w-75' size="lg" required />
               </Form.Group>
-                <Row>
-                  <Col md={{offset: 2}} >
-                    <Form.Group className="mb-3 ms-0 ps-2" controlId="rememberMe">
-                      <Form.Check type="switch" label="Remember me" className=' ms-5 text-start'/>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              <Button type="submit" variant="danger">Continue</Button>
+
+              <Form.Group className="ps-3 ms-4 mb-3 d-flex justify-content-start" controlId="rememberMe">
+                <Form.Check type="switch" label="Remember me" className='ps-5 ms-2 text-start'/>
+              </Form.Group>
+
+              <div className="d-grid gap-3 ms-2">
+                <Button className='w-75 ms-5' type="submit" variant="danger">Continue</Button>
+              </div>
             </Form>
-            <p className='mt-1'>Or using</p>
-            
+            <p className='mt-3'>Or using</p>
             <h2>
-            <Link to=''><i className="bi bi-facebook me-3"></i></Link>
-            <Link to=''><i className="bi bi-google ms-3"></i></Link>
+              <Link to=''><i className="bi bi-facebook me-3"></i></Link>
+              <Link to=''><i className="bi bi-google ms-3"></i></Link>
             </h2>
 
             <p className='mt-3'>Don't have an account? <Link to="/signup">Create one!</Link></p>
@@ -64,11 +62,11 @@ export function LoginView({ onSubmit }: LoginViewProps) {
             <small className='mt-5'>@2023 Cinomnia</small>
           </Col>
 
-          <Col className='' xs={5}>
-            <Image src="/login-background.png" className='ps-4 ms-3'/>
+          <Col sm={12} lg={5}>
+            <Image src="/login-background.png" className='ms-0 ps-0 rounded'/>
           </Col>
         </Row>
-      </Container>
+        </div>
     </>
   );
 }
