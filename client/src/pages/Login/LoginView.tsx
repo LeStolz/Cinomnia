@@ -32,7 +32,7 @@ export function LoginView({ onSubmit }: LoginViewProps) {
 
   return (
     <>
-      <div className='bg-image' style={{backgroundImage: `url("${background}")`}}>
+      <div className='bg-image'  style={{backgroundImage:"url('/login-background.png')" }}>
         <Row className='bg-secondary rounded'>
           <Col sm={12} lg={6} className="ms-0 text-center pt-5">
             <Image src="/logo.png" className='mb-3 mt-2 h-lg'/>
