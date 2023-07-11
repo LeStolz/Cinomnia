@@ -41,11 +41,15 @@ export function LoginView({ onSubmit }: LoginViewProps) {
 
             <Form noValidate validated={validated} onSubmit={onSubmitWrapped}>
               <Form.Group className="mb-3 d-flex justify-content-center" controlId="email">
-                <Form.Control type="email" ref={emailRef} placeholder='Enter your email here' className='w-75' required />
+                <Form.Control type="email" ref={emailRef} placeholder='Enter your email here' className='w-50' required />
               </Form.Group>
-                <Form.Group className="mb-3 ms-5" controlId="rememberMe">
-                  <Form.Check type="switch" label="Remember me" className='ms-5 text-start'/>
-                </Form.Group>
+                <Row>
+                  <Col md={{offset: 2}} >
+                    <Form.Group className="mb-3 ms-0 ps-2" controlId="rememberMe">
+                      <Form.Check type="switch" label="Remember me" className=' ms-5 text-start'/>
+                    </Form.Group>
+                  </Col>
+                </Row>
               <Button type="submit" variant="danger">Continue</Button>
             </Form>
             <p className='mt-1'>Or using</p>
