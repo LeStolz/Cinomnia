@@ -9,9 +9,13 @@ export function AuthLayout() {
       <Container
         fluid
         className="d-flex justify-content-center align-items-center min-vh-100 p-0 m-0"
+        style={{backgroundImage: "url('https://cdn.dribbble.com/users/3366330/screenshots/7150087/media/132a4969e541d757b1189f435e9a6cbe.jpg')",
+        backdropFilter: "blur(30px)"
+        
+      }}
       >
-        <Card className="shadow-sm">
-          <Card.Body className="p-4">
+        <Card className="">
+          <Card.Body className="p-0">
             <Outlet />
           </Card.Body>
         </Card>
