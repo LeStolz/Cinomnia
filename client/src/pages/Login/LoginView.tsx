@@ -1,9 +1,9 @@
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Image from 'react-bootstrap/Image';
-import { Link } from 'react-router-dom';
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
+import { Link } from "react-router-dom";
 import { FormEvent, createRef, useState } from "react";
 import { LoginViewProps } from "./Login";
 
@@ -33,7 +33,11 @@ export function LoginView({ onSubmit }: LoginViewProps) {
     <>
       <Row className="bg-secondary rounded">
         <Col className="ms-0 p-5 text-center">
-          <Image src="/logo.png" className="mb-3 mt-2 h-lg" alt="Cinomnia's logo"/>
+          <Image
+            src="/logo.png"
+            className="mb-3 mt-2 h-lg"
+            alt="Cinomnia's logo"
+          />
           <h2 className="fw-bold">Log In</h2>
           <p className="fw-bold">Watch anything, anywhere, and anyhow</p>
           <Form noValidate validated={validated} onSubmit={onSubmitWrapped}>
@@ -62,43 +66,41 @@ export function LoginView({ onSubmit }: LoginViewProps) {
               Continue
             </Button>
           </Form>
-            <p className="mt-3">Or using</p>
-          {/* <h2>
-            <Link to="">
-              <i className="bi bi-facebook me-3"></i>
-            </Link>
-            <Link to="">
-              <i className="bi bi-google ms-3"></i>
-            </Link>
-          </h2> */}
 
-          <h6>
-          <Button variant="light" className="w-100">
-          <Link to="" className='text-decoration-none text-dark'>
-              <i className="bi bi-facebook me-2"></i>
-              Continue with Facebook
-          </Link>
-          </Button>
-          </h6>
+          <div className="d-flex align-items-center my-2">
+            <hr className="w-100" />
+            <p className="w-100 m-0">Or using</p>
+            <hr className="w-100" />
+          </div>
 
-          <h6>
-            <Button variant="light" className="w-100">
-              <Link to="" className='text-decoration-none text-dark'>
+          <div>
+            <h6>
+              <Button variant="light" className="w-100 text-start px-5">
+                <Link to="" className="text-decoration-none text-dark">
+                  <i className="bi bi-facebook me-2"></i>
+                  Continue with Facebook
+                </Link>
+              </Button>
+            </h6>
+
+            <h6>
+              <Button variant="light" className="w-100 text-start px-5">
+                <Link to="" className="text-decoration-none text-dark">
                   <i className="bi bi-google me-2"></i>
                   Continue with Google
-              </Link>
-            </Button>
-          </h6>
+                </Link>
+              </Button>
+            </h6>
 
-          <h6>
-            <Button variant="light" className="w-100">
-              <Link to="" className='text-decoration-none text-dark'>
+            <h6>
+              <Button variant="light" className="w-100 text-start px-5">
+                <Link to="" className="text-decoration-none text-dark">
                   <i className="bi bi-twitter me-2"></i>
                   Continue with Twitter
-              </Link>
-            </Button>
-          </h6>
-
+                </Link>
+              </Button>
+            </h6>
+          </div>
           <p className="mt-3">
             Don't have an account? <Link to="/signup">Create one!</Link>
           </p>
@@ -106,7 +108,7 @@ export function LoginView({ onSubmit }: LoginViewProps) {
         </Col>
 
         <Col className="p-0 d-none d-md-block">
-          <Image src="/login-background.png" className="h-100 rounded"/>
+          <Image src="/login-background.png" className="h-100 rounded" />
         </Col>
       </Row>
     </>
