@@ -5,95 +5,170 @@ import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import Carousel from "react-bootstrap/Carousel";
 
 export function DetailFilmView() {
   return (
     <>
-      <Container className="bg-light text-dark rounded">
-        <Col>
-          <Row>
-            <Image src="holder.js/1423px342 rounded" fluid />
-          </Row>
+      <Container className="rounded" fluid>
+        <Row className="d-none d-md-block">
+          <video
+            src="https://placehold.co/1400x342.mp4"
+            className="mb-3 w-100 h-auto"
+          ></video>
+        </Row>
 
-          <Row className="shadow">
-            <Col xs={4} className="">
-              <h3 className="text-center">Film's Title</h3>
+        <Row className="">
+          <Col className="order-1 col-lg-4 col-sm-12">
+            <Card className="bg-secondary rounded">
+              <Card.Title className="text-center mb-0 py-2 fs-2 bg-light-subtle">
+                Film's Title
+              </Card.Title>
+              <Card.Text>
+                <Carousel data-bs-theme="dark">
+                  <Carousel.Item>
+                    <Image
+                      src="https://placehold.co/470x200"
+                      className="h-100 w-100"
+                    />
+                    <Carousel.Caption></Carousel.Caption>
+                  </Carousel.Item>
+                  <Carousel.Item>
+                    <Image
+                      src="https://placehold.co/470x200"
+                      className="h-100 w-100"
+                    />
+                    <Carousel.Caption></Carousel.Caption>
+                  </Carousel.Item>
+                  <Carousel.Item>
+                    <Image
+                      src="https://placehold.co/470x200"
+                      className="h-100 w-100"
+                    />
+                    <Carousel.Caption></Carousel.Caption>
+                  </Carousel.Item>
+                </Carousel>
 
-              <video
-                src="https://www.youtube.com/watch?v=1rC9Wh4-RfQ"
-                className="object-fit-cover"
-              ></video>
+                <ul className="list-unstyled fw-bold ps-2 mt-3">
+                  <li className="fw-light">
+                    <span className="fw-bold">Type</span>: TV
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Episodes:</span> 64
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Status:</span> Finished Airing
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Aired:</span> Apr 5, 2009 to Jul
+                    4, 2010
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Premiered:</span>{" "}
+                    <Link to="">Spring 2019</Link>
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Broadcast:</span> Sundays at 17:00
+                    (JST)
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Producers:</span>{" "}
+                    <Link to="">Aniplex </Link>, <Link to="">Square Enix</Link>,{" "}
+                    <Link to="">Mainichi Broadcasting System</Link>,{" "}
+                    <Link to="">Studio Moriken</Link>
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Licensors:</span>{" "}
+                    <Link to="">Funimation</Link>,{" "}
+                    <Link to="">Aniplex of America</Link>
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Source:</span> Manga
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Genres:</span>{" "}
+                    <Link to="">Action</Link>, <Link to="">Adventure</Link>,{" "}
+                    <Link to="">Drama</Link>, <Link to="">Fantasy</Link>
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Theme:</span>{" "}
+                    <Link to="">Military</Link>
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Duration:</span> 24min. per ep
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Rating:</span> R - 17+ (violent &
+                    profanity)
+                  </li>
+                </ul>
+              </Card.Text>
+            </Card>
 
-              <ul className="list-unstyled fw-bold">
-                <li>Type:</li>
-                <li>Episodes:</li>
-                <li>Status:</li>
-                <li>Aired:</li>
-                <li>Premiered:</li>
-                <li>Broadcast:</li>
-                <li>Producers:</li>
-                <li>Licensors:</li>
-                <li>Source:</li>
-                <li>Genres:</li>
-                <li>Theme:</li>
-                <li>Duration:</li>
-                <li>Rating:</li>
-              </ul>
+            <Card className="mt-3 bg-secondary rounded">
+              <Card.Title className="text-center py-2 bg-light-subtle">
+                Statistics
+              </Card.Title>
+              <Card.Text>
+                <ul className="list-unstyled fw-bold ps-2">
+                  <li>Ranked: #1</li>
+                  <li>Popularity: #3</li>
+                  <li>Members: 3,192,363</li>
+                  <li>Favorites: 218,364</li>
+                </ul>
+              </Card.Text>
+            </Card>
+          </Col>
 
-              <h3 className="text-center">Statistics</h3>
+          <Col className="order-2 col-lg-8 col-sm-12 my-md-3 my-lg-0">
+            <Card className="bg-secondary rounded">
+              <Card.Title className="ps-3 py-2 bg-light-subtle">
+                Information
+              </Card.Title>
+              <Card.Body>
+                <Row className="py-sm-2 py-md-0">
+                  <Col className="col-md-2 text-center col-sm-12">
+                    <h5 className="rounded border bg-secondary p-1">Score</h5>
+                    <h3>9.03</h3>
+                  </Col>
 
-              <ul className="list-unstyled fw-bold">
-                <li>Ranked:</li>
-                <li>Popularity:</li>
-                <li>Members:</li>
-                <li>Favorites:</li>
-              </ul>
+                  <Col className="">
+                    <Row>
+                      <div className="d-flex w-100 justify-content-between fs-1 p-1">
+                        <h5>Ranked #1</h5>
+                        <h5>Popularity #1</h5>
+                        <h5>Member 3,192,411</h5>
+                      </div>
+                    </Row>
 
-              <h3 className="text-center">Available at</h3>
+                    <Row>
+                      <p>
+                        <Link to="">Spring 2009</Link> | <Link to="">TV</Link> |{" "}
+                        <Link to="">Bones</Link>
+                      </p>
+                    </Row>
+                  </Col>
+                </Row>
 
-              <ul className="list-unstyled">
-                <li>Social Network</li>
-                <li>Resource</li>
-                <li>Streaming Platform</li>
-              </ul>
-            </Col>
+                <Row className="d-flex mt-3">
+                  <Button className="w-25 mx-2">Add to list</Button>
+                  <Button className="w-25 mx-2">
+                    Review <i className="bi bi-star-fill ps-1" />
+                  </Button>
+                  <Button className="w-25 mx-2">
+                    Episode: 0/64 <i className="bi bi-plus-circle ps-1" />
+                  </Button>
+                </Row>
+              </Card.Body>
+            </Card>
 
-            <Col xs={8} className="my-3">
-              <h3 className="text-start">Information</h3>
-
-              <Row className="d-flex p-3 shadow py-0">
-                <Card className="bg-light text-dark w-25">
-                  <Card.Body>
-                    <Card.Title>Score</Card.Title>
-                    <Card.Text>#</Card.Text>
-                  </Card.Body>
-                </Card>
-
-                <Card className="bg-light text-dark w-25">
-                  <Card.Body>
-                    <Card.Title>Ranked</Card.Title>
-                    <Card.Text>#</Card.Text>
-                  </Card.Body>
-                </Card>
-
-                <Card className="bg-light text-dark w-25">
-                  <Card.Body>
-                    <Card.Title>Popularity</Card.Title>
-                    <Card.Text>#</Card.Text>
-                  </Card.Body>
-                </Card>
-
-                <Card className="bg-light text-dark w-25">
-                  <Card.Body>
-                    <Card.Title>Members</Card.Title>
-                    <Card.Text>#</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Row>
-
-              <Row className="p-3 shadow my-3">
-                <h3 className="text-start">Sypnosis</h3>
-                <p className="fs-6">
+            <Card className="bg-secondary my-3 rounded">
+              <Card.Title className="py-3 ps-3 bg-light-subtle">
+                Sypnosis
+              </Card.Title>
+              <Card.Text>
+                <p className="fs-6 p-3" style={{ textAlign: "justify" }}>
                   After a horrific alchemy experiment goes wrong in the Elric
                   household, brothers Edward and Alphonse are left in a
                   catastrophic new reality. Ignoring the alchemical principle
@@ -115,194 +190,237 @@ export function DetailFilmView() {
                   them in a growing conspiracy that threatens the fate of the
                   world.[Written by MAL Rewrite]
                 </p>
-              </Row>
+              </Card.Text>
+            </Card>
 
-              <Row className="shadow my-3 p-3">
-                <dl>
-                  <h3>Related Film</h3>
-                  <div className="ps-3">
-                    <p>Adaptation:</p>
-                    <p>Alternative version:</p>
-                    <p>Side story:</p>
-                  </div>
-                </dl>
-              </Row>
+            <Card className="bg-secondary my-3 rounded">
+              <Card.Title className="p-3 bg-light-subtle">
+                Related Film
+              </Card.Title>
+              <Card.Text>
+                <ul className="p-3 list-unstyled">
+                  <li className="fw-light">
+                    <span className="fw-bold">Adalitation:</span> Fullmetal
+                    Alchemist
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Alternative version:</span>{" "}
+                    Fullmetal Alchemist
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Side story:</span>{" "}
+                    <Link to="">Fullmetal Alchemist: Brotherhood Specials</Link>
+                    ,{" "}
+                    <Link to="">
+                      Fullmetal Alchemist: The Sacred Star of Milos
+                    </Link>
+                  </li>
+                </ul>
+              </Card.Text>
+            </Card>
 
-              <Row className="my-3 p-3 shadow">
-                <h3>Characters & Voice Actors</h3>
-                <Row>
-                  <Col>
-                    <small>Characters</small>
-                    <small className="float-end">Actors</small>
-                  </Col>
-                </Row>
+            <Card className=" bg-secondary my-3 rounded">
+              <Card.Title className="p-3 bg-light-subtle">
+                Characters & Voice Actors
+              </Card.Title>
+              <Card.Text className="p-3">
+                <div className="d-flex justify-content-between">
+                  <small>Characters</small>
+                  <small>Actors</small>
+                </div>
 
-                <Row>
-                  <Col>
-                    <Link
-                      to=""
-                      className="text-decoration-none text-dark fw-bold"
-                    >
-                      Eric, Edward
-                    </Link>
-                    <Link
-                      to=""
-                      className="text-decoration-none text-dark fw-bold float-end"
-                    >
-                      Park, Romi
-                    </Link>
-                    <p className="mb-0">
-                      <small>Main</small>
-                      <small className="float-end">Japanese</small>
-                    </p>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col>
-                    <Link
-                      to=""
-                      className="text-decoration-none text-dark fw-bold"
-                    >
-                      Eric, Edward
-                    </Link>
-                    <Link
-                      to=""
-                      className="text-decoration-none text-dark fw-bold float-end"
-                    >
-                      Park, Romi
-                    </Link>
-                    <p className="mb-0">
-                      <small>Main</small>
-                      <small className="float-end">Japanese</small>
-                    </p>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col>
-                    <Link
-                      to=""
-                      className="text-decoration-none text-dark fw-bold"
-                    >
-                      Eric, Edward
-                    </Link>
-                    <Link
-                      to=""
-                      className="text-decoration-none text-dark fw-bold float-end"
-                    >
-                      Park, Romi
-                    </Link>
-                    <p className="mb-0">
-                      <small>Main</small>
-                      <small className="float-end">Japanese</small>
-                    </p>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col>
-                    <Link
-                      to=""
-                      className="text-decoration-none text-dark fw-bold"
-                    >
-                      Eric, Edward
-                    </Link>
-                    <Link
-                      to=""
-                      className="text-decoration-none text-dark fw-bold float-end"
-                    >
-                      Park, Romi
-                    </Link>
-                    <p className="mb-0">
-                      <small>Main</small>
-                      <small className="float-end">Japanese</small>
-                    </p>
-                  </Col>
-                </Row>
-              </Row>
-
-              <Row className="shadow my-3 p-3">
-                <h3>Staff</h3>
-                <Row>
-                  <Col>
-                    <Link
-                      to=""
-                      className="text-decoration-none text-dark fw-bold"
-                    >
-                      Eric, Edward
-                    </Link>
-                    <Link
-                      to=""
-                      className="text-decoration-none text-dark fw-bold float-end"
-                    >
-                      Park, Romi
-                    </Link>
-                    <p className="mb-0">
-                      <small>Main</small>
-                      <small className="float-end">Japanese</small>
-                    </p>
-                  </Col>
-                </Row>
-              </Row>
-
-              <Row className="shadow my-3 p-3">
-                <h3>Review</h3>
                 <hr />
+
+                <Row className="pb-0 d-flex justify-content-between">
+                  <Col className="d-flex pe-0 col-4 w-auto">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <Link to="" className="text-decoration-none">
+                        <p className="mb-0 fw-bold">Eric, Edward</p>
+                      </Link>
+                      <small className="mt-0">Main</small>
+                    </div>
+                  </Col>
+
+                  <Col className="d-flex col-4 pe-0 w-auto me-2">
+                    <div>
+                      <Link to="" className="text-decoration-none">
+                        <p className="mb-0 fw-bold">Park Romi</p>
+                      </Link>
+                      <small className="mt-0">Japanese</small>
+                    </div>
+                    <Image src="/logo.png" className="w-lg h-md ms-2" />
+                  </Col>
+                </Row>
+
+                <hr className="mb-3 mt-0" />
+
+                <Row className="pb-0 d-flex justify-content-between mb-2">
+                  <Col className="d-flex pe-0 col-4 w-auto">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <Link to="" className="text-decoration-none">
+                        <p className="mb-0 fw-bold">Eric, Edward</p>
+                      </Link>
+                      <small className="mt-0">Main</small>
+                    </div>
+                  </Col>
+
+                  <Col className="d-flex col-4 pe-0 w-auto me-2">
+                    <div>
+                      <Link to="" className="text-decoration-none">
+                        <p className="mb-0 fw-bold">Park Romi</p>
+                      </Link>
+                      <small className="mt-0">Japanese</small>
+                    </div>
+                    <Image src="/logo.png" className="w-lg h-md ms-2" />
+                  </Col>
+                </Row>
+                <hr className="mb-3 mt-0" />
+              </Card.Text>
+            </Card>
+
+            <Card className="bg-secondary my-3 rounded">
+              <Card.Title className="p-3 bg-light-subtle">Staff</Card.Title>
+              <Card.Text className="p-3">
+                <Row className="pb-0 d-flex justify-content-between w-75">
+                  <Col className="d-flex pe-0 col-4 w-auto my-2">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <Link to="" className="text-decoration-none">
+                        <p className="mb-0 fw-bold">Đăng</p>
+                      </Link>
+                      <small className="mt-0">Slave Owner</small>
+                    </div>
+                  </Col>
+
+                  <Col className="d-flex col-4 pe-0 w-auto my-2">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <Link to="" className="text-decoration-none">
+                        <p className="mb-0 fw-bold">Thức</p>
+                      </Link>
+                      <small className="mt-0">Slave</small>
+                    </div>
+                  </Col>
+                </Row>
+
+                <hr className="my-0" />
+
+                <Row className="pb-0 d-flex justify-content-between w-75 mt-2">
+                  <Col className="d-flex pe-0 col-4 w-auto">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <Link to="" className="text-decoration-none">
+                        <p className="mb-0 fw-bold">Hậu</p>
+                      </Link>
+                      <small className="mt-0">Slave</small>
+                    </div>
+                  </Col>
+
+                  <Col className="d-flex col-4 pe-0 w-auto">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <Link to="" className="text-decoration-none">
+                        <p className="mb-0 fw-bold">Vinh</p>
+                      </Link>
+                      <small className="mt-0">Slave</small>
+                    </div>
+                  </Col>
+                </Row>
+
+                <hr className="mb-3 mt-0" />
+              </Card.Text>
+            </Card>
+
+            <Card className="bg-secondary my-3 rounded">
+              <Card.Title className="p-3 mb-0 bg-light-subtle">
+                Review
+              </Card.Title>
+              <Card.Text className="mt-2">
                 <Form.Group
-                  className="mb-3"
+                  className="my-2"
                   controlId="exampleForm.ControlTextarea1"
                 >
                   <Form.Control
                     as="textarea"
                     rows={1}
                     placeholder="What's on your mind?"
-                    className="bg-light text-dark"
+                    className=""
                   />
                 </Form.Group>
-              </Row>
 
-              <Row className="my-3 p-3 shadow">
-                <Col xs={1}>
-                  <Image src="/logo.png" rounded className="w-lg" />
-                </Col>
-                <Col className="mb-2">
-                  <p className="fw-bold mb-0">Tazillo</p>
-                  <small className="fw-light">April 12 at 2:28pm</small>
-                </Col>
+                <Button className="float-end m-2">Publish</Button>
+              </Card.Text>
+            </Card>
 
-                <p>
-                  First of all, I have seen the original FMA and although it was
-                  very popular and original, the pacing and conclusion did not
-                  sit too well with me. Brotherhood is meant to be a remake of
-                  the original, this time sticking to the manga all the way
-                  through, but there were people who thought it would spoil the
-                  franchise. That myth should be dispelled, as there's only one
-                  word to describe this series - EPIC.12
-                </p>
-              </Row>
+              <Card className="bg-secondary my-3 rounded">
+                <Card.Title className="pt-2 ps-2">
+                  <Row className="w-auto mt-3">
+                    <Col className="d-flex col-4 pe-0 w-auto me-2">
+                      <Image src="/logo.png" className="w-lg h-md me-2" />
+                      <div>
+                        <p className="mb-0 fw-bold">Vinh</p>
 
-              <Row className="my-3 p-3 shadow">
-                <Col xs={1}>
-                  <Image src="/logo.png" rounded className="w-lg" />
-                </Col>
-                <Col className="mb-2">
-                  <p className="fw-bold mb-0">ChirssyKay</p>
-                  <small className="fw-light">April 12 at 2:28pm</small>
-                </Col>
+                        <small className="mt-0 fw-light fs-6">
+                          April 12 at 2:28pm
+                        </small>
+                      </div>
+                    </Col>
 
-                <p>
-                  Fullmetal Alchemist: Brotherhood gets an immense amount of
-                  praise in the MAL community. Now this is just the opinion of
-                  one guy. I'm certainly not the law of the land or anything.
-                  However, I personally feel as though calling FMA:B a
-                  masterpiece and the champion of all shows is a bit of a
-                  stretch. 12
-                </p>
-              </Row>
-            </Col>
-          </Row>
-        </Col>
+                    <Col className="pt-2">
+                      <i className="bi bi-trash float-end me-3" />
+                      <i className="bi bi-pencil float-end me-3" />
+                    </Col>
+                  </Row>
+                </Card.Title>
+
+                <Card.Text>
+                  <p className="pt-2 ps-2">
+                    First of all, I have seen the original FMA and although it
+                    was very popular and original, the pacing and conclusion did
+                    not sit too well with me. Brotherhood is meant to be a
+                    remake of the original, this time sticking to the manga all
+                    the way through, but there were people who thought it would
+                    spoil the franchise. That myth should be dispelled, as
+                    there's only one word to describe this series - EPIC.12
+                  </p>
+                </Card.Text>
+              </Card>
+
+              <Card className="bg-secondary my-3 rounded">
+                <Card.Title className="pt-2 ps-2">
+                  <Row>
+                    <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
+                      <Image src="/logo.png" className="w-lg h-md me-2" />
+                      <div>
+                        <p className="mb-0 fw-bold">Vinh</p>
+
+                        <small className="mt-0 fw-light fs-6">
+                          April 12 at 2:28pm
+                        </small>
+                      </div>
+                    </Col>
+
+                    <Col className="pt-2">
+                      <i className="bi bi-trash float-end me-3" />
+                      <i className="bi bi-pencil float-end me-3" />
+                    </Col>
+                  </Row>
+                </Card.Title>
+                <Card.Text>
+                  <p className="pt-2 ps-2">
+                    Fullmetal Alchemist: Brotherhood gets an immense amount of
+                    praise in the MAL community. Now this is just the opinion of
+                    one guy. I'm certainly not the law of the land or anything.
+                    However, I personally feel as though calling FMA:B a
+                    masterpiece and the champion of all shows is a bit of a
+                    stretch. 12
+                  </p>
+                </Card.Text>
+              </Card>
+          </Col>
+        </Row>
       </Container>
     </>
   );
