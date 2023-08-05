@@ -7,6 +7,7 @@ import { Home } from "./pages/Home/Home";
 import { Store } from "./pages/Store/Store";
 import { About } from "./pages/About/About";
 import { AuthProvider } from "./contexts/AuthContext";
+import { CastDetail } from "./pages/CastDetail/CastDetail";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
           { path: "", element: <Home /> },
           { path: "store", element: <Store /> },
           { path: "about", element: <About /> },
+          { path: "castDetail", element: <CastDetail /> },
         ],
       },
     ],
