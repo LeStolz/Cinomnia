@@ -1,0 +1,16 @@
+$dark: #212529;
+
+@import "bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+@include color-mode(light) {  
+    .bg-dark {
+      background-color: var(--bs-light) !important;
+    }
+  }
+
+.movie-container {
+  flex: 3;
+  overflow-y: scroll;
+  max-height: 70vh;
+}
