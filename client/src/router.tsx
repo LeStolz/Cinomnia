@@ -6,6 +6,8 @@ import { NavbarLayout } from "./layouts/NavbarLayout";
 import { Home } from "./pages/Home/Home";
 import { Store } from "./pages/Store/Store";
 import { About } from "./pages/About/About";
+import { Payment } from "./components/Payment/Payment";
+import { PaymentNotification } from "./components/Payment/PaymentNotification";
 import { AuthProvider } from "./contexts/AuthContext";
 
 export const router = createBrowserRouter([
@@ -25,6 +27,8 @@ export const router = createBrowserRouter([
           { path: "", element: <Home /> },
           { path: "store", element: <Store /> },
           { path: "about", element: <About /> },
+          { path: "payment", element: <Payment/>},
+          { path: "successful", element: <PaymentNotification/>},
         ],
       },
     ],
