@@ -9,6 +9,12 @@ import { About } from "./pages/About/About";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CastDetail } from "./pages/CastDetail/CastDetail";
 
+        
+import { FilmDetail } from "./pages/FilmDetail/FilmDetail";
+=======
+        
+import { WatchHistory } from "./pages/WatchHistory/WatchHistory";
+
 export const router = createBrowserRouter([
   {
     element: <ContextWrapper />,
@@ -26,7 +32,17 @@ export const router = createBrowserRouter([
           { path: "", element: <Home /> },
           { path: "store", element: <Store /> },
           { path: "about", element: <About /> },
+
           { path: "castDetail", element: <CastDetail /> },
+=======
+
+        
+          { path: "film_detail", element: <FilmDetail /> },
+=======
+        
+          { path: "watch_history", element: <WatchHistory /> },
+
+
         ],
       },
     ],
