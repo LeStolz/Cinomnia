@@ -39,6 +39,9 @@ export function Header() {
             <Nav.Link as={NavLink} to="/about">
               About
             </Nav.Link>
+            <Nav.Link as={NavLink} to="/wishlist">
+              Wishlist
+            </Nav.Link>
           </Nav>
           <Button
             onClick={setTheme}
