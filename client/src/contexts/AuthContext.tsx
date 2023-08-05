@@ -18,7 +18,6 @@ type AuthProviderProps = {
 
 export type User = {
   email: string;
-  password: string;
 };
 
 export function AuthProvider({ children }: AuthProviderProps) {

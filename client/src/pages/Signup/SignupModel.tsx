@@ -5,13 +5,12 @@ export class SignupModel {
   async signup(user: SignupModelProps) {
     const auth = useAuth();
 
-    if (user.email == null || user.password == null) {
+    if (user.email == null) {
       return;
     }
 
     await auth.signup({
       email: user.email,
-      password: user.password,
     });
   }
 }
