@@ -35,7 +35,7 @@ export function SignupView({ onSubmit }: SignupViewProps) {
   return (
     <>
       <Row className="bg-secondary rounded">
-        <Col className="p-0 d-none d-lg-block">
+        <Col className="p-0 d-none d-md-block">
           <Image src="/signup-background.png" className="h-100 rounded " />
         </Col>
 
@@ -60,44 +60,38 @@ export function SignupView({ onSubmit }: SignupViewProps) {
               />
             </Form.Group>
           </Form>
-          <Button type="submit" variant="danger" className="w-100">
-            Continue
+            <Button type="submit" variant="danger" className="w-100">
+              Continue
+            </Button>
+
+            <p className="mt-2">Or using</p>
+          
+            <h6>
+          <Button variant="light" className="w-100">
+          <Link to="" className='text-decoration-none text-dark'>
+              <i className="bi bi-facebook me-2"></i>
+              Continue with Facebook
+          </Link>
           </Button>
+          </h6>
 
-          <div className="d-flex align-items-center my-2">
-            <hr className="w-100" />
-            <p className="w-100 m-0">Or using</p>
-            <hr className="w-100" />
-          </div>
-
-          <div>
-            <h6>
-              <Button variant="light" className="w-100 text-start px-5">
-                <Link to="" className="text-decoration-none text-dark">
-                  <i className="bi bi-facebook me-2"></i>
-                  Continue with Facebook
-                </Link>
-              </Button>
-            </h6>
-
-            <h6>
-              <Button variant="light" className="w-100 text-start px-5">
-                <Link to="" className="text-decoration-none text-dark">
+          <h6>
+            <Button variant="light" className="w-100">
+              <Link to="" className='text-decoration-none text-dark'>
                   <i className="bi bi-google me-2"></i>
                   Continue with Google
-                </Link>
-              </Button>
-            </h6>
+              </Link>
+            </Button>
+          </h6>
 
-            <h6>
-              <Button variant="light" className="w-100 text-start px-5">
-                <Link to="" className="text-decoration-none text-dark">
+          <h6>
+            <Button variant="light" className="w-100">
+              <Link to="" className='text-decoration-none text-dark'>
                   <i className="bi bi-twitter me-2"></i>
                   Continue with Twitter
-                </Link>
-              </Button>
-            </h6>
-          </div>
+              </Link>
+            </Button>
+          </h6>
 
           <p className="mt-2">
             Already have an account? <Link to="/login">Log in now!</Link>
