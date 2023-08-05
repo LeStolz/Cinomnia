@@ -6,6 +6,7 @@ import { NavbarLayout } from "./layouts/NavbarLayout";
 import { Home } from "./pages/Home/Home";
 import { Store } from "./pages/Store/Store";
 import { About } from "./pages/About/About";
+import { Search } from "./components/Search/Search";
 import { AuthProvider } from "./contexts/AuthContext";
 import { WatchHistory } from "./pages/WatchHistory/WatchHistory";
 
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
           { path: "store", element: <Store /> },
           { path: "about", element: <About /> },
           { path: "watch_history", element: <WatchHistory /> },
+          { path: "search", element: <Search/>},
         ],
       },
     ],
