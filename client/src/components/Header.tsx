@@ -7,10 +7,14 @@ import {
   InputGroup,
   Button,
 } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { HomeModel } from "../pages/Home/HomeModel";
 
 export function Header() {
+  const navigate = useNavigate();
   const [isDark, setIsDark] = useState(true);
+  const [searchKey, setSearchKey] = useState("");
+  const [searchKeyNotEmpty, setSearchKeyNotEmpty] = useState(false);
 
   const setTheme = () => {
     document.documentElement.setAttribute(
@@ -19,6 +23,19 @@ export function Header() {
     );
 
     setIsDark(!isDark);
+  };
+
+  const searchMovies = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (searchKeyNotEmpty) {
+      try {
+        const fetchedMovies = await HomeModel.fetchMovie(searchKey); // merge Home 
+        console.log(fetchedMovies);
+        navigate("/search", { state: { movies: fetchedMovies } });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
   };
 
   return (
@@ -54,13 +71,17 @@ export function Header() {
               }`}
             ></i>
           </Button>
-          <Form className="ms-3">
+          <Form className="ms-3" onSubmit={searchMovies}>
             <InputGroup>
               <Form.Control
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
                 className="rounded-start-pill"
+                onChange={(e) => {
+                  setSearchKey(e.target.value);
+                  setSearchKeyNotEmpty(e.target.value.trim() !== "");
+                }}
               />
               <Button
                 variant="outline-primary"
