@@ -1,0 +1,10 @@
+.title {
+    &:hover {
+      color: red;
+    }
+    &::after {
+      content: "|";
+      color: #858484;
+      margin: 0 1rem;
+    }
+  }
