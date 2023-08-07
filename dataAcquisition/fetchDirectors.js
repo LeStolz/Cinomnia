@@ -5,8 +5,9 @@ const Director = require("./models/Director.js");
 const app = express();
 
 const options = { method: "GET", headers: { accept: "application/json" } };
+const DB = "Cinomnia"
 const code =
-  "mongodb+srv://admin:123@cinomnia.e8sbbzh.mongodb.net/?retryWrites=true&w=majority";
+  `mongodb+srv://admin:123@cinomnia.e8sbbzh.mongodb.net/${DB}?retryWrites=true&w=majority`;
 
 const apiKey = "api_key=3c83856efcaf8df7bef87e6e10139306";
 
@@ -84,7 +85,6 @@ async function fetchDirection(id) {
       if (element.department === "Directing") {
         const crews = new Object();
 
-
         crews.id = element.id;
         crews.job = element.job;
 
@@ -118,7 +118,13 @@ async function fetchInfoPersonal(id) {
     infoPersonal.biography = data.biography;
     infoPersonal.birthday = data.birthday;
     infoPersonal.gender = checkGender(data.gender);
-    infoPersonal.img = "https://image.tmdb.org/t/p/w500" + data["profile_path"];
+    infoPersonal.img = new Object();
+    if (data["profile_path"]) {
+      infoPersonal.img.img_500 =
+        "https://image.tmdb.org/t/p/w500" + data["profile_path"];
+      infoPersonal.img.img_1280 =
+        "https://image.tmdb.org/t/p/w1280" + data["profile_path"];
+    }
   } else return false;
 
   return infoPersonal;
@@ -141,7 +147,7 @@ async function fetchDirectors(amountFilm) {
   directorsList = dropDuplicate(directorsList);
 }
 
-async function fetchAndPostDirector() {
+async function main() {
   await connectToMongo();
 
   await getDb();
@@ -149,10 +155,6 @@ async function fetchAndPostDirector() {
   await fetchDirectors(100);
 
   await postToMongo();
-}
-
-async function main() {
-  await fetchAndPostDirector();
 }
 
 main();

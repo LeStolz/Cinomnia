@@ -24,6 +24,7 @@ const videos = mongoose.Schema({
   teasers: [video],
   behindTheScenes: [video],
   highlights: [video],
+  video_full: String
 });
 
 const filmSchema = mongoose.Schema(
@@ -36,8 +37,9 @@ const filmSchema = mongoose.Schema(
     release_date: Date,
     rating: Number,
     ranking: Number,
+    overview: String,
     review: [],
-    poster: String,
+    poster: {img_500: String, img_1280: String},
     genres: [genre],
     casts: [cast],
     directors: [director],

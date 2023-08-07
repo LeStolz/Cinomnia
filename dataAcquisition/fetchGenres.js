@@ -4,8 +4,9 @@ const Genres = require("./models/Genre.js");
 const app = express();
 
 const options = { method: "GET", headers: { accept: "application/json" } };
+const DB = "Cinomnia"
 const code =
-  "mongodb+srv://admin:123@cinomnia.e8sbbzh.mongodb.net/?retryWrites=true&w=majority";
+  `mongodb+srv://admin:123@cinomnia.e8sbbzh.mongodb.net/${DB}?retryWrites=true&w=majority`;
 
 const apiKey = "api_key=3c83856efcaf8df7bef87e6e10139306";
 

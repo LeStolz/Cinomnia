@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const Film = mongoose.Schema({
   id: Number,
-  character: String,
-  img_character: String,
+  job: String,
+  img_character: {img_500: String, img_1280: String},
 });
 
 const actorSchema = mongoose.Schema(
@@ -16,7 +16,7 @@ const actorSchema = mongoose.Schema(
     biography: String,
     birthday: Date,
     gender: String,
-    img: String,
+    img: {img_500: String, img_1280: String},
     crews: [Film],
   },
   {

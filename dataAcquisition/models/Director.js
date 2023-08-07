@@ -15,7 +15,7 @@ const directorSchema = mongoose.Schema(
     biography: String,
     birthday: Date,
     gender: String,
-    img: String,
+    img: {img_500: String, img_1280: String},
     crews: [Film],
   },
   {
