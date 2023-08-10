@@ -36,6 +36,7 @@ const filmSchema = mongoose.Schema(
     title: String,
     release_date: Date,
     rating: Number,
+    price: Number,
     ranking: Number,
     overview: String,
     review: [],

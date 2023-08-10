@@ -125,8 +125,9 @@ async function fetchInfo(id) {
     film.id = detail.id;
     film.title = detail.title;
     film["release_date"] = detail["release_date"];
-    film.rating = 0.0;
-    film.ranking = 0.0;
+    film.rating = detail["vote_average"] * 5 / 10;
+    film.price = (detail["vote_average"] * 5 / 10) * 10000;
+    film.ranking = 0;
     film.review = [];
     film.poster = new Object();
 
