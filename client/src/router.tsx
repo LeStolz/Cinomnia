@@ -12,10 +12,9 @@ import { Search } from "./components/Search/Search";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CastDetail } from "./pages/CastDetail/CastDetail";
 import { Wishlist } from "./pages/Wishlist/Wishlist";
-        
 import { FilmDetail } from "./pages/FilmDetail/FilmDetail";
-        
 import { WatchHistory } from "./pages/WatchHistory/WatchHistory";
+import { Player } from "./pages/Player/Player";
 
 export const router = createBrowserRouter([
   {
@@ -37,10 +36,11 @@ export const router = createBrowserRouter([
           { path: "payment", element: <Payment/>},
           { path: "successful", element: <PaymentNotification/>},
           { path: "castDetail", element: <CastDetail /> },
-          { path: "film_detail", element: <FilmDetail /> },
           { path: "watch_history", element: <WatchHistory /> },
-          { path: "search", element: <Search/>},
           { path: "wishlist", element: <Wishlist/>},
+          { path: "search/:search", element: <Search/>},
+          { path: "player/:id", element: <Player/> },
+          { path: "detail/:id", element: <FilmDetail/>},
         ],
       },
     ],

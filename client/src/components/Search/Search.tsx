@@ -1,6 +1,9 @@
+import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { MovieCard } from "../MovieCard/MovieCard";
+import { api } from "../../utils/api";
+import { Film } from "../../pages/Home/Home";
 import "./Search.scss";
 
 interface MovieTitlesProps {
@@ -15,7 +18,11 @@ export default function MovieTitles({ titles }: MovieTitlesProps) {
       </h3>
       <Container fluid>
         {titles.map((title, index) => (
-          <a key={title} href={`#${index}`} className="title text-decoration-none">
+          <a
+            key={title}
+            href={`#${index}`}
+            className="titles text-decoration-none fs-5"
+          >
             {title}
           </a>
         ))}
@@ -26,29 +33,52 @@ export default function MovieTitles({ titles }: MovieTitlesProps) {
 
 export function Search() {
   const location = useLocation();
-  const movies = location.state?.movies || [];
-  const slides: any[] = [];
-  slides.push(movies);
+  const searchKey = location.pathname.split("/search/")[1];
+  const [searchResults, setSearchResults] = useState<Film[]>([]);
+
+  useEffect(() => {
+    async function fetchSearchResults() {
+      try {
+        const response = await api.get(`/films/${searchKey}`);
+        const updatedFilmData = await Promise.all(
+          response.data.map(async (filmData: Film) => {
+            const genreIds = filmData.genres.map((genre) => genre.id);
+            const genreResponses = await Promise.all(
+              genreIds.map((genreId) => api.get(`/genres/${genreId}`))
+            );
+            const genres = genreResponses.map(
+              (genreResponse) => genreResponse.data[0]
+            );
+
+            filmData.genres = genres;
+            return filmData;
+          })
+        );
+        setSearchResults(updatedFilmData);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      }
+    }
+
+    fetchSearchResults();
+  }, [searchKey]);
 
   return (
     <Container className="home p-0">
-      <MovieTitles titles={movies.map((movie: any) => movie.name)} />
-      {slides.map((slide, index) => (
-        <Row
-          xs={1}
-          sm={2}
-          md={4}
-          lg={5}
-          key={index}
-          className="justify-content-start ms-5 me-5"
-        >
-          {slide.map((movie: any) => (
-            <Col key={movie.id} className="ps-1 pe-1 mb-5">
-              <MovieCard movieData={movie} />
-            </Col>
-          ))}
-        </Row>
-      ))}
+      <MovieTitles titles={searchResults.map((movie: Film) => movie.title)} />
+      <Row
+        xs={1}
+        sm={2}
+        md={4}
+        lg={5}
+        className="justify-content-start ms-5 me-5"
+      >
+        {searchResults.map((movie: Film) => (
+          <Col key={movie._id} className="ps-1 pe-1 mb-5">
+            <MovieCard movieData={movie} className="" />
+          </Col>
+        ))}
+      </Row>
     </Container>
   );
 }

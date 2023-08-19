@@ -1,6 +1,5 @@
 import { Container, Row, Col } from "../../node_modules/react-bootstrap";
-import MovieCard from "./MovieCard/MovieCard";
-
+import { MovieCard } from "./MovieCard/MovieCard";
 export function Film({ movies }: any) {
   const numCols = 4;
 
@@ -27,7 +26,7 @@ export function Film({ movies }: any) {
               xl={3}
             >
               <div className="media-element mt-2">
-                <MovieCard movieData={movie} />
+                <MovieCard movieData={movie} className=""/>
               </div>
             </Col>
           ))}

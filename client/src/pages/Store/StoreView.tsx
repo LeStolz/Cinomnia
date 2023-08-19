@@ -3,10 +3,83 @@ import { Container, Row, Col, Form, Button, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Store.scss";
 
+type Film = {
+  _id: string;
+  id: number;
+  title: string;
+  poster: {
+    img_500: string;
+    img_1280: string;
+  };
+  overview: string;
+  release_date: Date;
+  rating: number;
+  ranking: number;
+  review: string[];
+  genres: {
+    _id: string;
+    id: number;
+    name: string;
+  }[];
+  casts: {
+    _id: string;
+    id: number;
+    name: string;
+    biography: string;
+    birthday: Date;
+    gender: string;
+    img: {
+      img_500: string;
+      img_1280: string;
+    };
+    crews: {
+      id: number;
+      job: string;
+      img_character: {
+        img_500: string;
+        img_1280: string;
+      };
+    }[];
+  }[];
+  directors: {
+    _id: string;
+    id: number;
+    name: string;
+    biography: string;
+    birthday: Date;
+    gender: string;
+    img: {
+      img_500: string;
+      img_1280: string;
+    };
+    crews: {
+      id: number;
+      job: string;
+      img_character: {
+        img_500: string;
+        img_1280: string;
+      };
+    }[];
+  }[];
+  videos: {
+    trailers: {
+      _id: string;
+      name: string;
+      link: string;
+    }[];
+    video_full: string;
+  };
+  price: number;
+};
+
 export function StoreView({ store, handleClose }: any) {
   const navigate = useNavigate();
+  const totalRating = store.reduce((accumulator: number, movie: Film) => {
+    return accumulator + movie.rating;
+  }, 0);
+
   return (
-    <Container fluid className="p-5">
+    <Container className="p-0 pt-5">
       <Row className="mt-3">
         <Col xs={12} sm={12} md={12} lg={8}>
           {/* search */}
@@ -54,33 +127,41 @@ export function StoreView({ store, handleClose }: any) {
               fluid
               className="movie-container bg-secondary border border-1 p-4 rounded mb-3"
             >
-              {store.map((movie: any, index: number) => (
+              {store.map((movie: Film, index: number) => (
                 <React.Fragment key={index}>
-                  <Row className="mb-3 p-3 rounded bg-dark shadow-sm">
+                  <Row className="mb-3 p-3 rounded shadow-sm">
                     <Col xs={4}>
                       <Image
-                        src={`https://image.tmdb.org/t/p/w500${movie.image}`}
+                        src={`${movie.poster.img_500}`}
                         className="rounded w-100 h-auto"
                       />
                     </Col>
                     <Col>
                       <Row className="p-0">
                         <Col xs={8}>
-                          <span className="text-right">{movie.gerne}</span>
+                          <ul className="d-flex text-white p-0 m-0 genre-list fw-lighter fs-6 list-unstyled">
+                            {movie.genres &&
+                              movie.genres.map((genre) => (
+                                <li key={`genre-${genre.id}`} className="me-1">
+                                  {genre.name !== "" && genre.name}
+                                </li>
+                              ))}
+                          </ul>
+                          {/* <span className="text-right">{movie.title}</span> */}
                           <h4 className="text-success movie-name overflow-hidden">
-                            {movie.name}
+                            {movie.title}
                           </h4>
                           <span className="text-right">
-                            {movie.release_date}
+                            {new Date(movie.release_date).getFullYear()}
                           </span>
                         </Col>
                         <Col className="d-flex flex-column align-items-end">
-                          <span className="text-primary text-right">{`$${
+                          <span className="text-primary text-right">{`$${(
                             movie.rating * 1
-                          },00`}</span>
-                          <p className="text-primary h6">{`$${
+                          ).toFixed(2)},00`}</span>
+                          <p className="text-primary h6">{`$${(
                             movie.rating * 1.25
-                          },00`}</p>
+                          ).toFixed(2)},00`}</p>
                         </Col>
                       </Row>
                       <Row className="p-0 d-flex justify-content-between">
@@ -176,7 +257,9 @@ export function StoreView({ store, handleClose }: any) {
                 </Container>
                 <Container className="d-flex justify-content-between">
                   <h5>Total Price:</h5>
-                  <h5>$.....</h5>
+                  <h5 className="text-primary text-right">{`$${(
+                    totalRating * 1.25
+                  ).toFixed(2)},00`}</h5>
                 </Container>
               </Row>
               <Row>

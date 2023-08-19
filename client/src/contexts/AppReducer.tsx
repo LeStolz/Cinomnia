@@ -1,18 +1,14 @@
-interface Movie {
-  id: number;
-  // Add any other properties specific to the movie object
-}
-
+import { Film } from "../configs/Model";
 interface State {
-  watchlist: Movie[];
-  watched: Movie[];
-  store: Movie[];
+  watchlist: Film[];
+  watched: Film[];
+  store: Film[];
   // Add any other properties specific to the state object
 }
 
 interface Action {
   type: string;
-  payload: Movie | number;
+  payload: Film | number;
 }
 
 const initialState: State = {
@@ -26,7 +22,7 @@ const movieReducer = (state: State = initialState, action: Action): State => {
     case "ADD_MOVIE_TO_WATCHLIST":
       return {
         ...state,
-        watchlist: [action.payload as Movie, ...state.watchlist],
+        watchlist: [action.payload as Film, ...state.watchlist],
       };
     case "REMOVE_MOVIE_FROM_WATCHLIST":
       return {
@@ -39,17 +35,17 @@ const movieReducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         watchlist: state.watchlist.filter(
-          (movie) => movie.id !== (action.payload as Movie).id
+          (movie) => movie._id !== (action.payload as Film)._id
         ),
-        watched: [(action.payload as Movie), ...state.watched],
+        watched: [(action.payload as Film), ...state.watched],
       };
     case "MOVE_TO_WATCHLIST":
       return {
         ...state,
         watched: state.watched.filter(
-          (movie) => movie.id !== (action.payload as Movie).id
+          (movie) => movie._id !== (action.payload as Film)._id
         ),
-        watchlist: [(action.payload as Movie), ...state.watchlist],
+        watchlist: [(action.payload as Film), ...state.watchlist],
       };
     case "REMOVE_FROM_WATCHED":
       return {
@@ -61,7 +57,7 @@ const movieReducer = (state: State = initialState, action: Action): State => {
       case "ADD_MOVIE_TO_STORE":
         return {
           ...state,
-          store: [action.payload as Movie, ...state.store],
+          store: [action.payload as Film, ...state.store],
         };
       case "REMOVE_MOVIE_FROM_STORE":
         return {
