@@ -77,6 +77,9 @@ export function Header() {
             <Nav.Link as={NavLink} to="/watch_history">
               History
             </Nav.Link>
+            <Nav.Link as={NavLink} to="/filter">
+              Filter
+            </Nav.Link>
           </Nav>
           <Button
             onClick={setTheme}
