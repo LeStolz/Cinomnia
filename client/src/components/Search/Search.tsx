@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { api } from "../../utils/api";
-import { Film } from "../../pages/Home/Home";
+import { Film } from "../../configs/Model";
 import "./Search.scss";
 
 interface MovieTitlesProps {
