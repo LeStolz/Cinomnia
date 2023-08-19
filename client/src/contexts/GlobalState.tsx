@@ -1,27 +1,24 @@
 import React, { createContext, useReducer, useEffect, ReactNode } from "react";
+import { Film } from "../configs/Model";
 import AppReducer from "./AppReducer";
 
 // Interface for movie object
-interface Movie {
-  id: number;
-  // Add any other properties specific to the movie object
-}
 
 // Interface for the state object
 interface AppState {
-  watchlist: Movie[];
-  watched: Movie[];
-  store: Movie[];
+  watchlist: Film[];
+  watched: Film[];
+  store: Film[];
 }
 
 // Define the type for the context value
 interface GlobalContextValue extends AppState {
-  addMovieToWatchlist: (movie: Movie) => void;
+  addMovieToWatchlist: (movie: Film) => void;
   removeMovieFromWatchlist: (id: number) => void;
-  addMovieToWatched: (movie: Movie) => void;
-  moveToWatchlist: (movie: Movie) => void;
+  addMovieToWatched: (movie: Film) => void;
+  moveToWatchlist: (movie: Film) => void;
   removeFromWatched: (id: number) => void;
-  addMovieToStore: (movie: Movie) => void;
+  addMovieToStore: (movie: Film) => void;
   removeMovieFromStore: (id: number) => void;
   // Add any other action functions you have in the GlobalState here
 }
@@ -82,25 +79,25 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = (props) => {
   }, [state]);
 
   // Actions
-  const addMovieToWatchlist = (movie: Movie) => {
+  const addMovieToWatchlist = (movie: Film) => {
     dispatch({ type: "ADD_MOVIE_TO_WATCHLIST", payload: movie });
   };
   const removeMovieFromWatchlist = (id: number) => {
     dispatch({ type: "REMOVE_MOVIE_FROM_WATCHLIST", payload: id });
   };
 
-  const addMovieToWatched = (movie: Movie) => {
+  const addMovieToWatched = (movie: Film) => {
     dispatch({ type: "ADD_MOVIE_TO_WATCHED", payload: movie });
   };
 
-  const moveToWatchlist = (movie: Movie) => {
+  const moveToWatchlist = (movie: Film) => {
     dispatch({ type: "MOVE_TO_WATCHLIST", payload: movie });
   };
 
   const removeFromWatched = (id: number) => {
     dispatch({ type: "REMOVE_FROM_WATCHED", payload: id });
   };
-  const addMovieToStore = (movie: Movie) => {
+  const addMovieToStore = (movie: Film) => {
     dispatch({ type: "ADD_MOVIE_TO_STORE", payload: movie });
   };
   const removeMovieFromStore = (id: number) => {

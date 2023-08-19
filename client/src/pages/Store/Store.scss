@@ -1,13 +1,13 @@
-$dark: #212529;
+// $dark: #212529;
 
-@import "bootstrap";
-@import "bootstrap-icons/font/bootstrap-icons.css";
+// @import "bootstrap";
+// @import "bootstrap-icons/font/bootstrap-icons.css";
 
-@include color-mode(light) {  
-    .bg-dark {
-      background-color: var(--bs-light) !important;
-    }
-  }
+// @include color-mode(light) {  
+//     .bg-dark {
+//       background-color: var(--bs-light) !important;
+//     }
+//   }
 
 .movie-container {
   flex: 3;

@@ -1,29 +1,74 @@
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Image from "react-bootstrap/Image";
-import Row from "react-bootstrap/Row";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import Carousel from "react-bootstrap/Carousel";
+import { useState } from "react";
+import ReactPlayer from "react-player";
+import {
+  Col,
+  Container,
+  Image,
+  Row,
+  Card,
+  Form,
+  Button,
+  Carousel,
+} from "react-bootstrap";
+import { Film, Actor } from "../../configs/Model";
+import { Loading } from "../../components/Loading/Loading";
 
-export function FilmDetailView() {
+export function FilmDetailView({ movie }: { movie: Film | undefined }) {
+  const videoUrl = movie?.videos?.trailers[0]?.link || null;
+  const [playerReady, setPlayerReady] = useState(false);
+  const handlePlayerReady = () => {
+    setPlayerReady(true);
+  };
+
+  const getCharacters = (cast: Actor) => {
+    const filteredCrew = cast.crews.filter((crew) => crew.id === movie?.id);
+    console.log(filteredCrew);
+  };
+
+  if (!movie) {
+    return <Loading />;
+  }
   return (
-    <>
-      <Container className="rounded" fluid>
-        <Row className="d-none d-md-block">
-          <video
-            src="https://placehold.co/1400x342.mp4"
-            className="mb-3 w-100 h-auto"
-          ></video>
+    <Container className="p-0">
+      <Container className="pt-5" fluid>
+        <Row className="d-none d-md-block mt-5 mb-2">
+          {videoUrl ? (
+            <>
+              {playerReady ? (
+                <ReactPlayer
+                  url={videoUrl}
+                  className="rounded"
+                  playing={true}
+                  loop
+                  muted
+                  width="100%"
+                />
+              ) : (
+                <Container className="bg-black d-flex align-items-center justify-content-center w-100 h-100">
+                  <p className="text-center text-white">Loading video...</p>
+                </Container>
+              )}
+              <ReactPlayer
+                className="d-none"
+                url={videoUrl}
+                onReady={handlePlayerReady}
+              />
+            </>
+          ) : (
+            <Container className="d-flex align-items-center justify-content-center w-100 h-100">
+              <p className="text-center text-muted z-">
+                Sorry, this video is unavailable
+              </p>
+            </Container>
+          )}
         </Row>
 
         <Row className="">
           <Col className="order-1 col-lg-4 col-sm-12">
             <Card className="bg-secondary rounded">
               <Card.Title className="text-center mb-0 py-2 fs-2 bg-light-subtle">
-                Film's Title
+                {movie?.title}
               </Card.Title>
               <Card.Text>
                 <Carousel data-bs-theme="dark">
@@ -54,19 +99,23 @@ export function FilmDetailView() {
                   <li className="fw-light">
                     <span className="fw-bold">Type</span>: TV
                   </li>
-                  <li className="fw-light">
+                  {/* <li className="fw-light">
                     <span className="fw-bold">Episodes:</span> 64
-                  </li>
+                  </li> */}
                   <li className="fw-light">
                     <span className="fw-bold">Status:</span> Finished Airing
                   </li>
                   <li className="fw-light">
-                    <span className="fw-bold">Aired:</span> Apr 5, 2009 to Jul
-                    4, 2010
+                    <span className="fw-bold">Aired:</span>{" "}
+                    {new Date(movie?.release_date).toLocaleDateString("en-GB", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
                   </li>
                   <li className="fw-light">
-                    <span className="fw-bold">Premiered:</span>{" "}
-                    <Link to="">Spring 2019</Link>
+                    <span className="fw-bold">Director:</span>{" "}
+                    <Link to="">{movie?.directors[0].name}</Link>
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">Broadcast:</span> Sundays at 17:00
@@ -88,8 +137,16 @@ export function FilmDetailView() {
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">Genres:</span>{" "}
-                    <Link to="">Action</Link>, <Link to="">Adventure</Link>,{" "}
-                    <Link to="">Drama</Link>, <Link to="">Fantasy</Link>
+                    {movie?.genres &&
+                      movie?.genres.map((genre) => (
+                        <>
+                          <Link to="" key={`genre-${genre.id}`}>
+                            {genre.name !== "" && genre.name}
+                          </Link>{" "}
+                        </>
+                      ))}
+                    {/* <Link to="">Action</Link>, <Link to="">Adventure</Link>,{" "}
+                    <Link to="">Drama</Link>, <Link to="">Fantasy</Link> */}
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">Theme:</span>{" "}
@@ -99,8 +156,8 @@ export function FilmDetailView() {
                     <span className="fw-bold">Duration:</span> 24min. per ep
                   </li>
                   <li className="fw-light">
-                    <span className="fw-bold">Rating:</span> R - 17+ (violent &
-                    profanity)
+                    <span className="fw-bold">Rating:</span>{" "}
+                    {movie?.rating.toFixed(1)}
                   </li>
                 </ul>
               </Card.Text>
@@ -169,26 +226,7 @@ export function FilmDetailView() {
               </Card.Title>
               <Card.Text>
                 <p className="fs-6 p-3" style={{ textAlign: "justify" }}>
-                  After a horrific alchemy experiment goes wrong in the Elric
-                  household, brothers Edward and Alphonse are left in a
-                  catastrophic new reality. Ignoring the alchemical principle
-                  banning human transmutation, the boys attempted to bring their
-                  recently deceased mother back to life. Instead, they suffered
-                  brutal personal loss: Alphonse's body disintegrated while
-                  Edward lost a leg and then sacrificed an arm to keep
-                  Alphonse's soul in the physical realm by binding it to a
-                  hulking suit of armor.The brothers are rescued by their
-                  neighbor Pinako Rockbell and her granddaughter Winry. Known as
-                  a bio-mechanical engineering prodigy, Winry creates prosthetic
-                  limbs for Edward by utilizing "automail," a tough, versatile
-                  metal used in robots and combat armor. After years of
-                  training, the Elric brothers set off on a quest to restore
-                  their bodies by locating the Philosopher's Stone—a powerful
-                  gem that allows an alchemist to defy the traditional laws of
-                  Equivalent Exchange.As Edward becomes an infamous alchemist
-                  and gains the nickname "Fullmetal," the boys' journey embroils
-                  them in a growing conspiracy that threatens the fate of the
-                  world.[Written by MAL Rewrite]
+                  {movie?.overview}
                 </p>
               </Card.Text>
             </Card>
@@ -231,56 +269,49 @@ export function FilmDetailView() {
 
                 <hr />
 
-                <Row className="pb-0 d-flex justify-content-between">
-                  <Col className="d-flex pe-0 col-4 w-auto">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <Link to="" className="text-decoration-none">
-                        <p className="mb-0 fw-bold">Eric, Edward</p>
-                      </Link>
-                      <small className="mt-0">Main</small>
-                    </div>
-                  </Col>
-
-                  <Col className="d-flex col-4 pe-0 w-auto me-2">
-                    <div>
-                      <Link to="" className="text-decoration-none">
-                        <p className="mb-0 fw-bold">Park Romi</p>
-                      </Link>
-                      <small className="mt-0">Japanese</small>
-                    </div>
-                    <Image src="/logo.png" className="w-lg h-md ms-2" />
-                  </Col>
-                </Row>
-
-                <hr className="mb-3 mt-0" />
-
-                <Row className="pb-0 d-flex justify-content-between mb-2">
-                  <Col className="d-flex pe-0 col-4 w-auto">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <Link to="" className="text-decoration-none">
-                        <p className="mb-0 fw-bold">Eric, Edward</p>
-                      </Link>
-                      <small className="mt-0">Main</small>
-                    </div>
-                  </Col>
-
-                  <Col className="d-flex col-4 pe-0 w-auto me-2">
-                    <div>
-                      <Link to="" className="text-decoration-none">
-                        <p className="mb-0 fw-bold">Park Romi</p>
-                      </Link>
-                      <small className="mt-0">Japanese</small>
-                    </div>
-                    <Image src="/logo.png" className="w-lg h-md ms-2" />
-                  </Col>
-                </Row>
-                <hr className="mb-3 mt-0" />
+                {movie.casts &&
+                  movie.casts.map(
+                    (cast, idx) =>
+                      cast && (
+                        <>
+                          <Row className="pb-0 d-flex justify-content-between">
+                            <Col className="d-flex pe-0 col-4 w-auto">
+                              <Image
+                                key={`${cast.id}${idx}`}
+                                className="w-lg me-2 rounded"
+                                src={
+                                  cast.img
+                                    ? cast.img.img_500 || cast.img.img_1280
+                                    : "https://placehold.co/47x71"
+                                }
+                              />
+                              <div>
+                                <Link to="" className="text-decoration-none">
+                                  <p className="mb-0 fw-bold">{cast.name}</p>
+                                </Link>
+                              </div>
+                            </Col>
+                            <Col className="d-flex col-4 pe-0 w-auto me-2">
+                              <div>
+                                <Link to="" className="text-decoration-none">
+                                  <p className="mb-0 fw-bold">Park Romi</p>
+                                </Link>
+                                <small className="mt-0">Japanese</small>
+                              </div>
+                              <Image
+                                src="/logo.png"
+                                className="w-lg h-md ms-2"
+                              />
+                            </Col>
+                          </Row>
+                          <hr />
+                        </>
+                      )
+                  )}
               </Card.Text>
             </Card>
 
-            <Card className="bg-secondary my-3 rounded">
+            {/* <Card className="bg-secondary my-3 rounded">
               <Card.Title className="p-3 bg-light-subtle">Staff</Card.Title>
               <Card.Text className="p-3">
                 <Row className="pb-0 d-flex justify-content-between w-75">
@@ -331,7 +362,7 @@ export function FilmDetailView() {
 
                 <hr className="mb-3 mt-0" />
               </Card.Text>
-            </Card>
+            </Card> */}
 
             <Card className="bg-secondary my-3 rounded">
               <Card.Title className="p-3 mb-0 bg-light-subtle">
@@ -354,74 +385,74 @@ export function FilmDetailView() {
               </Card.Text>
             </Card>
 
-              <Card className="bg-secondary my-3 rounded">
-                <Card.Title className="pt-2 ps-2">
-                  <Row className="w-auto mt-3">
-                    <Col className="d-flex col-4 pe-0 w-auto me-2">
-                      <Image src="/logo.png" className="w-lg h-md me-2" />
-                      <div>
-                        <p className="mb-0 fw-bold">Vinh</p>
+            <Card className="bg-secondary my-3 rounded">
+              <Card.Title className="pt-2 ps-2">
+                <Row className="w-auto mt-3">
+                  <Col className="d-flex col-4 pe-0 w-auto me-2">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <p className="mb-0 fw-bold">Vinh</p>
 
-                        <small className="mt-0 fw-light fs-6">
-                          April 12 at 2:28pm
-                        </small>
-                      </div>
-                    </Col>
+                      <small className="mt-0 fw-light fs-6">
+                        April 12 at 2:28pm
+                      </small>
+                    </div>
+                  </Col>
 
-                    <Col className="pt-2">
-                      <i className="bi bi-trash float-end me-3" />
-                      <i className="bi bi-pencil float-end me-3" />
-                    </Col>
-                  </Row>
-                </Card.Title>
+                  <Col className="pt-2">
+                    <i className="bi bi-trash float-end me-3" />
+                    <i className="bi bi-pencil float-end me-3" />
+                  </Col>
+                </Row>
+              </Card.Title>
 
-                <Card.Text>
-                  <p className="pt-2 ps-2">
-                    First of all, I have seen the original FMA and although it
-                    was very popular and original, the pacing and conclusion did
-                    not sit too well with me. Brotherhood is meant to be a
-                    remake of the original, this time sticking to the manga all
-                    the way through, but there were people who thought it would
-                    spoil the franchise. That myth should be dispelled, as
-                    there's only one word to describe this series - EPIC.12
-                  </p>
-                </Card.Text>
-              </Card>
+              <Card.Text>
+                <p className="pt-2 ps-2">
+                  First of all, I have seen the original FMA and although it was
+                  very popular and original, the pacing and conclusion did not
+                  sit too well with me. Brotherhood is meant to be a remake of
+                  the original, this time sticking to the manga all the way
+                  through, but there were people who thought it would spoil the
+                  franchise. That myth should be dispelled, as there's only one
+                  word to describe this series - EPIC.12
+                </p>
+              </Card.Text>
+            </Card>
 
-              <Card className="bg-secondary my-3 rounded">
-                <Card.Title className="pt-2 ps-2">
-                  <Row>
-                    <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
-                      <Image src="/logo.png" className="w-lg h-md me-2" />
-                      <div>
-                        <p className="mb-0 fw-bold">Vinh</p>
+            <Card className="bg-secondary my-3 rounded">
+              <Card.Title className="pt-2 ps-2">
+                <Row>
+                  <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <p className="mb-0 fw-bold">Vinh</p>
 
-                        <small className="mt-0 fw-light fs-6">
-                          April 12 at 2:28pm
-                        </small>
-                      </div>
-                    </Col>
+                      <small className="mt-0 fw-light fs-6">
+                        April 12 at 2:28pm
+                      </small>
+                    </div>
+                  </Col>
 
-                    <Col className="pt-2">
-                      <i className="bi bi-trash float-end me-3" />
-                      <i className="bi bi-pencil float-end me-3" />
-                    </Col>
-                  </Row>
-                </Card.Title>
-                <Card.Text>
-                  <p className="pt-2 ps-2">
-                    Fullmetal Alchemist: Brotherhood gets an immense amount of
-                    praise in the MAL community. Now this is just the opinion of
-                    one guy. I'm certainly not the law of the land or anything.
-                    However, I personally feel as though calling FMA:B a
-                    masterpiece and the champion of all shows is a bit of a
-                    stretch. 12
-                  </p>
-                </Card.Text>
-              </Card>
+                  <Col className="pt-2">
+                    <i className="bi bi-trash float-end me-3" />
+                    <i className="bi bi-pencil float-end me-3" />
+                  </Col>
+                </Row>
+              </Card.Title>
+              <Card.Text>
+                <p className="pt-2 ps-2">
+                  Fullmetal Alchemist: Brotherhood gets an immense amount of
+                  praise in the MAL community. Now this is just the opinion of
+                  one guy. I'm certainly not the law of the land or anything.
+                  However, I personally feel as though calling FMA:B a
+                  masterpiece and the champion of all shows is a bit of a
+                  stretch. 12
+                </p>
+              </Card.Text>
+            </Card>
           </Col>
         </Row>
       </Container>
-    </>
+    </Container>
   );
 }
