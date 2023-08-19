@@ -15,7 +15,6 @@ import { Wishlist } from "./pages/Wishlist/Wishlist";
 import { FilmDetail } from "./pages/FilmDetail/FilmDetail";
 import { WatchHistory } from "./pages/WatchHistory/WatchHistory";
 import { Player } from "./pages/Player/Player";
-import { Filter } from "./pages/Filter/Filter";
 
 export const router = createBrowserRouter([
   {
@@ -42,7 +41,6 @@ export const router = createBrowserRouter([
           { path: "search/:search", element: <Search/>},
           { path: "player/:id", element: <Player/> },
           { path: "detail/:id", element: <FilmDetail/>},
-          { path: "filter", element: <Filter /> },
         ],
       },
     ],
