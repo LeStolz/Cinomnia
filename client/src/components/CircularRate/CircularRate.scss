@@ -1,0 +1,13 @@
+.progress-background {
+  stroke: #ddd;
+}
+
+.progress-circle {
+  stroke: #66BB6A; /* Change this to the desired color */
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 0.3s ease-in-out;
+}
+text {
+  fill: white;
+}

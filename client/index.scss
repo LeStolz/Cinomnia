@@ -1,6 +1,9 @@
-$primary: #ec2d4d;
+// $primary: #ec2d4d;
+$primary: #ff0000;
 $secondary: #141619;
 $min-contrast-ratio: 3;
+$dark-indicator-background: #ffffff;
+$light-indicator-background: black;
 
 @import "bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
@@ -11,6 +14,13 @@ $min-contrast-ratio: 3;
   .bg-secondary {
     background-color: var(--bs-white) !important;
   }
+}
+
+[data-bs-theme="dark"] .carousel .carousel-indicators [data-bs-target] {
+  background-color: $dark-indicator-background !important;
+}
+[data-bs-theme="light"] .carousel .carousel-indicators [data-bs-target] {
+  background-color: $light-indicator-background !important;
 }
 
 .card {

@@ -1,0 +1,115 @@
+.items {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  z-index: 1;
+  &.first {
+    &:hover {
+      transform: scale(1.25) translateX(10%);
+      transition-delay: 0.5s;
+      .video-container {
+        display: block;
+      }
+      .detail {
+        animation: showDetail 0.3s ease forwards;
+        animation-delay: 0.5s;
+      }
+      .movie-name-overlay {
+        opacity: 1;
+        z-index: 2;
+      }
+    }
+  }
+
+  &.last {
+    &:hover {
+      transform: scale(1.25) translateX(-10%);
+      transition-delay: 0.5s;
+      .video-container {
+        display: block;
+      }
+      .detail {
+        animation: showDetail 0.3s ease forwards;
+        animation-delay: 0.5s;
+      }
+      .movie-name-overlay {
+        opacity: 1;
+        z-index: 2;
+      }
+    }
+  }
+  &:hover {
+    z-index: 2;
+    transform: scale(1.25);
+    transition-delay: 0.5s;
+    .video-container {
+      display: block;
+    }
+    .detail {
+      animation: showDetail 0.3s ease forwards;
+      animation-delay: 0.5s;
+    }
+    .movie-name-overlay {
+      opacity: 1;
+      z-index: 2;
+    }
+  }
+}
+
+.detail {
+  width: 100%;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+@keyframes showDetail {
+  from {
+    height: 0;
+    transform: translateY(100%);
+  }
+  to {
+    height: auto;
+    transform: translateY(0);
+  }
+}
+
+.movie-name-overlay {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Dark theme */
+[data-bs-theme="dark"] .movie-name-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Light theme */
+[data-bs-theme="light"] .movie-name-overlay {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.like-items.btn-group {
+  opacity: 0;
+  visibility: hidden;
+  background-color: rgb(33, 37, 41);
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.like:hover {
+  .like-items.btn-group {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+ul.genre-list li {
+  white-space: nowrap;
+  overflow-wrap: break-word;
+  &:not(:first-child)::before {
+    content: "•";
+    color: gray;
+    margin-right: 5px;
+  }
+}
