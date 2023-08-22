@@ -9,11 +9,13 @@ import {
 } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Cart } from "../Cart/Cart";
-import './Header.scss'
+import "./Header.scss";
 
-export function Header() {
+type HeaderProps = { normal: boolean };
+
+export function Header({ normal }: HeaderProps) {
   const [isDark, setIsDark] = useState(true);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(normal);
   const [searchKey, setSearchKey] = useState("");
   const [showCartModal, setShowCartModal] = useState(false);
   const [searchKeyNotEmpty, setSearchKeyNotEmpty] = useState(false);
@@ -30,14 +32,14 @@ export function Header() {
   };
 
   window.onscroll = () => {
-    setIsScrolled(window.pageYOffset === 0 ? false : true);
+    setIsScrolled(!normal && window.pageYOffset === 0 ? false : true);
     return () => (window.onscroll = null);
   };
 
   const searchMovies = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchKeyNotEmpty) {
-      navigate(`/search/${searchKey}`)
+      navigate(`/search/${searchKey}`);
     }
   };
 
@@ -51,11 +53,16 @@ export function Header() {
   return (
     <Navbar
       expand="md"
-      className={`bg-secondary mb-3 position-fixed z-3 w-100 ${
-        isScrolled ? "" : "bg-transparent"
-      }`}
+      className={`bg-secondary mb-3 ${
+        normal ? "position-sticky" : "position-fixed"
+      } z-3 w-100 ${isScrolled ? "" : "bg-transparent"}`}
     >
-      <Container id="navbar" className={`${isScrolled ? "scrolled d-flex justify-content-center" : ""}`}>
+      <Container
+        id="navbar"
+        className={`${
+          isScrolled ? "scrolled d-flex justify-content-center" : ""
+        }`}
+      >
         <Navbar.Brand as={NavLink} to="/" className="me-3">
           <img alt="Cinomnia" src="/logo.png" className="h-md" />
         </Navbar.Brand>

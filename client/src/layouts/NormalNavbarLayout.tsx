@@ -3,11 +3,11 @@ import { Container } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
 import { Footer } from "../components/Footer";
 
-export function NavbarLayout() {
+export function NormalNavbarLayout() {
   return (
     <>
-      <Header normal={false} />
-      <Container fluid className="p-0">
+      <Header normal />
+      <Container className="p-0">
         <Outlet />
       </Container>
       <Footer />
