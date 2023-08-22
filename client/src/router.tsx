@@ -16,6 +16,7 @@ import { FilmDetail } from "./pages/FilmDetail/FilmDetail";
 import { WatchHistory } from "./pages/WatchHistory/WatchHistory";
 import { Player } from "./pages/Player/Player";
 import { Filter } from "./pages/Filter/Filter";
+import { NormalNavbarLayout } from "./layouts/NormalNavbarLayout";
 
 export const router = createBrowserRouter([
   {
@@ -33,17 +34,20 @@ export const router = createBrowserRouter([
         children: [
           { path: "", element: <Home /> },
           { path: "store", element: <Store /> },
-          { path: "about", element: <About /> },
-          { path: "payment", element: <Payment/>},
-          { path: "successful", element: <PaymentNotification/>},
+          { path: "payment", element: <Payment /> },
+          { path: "successful", element: <PaymentNotification /> },
           { path: "castDetail", element: <CastDetail /> },
           { path: "watch_history", element: <WatchHistory /> },
-          { path: "wishlist", element: <Wishlist/>},
-          { path: "search/:search", element: <Search/>},
-          { path: "player/:id", element: <Player/> },
-          { path: "detail/:id", element: <FilmDetail/>},
+          { path: "wishlist", element: <Wishlist /> },
+          { path: "search/:search", element: <Search /> },
+          { path: "player/:id", element: <Player /> },
+          { path: "detail/:id", element: <FilmDetail /> },
           { path: "filter", element: <Filter /> },
         ],
+      },
+      {
+        element: <NormalNavbarLayout />,
+        children: [{ path: "about", element: <About /> }],
       },
     ],
   },
