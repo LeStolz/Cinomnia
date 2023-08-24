@@ -1,7 +1,6 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import { AuthLayout } from "./layouts/AuthLayout";
-import { Login } from "./pages/Login/Login";
-import { Signup } from "./pages/Signup/Signup";
+import { Signin } from "./pages/Signin/Signin";
 import { NavbarLayout } from "./layouts/NavbarLayout";
 import { Home } from "./pages/Home/Home";
 import { Store } from "./pages/Store/Store";
@@ -16,7 +15,9 @@ import { FilmDetail } from "./pages/FilmDetail/FilmDetail";
 import { WatchHistory } from "./pages/WatchHistory/WatchHistory";
 import { Player } from "./pages/Player/Player";
 import { Filter } from "./pages/Filter/Filter";
-import { NormalNavbarLayout } from "./layouts/NormalNavbarLayout";
+import { SignedInOnlyLayout } from "./layouts/SignedInOnlyLayout";
+import { NotFound } from "./components/NotFound";
+import { Account } from "./pages/Account/Account";
 
 export const router = createBrowserRouter([
   {
@@ -24,30 +25,46 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <AuthLayout />,
+        children: [{ path: "signin", element: <Signin /> }],
+      },
+      {
+        element: <SignedInOnlyLayout />,
         children: [
-          { path: "login", element: <Login /> },
-          { path: "signup", element: <Signup /> },
+          {
+            element: <NavbarLayout fade={true} />,
+            children: [{ path: "", element: <Home /> }],
+          },
+          {
+            element: <NavbarLayout fade={false} />,
+            children: [
+              { path: "store", element: <Store /> },
+              { path: "about", element: <About /> },
+              { path: "payment", element: <Payment /> },
+              { path: "successful", element: <PaymentNotification /> },
+              { path: "cast-detail", element: <CastDetail /> },
+              { path: "watch-history", element: <WatchHistory /> },
+              { path: "wishlist", element: <Wishlist /> },
+              { path: "search/:search", element: <Search /> },
+              { path: "player/:id", element: <Player /> },
+              { path: "detail/:id", element: <FilmDetail /> },
+              { path: "filter", element: <Filter /> },
+              { path: "account", element: <Account /> },
+            ],
+          },
         ],
       },
       {
-        element: <NavbarLayout />,
+        element: <SignedInOnlyLayout adminOnly />,
         children: [
-          { path: "", element: <Home /> },
-          { path: "store", element: <Store /> },
-          { path: "payment", element: <Payment /> },
-          { path: "successful", element: <PaymentNotification /> },
-          { path: "castDetail", element: <CastDetail /> },
-          { path: "watch_history", element: <WatchHistory /> },
-          { path: "wishlist", element: <Wishlist /> },
-          { path: "search/:search", element: <Search /> },
-          { path: "player/:id", element: <Player /> },
-          { path: "detail/:id", element: <FilmDetail /> },
-          { path: "filter", element: <Filter /> },
+          {
+            element: <NavbarLayout fade={true} />,
+            children: [{ path: "test", element: <Home /> }],
+          },
         ],
       },
       {
-        element: <NormalNavbarLayout />,
-        children: [{ path: "about", element: <About /> }],
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },

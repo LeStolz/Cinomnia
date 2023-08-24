@@ -1,0 +1,11 @@
+.google-btn {
+  background-color: #4285f4 !important;
+  border-color: #4285f4 !important;
+}
+
+.google-btn:hover,
+.google-btn:focus,
+.google-btn:active {
+  background-color: darken(#4285f4, 10%) !important;
+  border-color: darken(#4285f4, 10%) !important;
+}

@@ -22,7 +22,6 @@ export class HomeModel {
   async getGenres() {
     try {
       const response = await api.get("/genres");
-      console.log("genres", response.data);
       return response.data as Genre[];
     } catch (error) {
       console.error("Error fetching genres:", error);
@@ -33,7 +32,6 @@ export class HomeModel {
   async getActors() {
     try {
       const response = await api.get("/actors");
-      console.log("actor", response);
       return response.data as Actor[];
     } catch (error) {
       console.error("Error fetching actors:", error);
@@ -44,7 +42,6 @@ export class HomeModel {
   async getDirectors() {
     try {
       const response = await api.get("/directors");
-      console.log("director", response);
       return response.data as Director[];
     } catch (error) {
       console.error("Error fetching directors:", error);
@@ -55,7 +52,6 @@ export class HomeModel {
   async fetchMovie() {
     try {
       const response = await api.get("/films");
-      console.log("film", response);
       return response.data as Film[];
     } catch (error) {
       console.error("Error fetching films:", error);
