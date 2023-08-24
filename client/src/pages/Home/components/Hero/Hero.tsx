@@ -13,7 +13,6 @@ const overview =
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book";
 
 export function Hero({ movies }: HeroProps) {
-  console.log(movies);
   const navigate = useNavigate();
 
   const getRandomMovies = (movies: Film[], count: number) => {
@@ -58,35 +57,39 @@ export function Hero({ movies }: HeroProps) {
                 <Container fluid className="position-absolute h-50 ms-5 w-auto">
                   <Container className="w-50 m-0">
                     <h1
-                      className="text-uppercase m-0 p-0 fw-bolder text-success"
+                      className="text-uppercase m-0 p-0 fw-bolder text-primary"
                       style={{
                         textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
                       }}
                     >
                       {data.title}
                     </h1>
-                    <h4 className="text-white mt-2 mb-2 fw-normal overview overflow-hidden">
+                    <h4 className="text-white mt-2 mb-3 fw-normal overview overflow-hidden">
                       {data.overview ? data.overview : overview}
                     </h4>
                   </Container>
-                  <Container className="p-0 m-0 d-flex justify-content-between w-100" style={{ whiteSpace: 'nowrap' }}>
-                    <Container className="d-flex">
+                  <Container
+                    className="p-0 m-0 d-flex justify-content-between w-100"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    <Container>
                       <Button
                         variant="light"
                         size="lg"
-                        className="position-relative rounded-1 me-2 fw-bold fs-4 shadow"
+                        className="position-relative rounded fw-bold fs-4 shadow me-2"
                         onClick={() => navigate(`/player/${data.id}`)}
                       >
-                        <i className="position-absolute-start bi bi-play-fill"></i>
+                        <i className="position-absolute-start bi bi-play-fill me-2"></i>
                         Play
                       </Button>
                       <Button
+                        variant="dark"
                         size="lg"
-                        variant="secondary"
-                        className="position-relative rounded fw-bold fs-4 shadow"
+                        className="position-relative rounded fs-4 fw-bold shadow"
                         onClick={() => navigate(`/detail/${data.id}`)}
                       >
-                        <b>More Infomation</b>
+                        <i className="position-absolute-start bi bi-info-circle me-3"></i>
+                        More Info
                       </Button>
                     </Container>
                     <Container className="end-0 right-items"></Container>

@@ -23,7 +23,6 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
 
   const getCharacters = (cast: Actor) => {
     const filteredCrew = cast.crews.filter((crew) => crew.id === movie?.id);
-    console.log(filteredCrew);
   };
 
   if (!movie) {
