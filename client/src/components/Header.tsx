@@ -16,7 +16,7 @@ type HeaderProps = {
 
 export function Header({ fade }: HeaderProps) {
   const [isDark, setIsDark] = useState(true);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(fade);
   const [searchKey, setSearchKey] = useState("");
   const [showCartModal, setShowCartModal] = useState(false);
   const [searchKeyNotEmpty, setSearchKeyNotEmpty] = useState(false);

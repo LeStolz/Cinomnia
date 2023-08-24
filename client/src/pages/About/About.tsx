@@ -1,3 +1,5 @@
+import { AboutView } from "./AboutView";
+
 export function About() {
-  return <h1>About</h1>;
+  return <AboutView/>;
 }
