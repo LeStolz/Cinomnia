@@ -105,7 +105,6 @@ export type Director = {
   }[];
 };
 
-
 export function Filter() {
   const [moviesFromDb, setMovies] = useState<Film[]>([]);
 
@@ -116,16 +115,16 @@ export function Filter() {
         setMovies(fetchedMovies);
 
         // Chuyển đổi dữ liệu từ mảng Film sang mảng productType
-        const products: productType[] = fetchedMovies.map((movie: Film) => ({
-          qty: 1,
-          id: movie.id,
-          title: movie.title,
-          price: movie.price,
-          image: movie.poster.img_500,
-          ratings: movie.rating,
-          genres: movie.genres,
-          isBought: false,
-        }));
+        // const products: productType[] = fetchedMovies.map((movie: Film) => ({
+        //   qty: 1,
+        //   id: movie.id,
+        //   title: movie.title,
+        //   price: movie.price,
+        //   image: movie.poster.img_500,
+        //   ratings: movie.rating,
+        //   genres: movie.genres,
+        //   isBought: false,
+        // }));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -144,5 +143,5 @@ export function Filter() {
     isBought: false,
   }));
 
-  return <FilterView movies={movies}/>;
+  return <FilterView movies={movies} />;
 }

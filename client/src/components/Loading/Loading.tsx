@@ -70,7 +70,7 @@ export function Loading() {
 
   const random = (min: number, max: number) =>
     Math.floor(Math.random() * (max - min)) + min;
-  const shuffle = (arr: []) => [...arr].sort(() => 0.5 - Math.random());
+  const shuffle = (arr: string[]) => [...arr].sort(() => 0.5 - Math.random());
 
   return (
     <Container

@@ -1,4 +1,4 @@
-import { Container, Row, Col, Button, Image, Form } from "react-bootstrap";
+import { Container, Row, Col, Button, Image } from "react-bootstrap";
 import PaymentPhoto from "/payment-success.jpeg";
 import { useNavigate } from "react-router-dom";
 export function PaymentNotification() {

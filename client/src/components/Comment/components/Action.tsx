@@ -3,12 +3,17 @@ import { Button } from "react-bootstrap";
 
 interface ActionProps {
   handleClick: () => void;
-  type: string;
+  type: any;
   className: string;
   variant: string;
 }
 
-const Action = ({ handleClick, type, className, variant }: ActionProps): ReactElement => {
+const Action = ({
+  handleClick,
+  type,
+  className,
+  variant,
+}: ActionProps): ReactElement => {
   return (
     <Button variant={variant} className={className} onClick={handleClick}>
       {type}

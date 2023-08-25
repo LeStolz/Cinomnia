@@ -11,9 +11,6 @@ import {
   Button,
   ButtonGroup,
   Image,
-  Card,
-  Form,
-  Badge,
 } from "react-bootstrap";
 import "./Player.scss";
 import { Loading } from "../../components/Loading/Loading";
@@ -271,9 +268,9 @@ export function PlayerView({ movie }: PlayerProps) {
             <span>See More</span>
           </Button>
         </Container> */}
-        <Container className="p-2 border border-1 bg-secondary rounded shadow pb-5">
-          <Comment />
-        </Container>
+          <Container className="p-2 border border-1 bg-secondary rounded shadow pb-5">
+            <Comment />
+          </Container>
         </Container>
       </Container>
     </Container>

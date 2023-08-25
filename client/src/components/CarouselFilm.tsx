@@ -5,7 +5,7 @@ export function CarouselFilm({ slides }: any) {
   return (
     <>
       <Carousel fade>
-        {slides.map((slide: any, index: any) => (
+        {slides.map((_slide: any, index: any) => (
           <Carousel.Item interval={10000} key={index}>
             <Image
               className="w-100"

@@ -11,7 +11,7 @@ import {
   Button,
   Carousel,
 } from "react-bootstrap";
-import { Film, Actor } from "../../configs/Model";
+import { Film } from "../../configs/Model";
 import { Loading } from "../../components/Loading/Loading";
 
 export function FilmDetailView({ movie }: { movie: Film | undefined }) {
@@ -21,9 +21,9 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
     setPlayerReady(true);
   };
 
-  const getCharacters = (cast: Actor) => {
-    const filteredCrew = cast.crews.filter((crew) => crew.id === movie?.id);
-  };
+  // const getCharacters = (cast: Actor) => {
+  //   const filteredCrew = cast.crews.filter((crew) => crew.id === movie?.id);
+  // };
 
   if (!movie) {
     return <Loading />;

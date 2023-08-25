@@ -21,9 +21,12 @@ const SingleProduct = ({ prod }: { prod: productType }) => {
             <Card.Title>{prod.title}</Card.Title>
             <Card.Subtitle style={{ paddingBottom: 10 }}>
               <div>VND {price.split(".")[0]}</div>
-              <Rating rating={prod.ratings} onClick={function (index: number): void {
-                throw new Error("Function not implemented.");
-              } } />
+              <Rating
+                rating={prod.ratings}
+                onClick={function (_index: number): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
             </Card.Subtitle>
             {cart.some((p: { id: number }) => p.id === prod.id) ? (
               <Button
