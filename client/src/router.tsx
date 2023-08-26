@@ -18,6 +18,10 @@ import { SignedInOnlyLayout } from "./layouts/SignedInOnlyLayout";
 import { NotFound } from "./components/NotFound";
 import { Account } from "./pages/Account/Account";
 import { FilmProvider } from "./contexts/FilmContext";
+import { DashboardLayout } from "./layouts/DashboardLayout";
+import { FilmCrud } from "./pages/FilmCrud/FilmCrud";
+import { GenreCrud } from "./pages/GenreCrud/GenreCrud";
+import { UserCrud } from "./pages/UserCrud/UserCrud";
 
 export const router = createBrowserRouter([
   {
