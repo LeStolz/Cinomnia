@@ -1,12 +1,11 @@
 import { api } from "../../utils/api";
 import { Film } from "../../configs/Model";
 export class FilmDetailModel {
-  static async fetchMovieById(filmId: string) {
+  async fetchMovieById(filmId: string) {
     try {
       const response = await api.get(`/films/${filmId}`);
       const filmData = response.data[0] as Film;
 
-      // Fetch genres for the movie
       const genreIds = filmData.genres.map((genre) => genre.id);
       const genreResponses = await Promise.all(
         genreIds.map((genreId) => api.get(`/genres/${genreId}`))
@@ -16,8 +15,6 @@ export class FilmDetailModel {
       );
 
       filmData.genres = genres;
-
-      // Fetch actor for the movie
       const castIds = filmData.casts.map((cast) => cast.id);
       const castResponses = await Promise.all(
         castIds.map((castId) => api.get(`/actors/${castId}`))
@@ -36,9 +33,12 @@ export class FilmDetailModel {
       );
       filmData.directors = directors;
 
-      return filmData;
+      const relatedResponse = await api.get(`/films/genre/${filmId}`);
+      const relatedFilms = relatedResponse.data;
+
+      return { film: filmData, relatedFilms };
     } catch (error) {
-      console.error("Error fetching film with id:", error);
+      console.error("Error fetching film and related films:", error);
       return null;
     }
   }

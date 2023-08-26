@@ -18,7 +18,6 @@ export function Header({ fade }: HeaderProps) {
   const [isDark, setIsDark] = useState(true);
   const [isScrolled, setIsScrolled] = useState(fade);
   const [searchKey, setSearchKey] = useState("");
-  const [showCartModal, setShowCartModal] = useState(false);
   const [searchKeyNotEmpty, setSearchKeyNotEmpty] = useState(false);
 
   const navigate = useNavigate();
@@ -44,18 +43,11 @@ export function Header({ fade }: HeaderProps) {
     }
   };
 
-  const handleShowCartModal = () => {
-    setShowCartModal(true);
-  };
-  const handleCloseModal = () => {
-    setShowCartModal(false);
-  };
-
   return (
     <Navbar
       expand="md"
       className={`mb-3 ${
-        fade ? "position-fixed" : "position-sticky"
+        fade ? "position-fixed" : "position-sticky top-0"
       } z-3 w-100 ${!fade || isScrolled ? "bg-secondary" : "bg-transparent"}`}
       style={{ transition: "0.4s" }}
     >
@@ -76,10 +68,7 @@ export function Header({ fade }: HeaderProps) {
               About
             </Nav.Link>
             <Nav.Link as={NavLink} to="/wishlist">
-              Wishlist
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/watch-history">
-              History
+              My List
             </Nav.Link>
             <Nav.Link as={NavLink} to="/filter">
               Filter
@@ -118,17 +107,7 @@ export function Header({ fade }: HeaderProps) {
               </Button>
             </InputGroup>
           </Form>
-          <Button
-            variant="outline-primary"
-            className="position-relative rounded-circle ms-3 w-md h-md"
-            id="store"
-            onClick={handleShowCartModal}
-          >
-            <i className="position-absolute-center bi bi-cart-fill"></i>
-          </Button>
-
-          <Cart show={showCartModal} handleClose={handleCloseModal} />
-
+          <Cart />
           <Nav.Link as={NavLink} to="/account">
             <Button
               variant="outline-primary"

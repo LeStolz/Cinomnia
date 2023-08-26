@@ -1,25 +1,8 @@
+$primary: #ec2d4d;
 @media (min-width: 768px) {
   .hero {
-    .carousel-control-prev,
-    .carousel-control-next {
-      width: 5% !important;
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.5);
-        transition: background-color 0.3s ease;
-      }
-      .carousel-control-next-icon:hover {
-        color: white !important;
-      }
-    }
-    .carousel-indicators {
-      z-index: 0;
-      display: none;
-    }
-    .overview {
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    .swiper-pagination-bullet {
+      background-color: $primary;
     }
   }
   [data-bs-theme="dark"] .blur-hero {
@@ -41,13 +24,14 @@
     background-image: linear-gradient(
         to top,
         rgb(248, 249, 250),
-        transparent,
+        rgba(248, 249, 250, 0.5),
         transparent,
         transparent
       ),
       linear-gradient(
-        to right,
-        rgb(248, 249, 250),
+        to bottom,
+        rgba(248, 249, 250, 0.5),
+        transparent,
         transparent,
         transparent,
         transparent

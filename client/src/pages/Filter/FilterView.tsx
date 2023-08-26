@@ -1,10 +1,9 @@
 import Header from "../../components/Filter/FilterHeader";
 import Context from "../../contexts/Context";
 import Home from "../../components/Filter/HandleFilter";
-import { productType } from "../../contexts/Context";
-
+import { Film } from "../../configs/Model";
 interface FilterViewProps {
-  movies: productType[];
+  movies: Film[];
 }
 
 export function FilterView({ movies }: FilterViewProps) {

@@ -1,85 +1,31 @@
 import React from "react";
 import { Container, Row, Col, Form, Button, Image } from "react-bootstrap";
+import { Film } from "../../configs/Model";
 import { useNavigate } from "react-router-dom";
 import "./Store.scss";
 
-type Film = {
-  _id: string;
-  id: number;
-  title: string;
-  poster: {
-    img_500: string;
-    img_1280: string;
-  };
-  overview: string;
-  release_date: Date;
-  rating: number;
-  ranking: number;
-  review: string[];
-  genres: {
-    _id: string;
-    id: number;
-    name: string;
-  }[];
-  casts: {
-    _id: string;
-    id: number;
-    name: string;
-    biography: string;
-    birthday: Date;
-    gender: string;
-    img: {
-      img_500: string;
-      img_1280: string;
-    };
-    crews: {
-      id: number;
-      job: string;
-      img_character: {
-        img_500: string;
-        img_1280: string;
-      };
-    }[];
-  }[];
-  directors: {
-    _id: string;
-    id: number;
-    name: string;
-    biography: string;
-    birthday: Date;
-    gender: string;
-    img: {
-      img_500: string;
-      img_1280: string;
-    };
-    crews: {
-      id: number;
-      job: string;
-      img_character: {
-        img_500: string;
-        img_1280: string;
-      };
-    }[];
-  }[];
-  videos: {
-    trailers: {
-      _id: string;
-      name: string;
-      link: string;
-    }[];
-    video_full: string;
-  };
-  price: number;
-};
+interface StoreProps {
+  store: Film[];
+  handleClose: (id: string) => void;
+  buyMovie: (movieData: Film, status: string) => void;
+}
 
-export function StoreView({ store, handleClose }: any) {
+export function StoreView({ store, handleClose, buyMovie }: StoreProps) {
   const navigate = useNavigate();
   const totalRating = store.reduce((accumulator: number, movie: Film) => {
     return accumulator + movie.rating;
   }, 0);
 
+  const handleGoToCheckout = async () => {
+    store.forEach((movie: Film) => {
+      buyMovie(movie, "bought");
+      handleClose(movie._id);
+    });
+    navigate("/payment");
+  };
+
   return (
-    <Container className="p-0 pt-5">
+    <Container className="p-0">
       <Row className="mt-3">
         <Col xs={12} sm={12} md={12} lg={8}>
           {/* search */}
@@ -176,7 +122,7 @@ export function StoreView({ store, handleClose }: any) {
                           <Button
                             variant="link"
                             className="text-decoration-none"
-                            onClick={() => handleClose(movie.id)}
+                            onClick={() => handleClose(movie._id)}
                           >
                             <i className="bi bi-trash-fill me-1"></i>
                             Delete
@@ -267,7 +213,7 @@ export function StoreView({ store, handleClose }: any) {
                   <Button
                     className="w-100 rounded-pill mt-3"
                     variant="primary"
-                    onClick={() => navigate("/payment")}
+                    onClick={handleGoToCheckout}
                   >
                     Go to checkout
                   </Button>

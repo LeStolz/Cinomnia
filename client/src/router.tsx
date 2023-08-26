@@ -10,14 +10,14 @@ import { PaymentNotification } from "./components/Payment/PaymentNotification";
 import { Search } from "./components/Search/Search";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CastDetail } from "./pages/CastDetail/CastDetail";
-import { Wishlist } from "./pages/Wishlist/Wishlist";
+import { MyList } from "./pages/MyList/MyList";
 import { FilmDetail } from "./pages/FilmDetail/FilmDetail";
-import { WatchHistory } from "./pages/WatchHistory/WatchHistory";
 import { Player } from "./pages/Player/Player";
 import { Filter } from "./pages/Filter/Filter";
 import { SignedInOnlyLayout } from "./layouts/SignedInOnlyLayout";
 import { NotFound } from "./components/NotFound";
 import { Account } from "./pages/Account/Account";
+import { FilmProvider } from "./contexts/FilmContext";
 
 export const router = createBrowserRouter([
   {
@@ -42,8 +42,7 @@ export const router = createBrowserRouter([
               { path: "payment", element: <Payment /> },
               { path: "successful", element: <PaymentNotification /> },
               { path: "cast-detail", element: <CastDetail /> },
-              { path: "watch-history", element: <WatchHistory /> },
-              { path: "wishlist", element: <Wishlist /> },
+              { path: "wishlist", element: <MyList /> },
               { path: "search/:search", element: <Search /> },
               { path: "player/:id", element: <Player /> },
               { path: "detail/:id", element: <FilmDetail /> },
@@ -73,7 +72,9 @@ export const router = createBrowserRouter([
 function ContextWrapper() {
   return (
     <AuthProvider>
-      <Outlet />
+      <FilmProvider>
+        <Outlet />
+      </FilmProvider>
     </AuthProvider>
   );
 }

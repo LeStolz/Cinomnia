@@ -1,17 +1,17 @@
-import { Carousel, Container, Button } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Film } from "../../../../configs/Model";
 import Skeleton from "react-loading-skeleton";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./Hero.scss";
 
 interface HeroProps {
   movies: Film[];
 }
-
-const overview =
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book";
-
 export function Hero({ movies }: HeroProps) {
   const navigate = useNavigate();
 
@@ -34,9 +34,18 @@ export function Hero({ movies }: HeroProps) {
       {movies.length == 0 ? (
         <Skeleton height={300} />
       ) : (
-        <Carousel className="hero">
+        <Swiper
+          className="hero"
+          slidesPerView={1}
+          loop={true}
+          pagination={{
+            clickable: true,
+            dynamicBullets: true,
+          }}
+          modules={[Pagination]}
+        >
           {movieData.map((data, index) => (
-            <Carousel.Item key={index}>
+            <SwiperSlide key={index}>
               <Container
                 fluid
                 className="d-flex align-items-center position-relative p-0"
@@ -65,7 +74,7 @@ export function Hero({ movies }: HeroProps) {
                       {data.title}
                     </h1>
                     <h4 className="text-white mt-2 mb-3 fw-normal overview overflow-hidden">
-                      {data.overview ? data.overview : overview}
+                      {data.overview}
                     </h4>
                   </Container>
                   <Container
@@ -96,9 +105,9 @@ export function Hero({ movies }: HeroProps) {
                   </Container>
                 </Container>
               </Container>
-            </Carousel.Item>
+            </SwiperSlide>
           ))}
-        </Carousel>
+        </Swiper>
       )}
     </>
   );

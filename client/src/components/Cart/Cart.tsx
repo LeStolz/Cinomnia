@@ -1,81 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { GlobalContext } from "../../contexts/GlobalState";
 import { Container, Button, Image, Modal, Row, Col } from "react-bootstrap";
+import { Film } from "../../configs/Model";
 import { useNavigate } from "react-router-dom";
 import "./Cart.scss";
 
-type Film = {
-  _id: string;
-  id: number;
-  title: string;
-  poster: {
-    img_500: string;
-    img_1280: string;
-  };
-  overview: string;
-  release_date: Date;
-  rating: number;
-  ranking: number;
-  review: string[];
-  genres: {
-    _id: string;
-    id: number;
-    name: string;
-  }[];
-  casts: {
-    _id: string;
-    id: number;
-    name: string;
-    biography: string;
-    birthday: Date;
-    gender: string;
-    img: {
-      img_500: string;
-      img_1280: string;
-    };
-    crews: {
-      id: number;
-      job: string;
-      img_character: {
-        img_500: string;
-        img_1280: string;
-      };
-    }[];
-  }[];
-  directors: {
-    _id: string;
-    id: number;
-    name: string;
-    biography: string;
-    birthday: Date;
-    gender: string;
-    img: {
-      img_500: string;
-      img_1280: string;
-    };
-    crews: {
-      id: number;
-      job: string;
-      img_character: {
-        img_500: string;
-        img_1280: string;
-      };
-    }[];
-  }[];
-  videos: {
-    trailers: {
-      _id: string;
-      name: string;
-      link: string;
-    }[];
-    video_full: string;
-  };
-  price: number;
-};
+interface ModalCartProps {
+  show: boolean | undefined;
+  handleClose: () => void;
+  removeMovieFromStore: (id: string) => void;
+  store: Film[];
+}
 
-export function Cart({ show, handleClose }: any) {
+const ModalCart = ({
+  show,
+  handleClose,
+  removeMovieFromStore,
+  store,
+}: ModalCartProps) => {
   const navigate = useNavigate();
-  const { removeMovieFromStore, store } = useContext(GlobalContext);
 
   const handleCloseModal = () => {
     handleClose();
@@ -84,7 +27,6 @@ export function Cart({ show, handleClose }: any) {
     handleClose();
     navigate("/store");
   };
-
   const movies = store.slice(0, 5);
   return (
     <Modal show={show} onHide={handleClose}>
@@ -99,7 +41,7 @@ export function Cart({ show, handleClose }: any) {
                 <Row className="mb-3">
                   <Col xs={4}>
                     <Image
-                      src={`${movie.poster.img_1280}`}
+                      src={`${movie?.poster?.img_500}`}
                       className="rounded border border-3  w-100 h-auto"
                     />
                   </Col>
@@ -122,7 +64,7 @@ export function Cart({ show, handleClose }: any) {
                         <Button
                           variant="primary"
                           className="end-0"
-                          onClick={() => removeMovieFromStore(movie.id)}
+                          onClick={() => removeMovieFromStore(movie._id)}
                         >
                           <i className="bi bi-trash-fill me-1"></i>
                           Delete
@@ -149,5 +91,42 @@ export function Cart({ show, handleClose }: any) {
         </Button>
       </Modal.Footer>
     </Modal>
+  );
+};
+
+export default Cart;
+
+export function Cart() {
+  const { removeMovieFromStore, store } = useContext(GlobalContext);
+  const [showCartModal, setShowCartModal] = useState(false);
+  const handleShowCartModal = () => {
+    setShowCartModal(true);
+  };
+  const handleCloseModal = () => {
+    setShowCartModal(false);
+  };
+  return (
+    <>
+      <Button
+        variant="outline-primary"
+        className="position-relative rounded-circle ms-3 w-md h-md"
+        id="store"
+        onClick={handleShowCartModal}
+      >
+        <i className="position-absolute-center bi bi-cart-fill"></i>
+        {store.length > 0 && (
+          <span className="position-absolute top-0 end-0 bg-primary text-light rounded-circle h-50 w-50 d-flex align-items-center justify-content-center border border-1 small fw-lighter shadow">
+            {store.length}
+          </span>
+        )}
+      </Button>
+
+      <ModalCart
+        show={showCartModal}
+        handleClose={handleCloseModal}
+        removeMovieFromStore={removeMovieFromStore}
+        store={store}
+      />
+    </>
   );
 }

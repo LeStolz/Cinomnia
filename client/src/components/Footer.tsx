@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
-    <Container fluid className="bg-secondary p-0 py-3">
+    <Container fluid className="bg-secondary p-0 py-3 z-1 position-relative">
       <Container className="">
         <Row className="mb-3">
           <Col>

@@ -1,4 +1,4 @@
-.items {
+.items-scale {
   cursor: pointer;
   transition: transform 0.3s ease;
   overflow: hidden;
@@ -20,7 +20,6 @@
       }
     }
   }
-
   &.last {
     &:hover {
       transform: scale(1.25) translateX(-10%);
@@ -42,6 +41,24 @@
     z-index: 2;
     transform: scale(1.25);
     transition-delay: 0.5s;
+    .video-container {
+      display: block;
+    }
+    .detail {
+      animation: showDetail 0.3s ease forwards;
+      animation-delay: 0.5s;
+    }
+    .movie-name-overlay {
+      opacity: 1;
+      z-index: 2;
+    }
+  }
+}
+
+.items {
+  cursor: pointer;
+  overflow: hidden;
+  &:hover {
     .video-container {
       display: block;
     }
