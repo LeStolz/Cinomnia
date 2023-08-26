@@ -22,7 +22,7 @@ genres.get("/:id", async (req, res) => {
   const genreId = req.params.id;
 
   try {
-    const genre = await Genre.findOne({ id: genreId });
+    const genre = await Genre.find({ id: genreId });
 
     if (genre) {
       res.status(200).json(genre);

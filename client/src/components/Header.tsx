@@ -8,7 +8,7 @@ import {
   Button,
   FormControl,
 } from "react-bootstrap";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Cart } from "./Cart/Cart";
 import { CartState } from "../contexts/Context";
 import { useAuth } from "../contexts/AuthContext";
@@ -20,9 +20,7 @@ type HeaderProps = {
 export function Header({ fade }: HeaderProps) {
   const [isDark, setIsDark] = useState(true);
   const [isScrolled, setIsScrolled] = useState(fade);
-  const [searchKey, setSearchKey] = useState("");
   const [showCartModal, setShowCartModal] = useState(false);
-  const [searchKeyNotEmpty, setSearchKeyNotEmpty] = useState(false);
   const { productDispatch } = CartState();
   const { getUser } = useAuth();
   const [user, setUser] = useState<any>(undefined);
@@ -32,8 +30,6 @@ export function Header({ fade }: HeaderProps) {
       setUser(await getUser());
     })();
   }, []);
-
-  const navigate = useNavigate();
 
   const setTheme = () => {
     document.documentElement.setAttribute(
@@ -49,16 +45,10 @@ export function Header({ fade }: HeaderProps) {
     return () => (window.onscroll = null);
   };
 
-  const searchMovies = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (searchKeyNotEmpty) {
-      navigate(`/search/${searchKey}`);
-    }
-  };
-
   const handleShowCartModal = () => {
     setShowCartModal(true);
   };
+
   const handleCloseModal = () => {
     setShowCartModal(false);
   };
@@ -109,34 +99,28 @@ export function Header({ fade }: HeaderProps) {
               }`}
             ></i>
           </Button>
-          <Form className="me-3 mb-2 mb-md-0" onSubmit={searchMovies}>
-            <InputGroup>
-              {useLocation().pathname.split("/")[1] !== "cart" && (
-                <Navbar.Text className="search">
-                  <FormControl
-                    type="search"
-                    placeholder="Search a film..."
-                    className="rounded-start-pill pe-3 border-outline-primary"
-                    aria-label="Search"
-                    onChange={(e) => {
-                      if (productDispatch) {
-                        productDispatch({
-                          type: "FILTER_BY_SEARCH",
-                          payload: e.target.value,
-                        });
-                      }
-                    }}
-                  />
-                </Navbar.Text>
-              )}
-              <Button
-                variant="outline-primary"
-                className="rounded-end-pill pe-3"
-                type="submit"
-                disabled={!searchKeyNotEmpty}
+          <Form className="me-3 mb-2 mb-md-0">
+            <InputGroup className="position-relative">
+              <FormControl
+                type="search"
+                placeholder="Search film"
+                className="rounded-pill pe-3"
+                aria-label="Search"
+                onChange={(e) => {
+                  if (productDispatch) {
+                    productDispatch({
+                      type: "FILTER_BY_SEARCH",
+                      payload: e.target.value,
+                    });
+                  }
+                }}
+              />
+              <div
+                className="position-absolute-center"
+                style={{ left: "100%", transform: "translate(-175%, -50%)" }}
               >
                 <i className="bi bi-search"></i>
-              </Button>
+              </div>
             </InputGroup>
           </Form>
           <Button

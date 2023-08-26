@@ -1,56 +1,64 @@
+.hero-text {
+  width: 100% !important;
+}
+
 @media (min-width: 768px) {
-  .hero {
-    .carousel-control-prev,
-    .carousel-control-next {
-      width: 5% !important;
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.5);
-        transition: background-color 0.3s ease;
-      }
-      .carousel-control-next-icon:hover {
-        color: white !important;
-      }
+  .hero-text {
+    width: 50% !important;
+  }
+}
+
+.hero {
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 5% !important;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+      transition: background-color 0.3s ease;
     }
-    .carousel-indicators {
-      z-index: 0;
-      display: none;
-    }
-    .overview {
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    .carousel-control-next-icon:hover {
+      color: white !important;
     }
   }
-  [data-bs-theme="dark"] .blur-hero {
-    background-image: linear-gradient(
-        to top,
-        rgb(33, 37, 41),
-        rgba(33, 37, 41, 0.5),
-        transparent
-      ),
-      linear-gradient(
-        to bottom,
-        rgb(33, 37, 41),
-        transparent,
-        transparent,
-        transparent
-      );
+  .carousel-indicators {
+    z-index: 0;
+    display: none;
   }
-  [data-bs-theme="light"] .blur-hero {
-    background-image: linear-gradient(
-        to top,
-        rgb(248, 249, 250),
-        transparent,
-        transparent,
-        transparent
-      ),
-      linear-gradient(
-        to right,
-        rgb(248, 249, 250),
-        transparent,
-        transparent,
-        transparent
-      );
+  .overview {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   }
+}
+[data-bs-theme="dark"] .blur-hero {
+  background-image: linear-gradient(
+      to top,
+      rgb(44, 48, 53),
+      rgba(44, 48, 53, 0.5),
+      transparent
+    ),
+    linear-gradient(
+      to bottom,
+      rgb(44, 48, 53),
+      transparent,
+      transparent,
+      transparent
+    );
+}
+[data-bs-theme="light"] .blur-hero {
+  background-image: linear-gradient(
+      to top,
+      rgb(248, 249, 250),
+      transparent,
+      transparent,
+      transparent
+    ),
+    linear-gradient(
+      to right,
+      rgb(248, 249, 250),
+      transparent,
+      transparent,
+      transparent
+    );
 }
