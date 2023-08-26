@@ -154,7 +154,7 @@ async function main() {
 
   await getDb();
 
-  await fetchActors(3, filmLists.length);
+  await fetchActors(4, filmLists.length);
 
   await postToMongo();
 

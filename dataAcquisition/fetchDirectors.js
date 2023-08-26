@@ -155,6 +155,7 @@ async function main() {
   await fetchDirectors(100);
 
   await postToMongo();
+  getReq();
 }
 
 main();

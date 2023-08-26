@@ -14,7 +14,8 @@ const Home = ({ movies }: { movies: productType[] }) => {
       searchQuery,
       byBought,
       selectedGenres,
-    },updateProducts
+    },
+    updateProducts,
   } = CartState();
 
   useEffect(() => {
@@ -75,9 +76,13 @@ const Home = ({ movies }: { movies: productType[] }) => {
     <div className="home">
       <Filters />
       <div className="productContainer">
-        {transformProducts().map((prod: productType) => (
-          <SingleProduct prod={prod} key={prod.id} />
-        ))}
+        {transformProducts().length > 0 ? (
+          transformProducts().map((prod: productType) => (
+            <SingleProduct prod={prod} key={prod.id} />
+          ))
+        ) : (
+          <h1>We're sorry, no films were found for your search: "{searchQuery}"</h1>
+        )}
       </div>
     </div>
   );
