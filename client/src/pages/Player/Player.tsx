@@ -19,7 +19,6 @@ export function Player() {
           try {
             const filmDocument = await model.fetchMovieById(id);
             if (filmDocument) {
-              console.log("filmData", filmDocument);
               setMovie(filmDocument);
               sessionStorage.setItem(
                 `cachedFilm${id}`,

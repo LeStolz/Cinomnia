@@ -18,7 +18,6 @@ export function FilmDetail() {
           try {
             const filmDocument = await FilmDetailModel.fetchMovieById(id);
             if (filmDocument) {
-              console.log("filmData", filmDocument);
               setMovie(filmDocument);
               sessionStorage.setItem(
                 `cachedFilm${id}`,

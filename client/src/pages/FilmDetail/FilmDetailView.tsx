@@ -19,7 +19,6 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
   const handlePlayerReady = () => {
     setPlayerReady(true);
   };
-
   if (!movie) {
     return <Loading />;
   }

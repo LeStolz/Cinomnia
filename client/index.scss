@@ -1,9 +1,14 @@
-// $primary: #ec2d4d;
-$primary: #ff0000;
-$secondary: #141619;
+$primary: #ec2d4d;
+$secondary: #212529;
+$info: #0d6efd;
 $min-contrast-ratio: 3;
 $dark-indicator-background: #ffffff;
 $light-indicator-background: black;
+
+:root {
+  --header-size: 79.6px;
+  --card-header-size: 122.5px;
+}
 
 @import "bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
@@ -16,6 +21,10 @@ $light-indicator-background: black;
   }
 }
 
+@include color-mode(dark) {
+  --bs-body-bg: #2c3035;
+}
+
 [data-bs-theme="dark"] .carousel .carousel-indicators [data-bs-target] {
   background-color: $dark-indicator-background !important;
 }
@@ -25,6 +34,7 @@ $light-indicator-background: black;
 
 .card {
   border: 0;
+  transition: 0.4s;
 }
 
 .position-absolute-center {
@@ -56,4 +66,8 @@ $light-indicator-background: black;
 
 .h-lg {
   height: 2.975rem;
+}
+
+.h-xl {
+  height: 5rem;
 }

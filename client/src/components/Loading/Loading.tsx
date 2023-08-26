@@ -1,6 +1,4 @@
 import { Container, Image } from "react-bootstrap";
-import Skeleton from "react-loading-skeleton";
-import logo from "../../../public/logoLoading.png";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./Loading.scss";
 
@@ -82,10 +80,8 @@ export function Loading() {
       {/* <Container fluid className="mt-5 p-0">
         <Skeleton baseColor="#5E0911" highlightColor="#FF0000" />
       </Container>{" "} */}
-      <Container
-        className="mt-5 d-flex flex-column align-items-center text-center"
-      >
-        <Image className="w-25" src={logo} />
+      <Container className="mt-5 d-flex flex-column align-items-center text-center">
+        <Image className="w-25" src="/logo-loading.png" />
       </Container>
       <Container className="tag-list w-100 ms-0 me-0 ps-0 pe-0">
         {[...new Array(ROWS)].map((_, i) => (

@@ -15,7 +15,6 @@ export function Home() {
         const model = new HomeModel();
         try {
           const fetchedMovies = await model.fetchData();
-          console.log("data : ", fetchedMovies);
           setMovies(fetchedMovies);
           sessionStorage.setItem("cachedMovies", JSON.stringify(fetchedMovies));
         } catch (error) {
@@ -28,9 +27,3 @@ export function Home() {
 
   return <HomeView movies={movies} />;
 }
-
-
-
-
-
-

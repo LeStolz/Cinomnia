@@ -1,10 +1,5 @@
 import mongoose from "mongoose";
 
-type SignupProps = {
-  email: string;
-  password: string;
-};
-
 const UserSchema = new mongoose.Schema(
   {
     email: {
@@ -12,15 +7,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    password: {
+    type: {
       type: String,
       required: true,
-      unique: true,
-    },
-    createdAt: {
-      type: Date,
-      immutable: true,
-      default: () => Date.now(),
+      default: "client",
     },
     balance: {
       type: Number,
@@ -32,13 +22,14 @@ const UserSchema = new mongoose.Schema(
       ref: "Show",
       default: [],
     },
+    createdAt: {
+      type: Date,
+      immutable: true,
+      default: () => Date.now(),
+    },
   },
   {
-    statics: {
-      async signup(user: SignupProps) {
-        return await this.create(user);
-      },
-    },
+    statics: {},
   }
 );
 

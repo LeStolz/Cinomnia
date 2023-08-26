@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import Action from "./Action";
-import logo from "../../../../public/logo.png";
 import { Container, Form, Image } from "react-bootstrap";
 
 interface CommentProps {
@@ -67,7 +66,7 @@ const CommentChild: React.FC<CommentProps> = ({
         {comment.id === 1 ? (
           <>
             <Form className="rounded-1 p-3 border border-1 m-2 d-flex align-items-center justify-content-between">
-              <Image src={logo} className="w-lg me-2" />
+              <Image src="/logo.png" className="w-lg me-2" />
               <Form.Control
                 className="m-0 me-2"
                 type="text"
@@ -95,7 +94,7 @@ const CommentChild: React.FC<CommentProps> = ({
           </>
         ) : (
           <>
-            <Image src={logo} className="w-lg me-2" />
+            <Image src="/logo.png" className="w-lg me-2" />
             <span
               contentEditable={editMode}
               suppressContentEditableWarning={editMode}
@@ -167,7 +166,7 @@ const CommentChild: React.FC<CommentProps> = ({
         {showInput && (
           <Container className="inputContainer">
             <Form className="rounded-1 p-3 border border-1 m-2 d-flex align-items-center justify-content-between">
-              <Image src={logo} className="w-lg me-2" />
+              <Image src="/logo.png" className="w-lg me-2" />
               <Form.Control
                 className="m-0 me-2"
                 type="text"
