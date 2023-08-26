@@ -9,9 +9,8 @@ import {
   Card,
   Form,
   Button,
-  Carousel,
 } from "react-bootstrap";
-import { Film, Actor } from "../../configs/Model";
+import { Film } from "../../configs/Model";
 import { Loading } from "../../components/Loading/Loading";
 
 export function FilmDetailView({ movie }: { movie: Film | undefined }) {
@@ -20,11 +19,6 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
   const handlePlayerReady = () => {
     setPlayerReady(true);
   };
-
-  const getCharacters = (cast: Actor) => {
-    const filteredCrew = cast.crews.filter((crew) => crew.id === movie?.id);
-  };
-
   if (!movie) {
     return <Loading />;
   }
@@ -56,83 +50,30 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
             </>
           ) : (
             <Container className="d-flex align-items-center justify-content-center w-100 h-100">
-              <p className="text-center text-muted z-">
+              <p className="text-center text-muted">
                 Sorry, this video is unavailable
               </p>
             </Container>
           )}
         </Row>
 
-        <Row className="">
+        <Row className="mt-3">
           <Col className="order-1 col-lg-4 col-sm-12">
             <Card className="bg-secondary rounded">
               <Card.Title className="text-center mb-0 py-2 fs-2 bg-light-subtle">
-                {movie?.title}
+                {movie.title}
               </Card.Title>
               <Card.Text>
-                <Carousel data-bs-theme="dark">
-                  <Carousel.Item>
-                    <Image
-                      src="https://placehold.co/470x200"
-                      className="h-100 w-100"
-                    />
-                    <Carousel.Caption></Carousel.Caption>
-                  </Carousel.Item>
-                  <Carousel.Item>
-                    <Image
-                      src="https://placehold.co/470x200"
-                      className="h-100 w-100"
-                    />
-                    <Carousel.Caption></Carousel.Caption>
-                  </Carousel.Item>
-                  <Carousel.Item>
-                    <Image
-                      src="https://placehold.co/470x200"
-                      className="h-100 w-100"
-                    />
-                    <Carousel.Caption></Carousel.Caption>
-                  </Carousel.Item>
-                </Carousel>
+                <Image
+                  src={`${movie.poster.img_500}`}
+                  className="h-100 w-100"
+                />
 
                 <ul className="list-unstyled fw-bold ps-2 mt-3">
                   <li className="fw-light">
-                    <span className="fw-bold">Type</span>: TV
-                  </li>
-                  {/* <li className="fw-light">
-                    <span className="fw-bold">Episodes:</span> 64
-                  </li> */}
-                  <li className="fw-light">
-                    <span className="fw-bold">Status:</span> Finished Airing
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Aired:</span>{" "}
-                    {new Date(movie?.release_date).toLocaleDateString("en-GB", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Director:</span>{" "}
-                    <Link to="">{movie?.directors[0].name}</Link>
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Broadcast:</span> Sundays at 17:00
-                    (JST)
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Producers:</span>{" "}
-                    <Link to="">Aniplex </Link>, <Link to="">Square Enix</Link>,{" "}
-                    <Link to="">Mainichi Broadcasting System</Link>,{" "}
-                    <Link to="">Studio Moriken</Link>
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Licensors:</span>{" "}
-                    <Link to="">Funimation</Link>,{" "}
-                    <Link to="">Aniplex of America</Link>
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Source:</span> Manga
+                    <span className="fw-bold">
+                      Director: {movie.directors[0].name}
+                    </span>
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">Genres:</span>{" "}
@@ -144,34 +85,26 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
                           </Link>{" "}
                         </>
                       ))}
-                    {/* <Link to="">Action</Link>, <Link to="">Adventure</Link>,{" "}
-                    <Link to="">Drama</Link>, <Link to="">Fantasy</Link> */}
                   </li>
                   <li className="fw-light">
-                    <span className="fw-bold">Theme:</span>{" "}
-                    <Link to="">Military</Link>
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Duration:</span> 24min. per ep
+                    <span className="fw-bold">
+                      Release Date:
+                      <span className="fw-light">
+                        {new Date(movie?.release_date).toLocaleDateString(
+                          "en-GB",
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          }
+                        )}
+                      </span>
+                    </span>{" "}
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">Rating:</span>{" "}
-                    {movie?.rating.toFixed(1)}
+                    {movie.rating.toFixed(1)}
                   </li>
-                </ul>
-              </Card.Text>
-            </Card>
-
-            <Card className="mt-3 bg-secondary rounded">
-              <Card.Title className="text-center py-2 bg-light-subtle">
-                Statistics
-              </Card.Title>
-              <Card.Text>
-                <ul className="list-unstyled fw-bold ps-2">
-                  <li>Ranked: #1</li>
-                  <li>Popularity: #3</li>
-                  <li>Members: 3,192,363</li>
-                  <li>Favorites: 218,364</li>
                 </ul>
               </Card.Text>
             </Card>
@@ -186,34 +119,33 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
                 <Row className="py-sm-2 py-md-0">
                   <Col className="col-md-2 text-center col-sm-12">
                     <h5 className="rounded border bg-secondary p-1">Score</h5>
-                    <h3>9.03</h3>
+                    <h3>{movie.rating.toFixed(1)}</h3>
                   </Col>
 
                   <Col className="">
                     <Row>
-                      <div className="d-flex w-100 justify-content-between fs-1 p-1">
+                      <div className="d-flex w-100 justify-content-around fs-1 p-1">
                         <h5>Ranked #1</h5>
                         <h5>Popularity #1</h5>
-                        <h5>Member 3,192,411</h5>
                       </div>
-                    </Row>
-
-                    <Row>
-                      <p>
-                        <Link to="">Spring 2009</Link> | <Link to="">TV</Link> |{" "}
-                        <Link to="">Bones</Link>
-                      </p>
                     </Row>
                   </Col>
                 </Row>
 
                 <Row className="d-flex mt-3">
-                  <Button className="w-25 mx-2">Add to list</Button>
-                  <Button className="w-25 mx-2">
-                    Review <i className="bi bi-star-fill ps-1" />
+                  <Button className="w-25 mx-2 text-center">
+                    <i className="bi bi-cart4 me-2" />
+                    Add to cart
                   </Button>
-                  <Button className="w-25 mx-2">
-                    Episode: 0/64 <i className="bi bi-plus-circle ps-1" />
+
+                  <Button className="w-25 mx-2 text-center">
+                    <i className="bi bi-star-fill me-2" />
+                    Review
+                  </Button>
+
+                  <Button className="w-25 mx-2 text-center">
+                    <i className="bi bi-currency-dollar me-2" />
+                    Buy
                   </Button>
                 </Row>
               </Card.Body>
@@ -225,159 +157,148 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
               </Card.Title>
               <Card.Text>
                 <p className="fs-6 p-3" style={{ textAlign: "justify" }}>
-                  {movie?.overview}
+                  {movie.overview}
                 </p>
               </Card.Text>
             </Card>
 
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="p-3 bg-light-subtle">
-                Related Film
-              </Card.Title>
-              <Card.Text>
-                <ul className="p-3 list-unstyled">
-                  <li className="fw-light">
-                    <span className="fw-bold">Adalitation:</span> Fullmetal
-                    Alchemist
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Alternative version:</span>{" "}
-                    Fullmetal Alchemist
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Side story:</span>{" "}
-                    <Link to="">Fullmetal Alchemist: Brotherhood Specials</Link>
-                    ,{" "}
-                    <Link to="">
-                      Fullmetal Alchemist: The Sacred Star of Milos
-                    </Link>
-                  </li>
-                </ul>
-              </Card.Text>
-            </Card>
-
             <Card className=" bg-secondary my-3 rounded">
-              <Card.Title className="p-3 bg-light-subtle">
-                Characters & Voice Actors
-              </Card.Title>
+              <Card.Title className="p-3 bg-light-subtle">Actors</Card.Title>
               <Card.Text className="p-3">
-                <div className="d-flex justify-content-between">
-                  <small>Characters</small>
-                  <small>Actors</small>
-                </div>
+                <hr className="" />
 
-                <hr />
+                <Row className="pb-0 d-flex justify-content-between">
+                  <Col className="d-flex pe-0 col-4 w-auto">
+                    <Image
+                      src={
+                        movie.casts[0].img
+                          ? movie.casts[0].img.img_500 ||
+                            movie.casts[0].img.img_1280 ||
+                            "https://placehold.co/47x71"
+                          : "https://placehold.co/47x71"
+                      }
+                      className="w-lg me-2 rounded"
+                    />
+                    <div>
+                      <p>
+                        <Link
+                          to=""
+                          className="mb-0 fw-bold text-primary text-decoration-none float-start"
+                        >
+                          {movie.casts[0].name}
+                        </Link>
+                      </p>
+                      <small className="mt-0">
+                        {movie.casts[0].crews[0].job
+                          ? movie.casts[0].crews[0].job
+                          : " "}
+                      </small>
+                    </div>
+                  </Col>
 
-                {movie.casts &&
-                  movie.casts.map(
-                    (cast, idx) =>
-                      cast && (
-                        <>
-                          <Row className="pb-0 d-flex justify-content-between">
-                            <Col className="d-flex pe-0 col-4 w-auto">
-                              <Image
-                                key={`${cast.id}${idx}`}
-                                className="w-lg me-2 rounded"
-                                src={
-                                  cast.img
-                                    ? cast.img.img_500 || cast.img.img_1280
-                                    : "https://placehold.co/47x71"
-                                }
-                              />
-                              <div>
-                                <Link to="" className="text-decoration-none">
-                                  <p className="mb-0 fw-bold">{cast.name}</p>
-                                </Link>
-                              </div>
-                            </Col>
-                            <Col className="d-flex col-4 pe-0 w-auto me-2">
-                              <div>
-                                <Link to="" className="text-decoration-none">
-                                  <p className="mb-0 fw-bold">Park Romi</p>
-                                </Link>
-                                <small className="mt-0">Japanese</small>
-                              </div>
-                              <Image
-                                src="/logo.png"
-                                className="w-lg h-md ms-2"
-                              />
-                            </Col>
-                          </Row>
-                          <hr />
-                        </>
-                      )
-                  )}
+                  <Col className="d-flex col-4 pe-0 w-auto me-2">
+                    <div>
+                      <p>
+                        <Link
+                          to=""
+                          className="mb-0 fw-bold text-primary text-decoration-none float-end"
+                        >
+                          {movie.casts[1].name}
+                        </Link>
+                      </p>
+                      <small className="mt-0 float-end">
+                        {movie.casts[1].crews[0].job
+                          ? movie.casts[1].crews[0].job
+                          : " "}
+                      </small>
+                    </div>
+                    <Image
+                      src={
+                        movie.casts[1].img
+                          ? movie.casts[1].img.img_500 ||
+                            movie.casts[1].img.img_1280 ||
+                            "https://placehold.co/47x71"
+                          : "https://placehold.co/47x71"
+                      }
+                      className="w-lg ms-2 rounded"
+                    />
+                  </Col>
+                </Row>
+
+                <hr className="" />
+
+                <Row className="pb-0 d-flex justify-content-between mb-2">
+                  <Col className="d-flex pe-0 col-4 w-auto">
+                    <Image
+                      src={
+                        movie.casts[2].img
+                          ? movie.casts[2].img.img_500 ||
+                            movie.casts[2].img.img_1280 ||
+                            "https://placehold.co/47x71"
+                          : "https://placehold.co/47x71"
+                      }
+                      className="w-lg me-2 rounded"
+                    />
+                    <div>
+                      <p>
+                        <Link
+                          to=""
+                          className="mb-0 fw-bold text-primary text-decoration-none float-start"
+                        >
+                          {movie.casts[2].name}
+                        </Link>
+                      </p>
+                      <small className="mt-0">
+                        {movie.casts[2].crews[0].job
+                          ? movie.casts[2].crews[0].job
+                          : " "}
+                      </small>
+                    </div>
+                  </Col>
+
+                  <Col className="d-flex col-4 pe-0 w-auto me-2">
+                    <div>
+                      <p>
+                        <Link
+                          to=""
+                          className="mb-0 fw-bold text-primary text-decoration-none float-end"
+                        >
+                          {movie.casts[3].name}
+                        </Link>
+                      </p>
+
+                      <small className="mt-0 float-end">
+                        {movie.casts[3].crews[0].job
+                          ? movie.casts[3].crews[0].job
+                          : " "}
+                      </small>
+                    </div>
+                    <Image
+                      src={
+                        movie.casts[3].img
+                          ? movie.casts[3].img.img_500 ||
+                            movie.casts[3].img.img_1280 ||
+                            "https://placehold.co/47x71"
+                          : "https://placehold.co/47x71"
+                      }
+                      className="w-lg ms-2 rounded"
+                    />
+                  </Col>
+                </Row>
+                <hr className="" />
               </Card.Text>
             </Card>
-
-            {/* <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="p-3 bg-light-subtle">Staff</Card.Title>
-              <Card.Text className="p-3">
-                <Row className="pb-0 d-flex justify-content-between w-75">
-                  <Col className="d-flex pe-0 col-4 w-auto my-2">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <Link to="" className="text-decoration-none">
-                        <p className="mb-0 fw-bold">Đăng</p>
-                      </Link>
-                      <small className="mt-0">Slave Owner</small>
-                    </div>
-                  </Col>
-
-                  <Col className="d-flex col-4 pe-0 w-auto my-2">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <Link to="" className="text-decoration-none">
-                        <p className="mb-0 fw-bold">Thức</p>
-                      </Link>
-                      <small className="mt-0">Slave</small>
-                    </div>
-                  </Col>
-                </Row>
-
-                <hr className="my-0" />
-
-                <Row className="pb-0 d-flex justify-content-between w-75 mt-2">
-                  <Col className="d-flex pe-0 col-4 w-auto">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <Link to="" className="text-decoration-none">
-                        <p className="mb-0 fw-bold">Hậu</p>
-                      </Link>
-                      <small className="mt-0">Slave</small>
-                    </div>
-                  </Col>
-
-                  <Col className="d-flex col-4 pe-0 w-auto">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <Link to="" className="text-decoration-none">
-                        <p className="mb-0 fw-bold">Vinh</p>
-                      </Link>
-                      <small className="mt-0">Slave</small>
-                    </div>
-                  </Col>
-                </Row>
-
-                <hr className="mb-3 mt-0" />
-              </Card.Text>
-            </Card> */}
 
             <Card className="bg-secondary my-3 rounded">
               <Card.Title className="p-3 mb-0 bg-light-subtle">
                 Review
               </Card.Title>
-              <Card.Text className="mt-2">
+              <Card.Text className="">
                 <Form.Group
-                  className="my-2"
+                  className="mb-3"
                   controlId="exampleForm.ControlTextarea1"
                 >
-                  <Form.Control
-                    as="textarea"
-                    rows={1}
-                    placeholder="What's on your mind?"
-                    className=""
-                  />
+                  <Form.Control as="textarea" rows={3} />
                 </Form.Group>
 
                 <Button className="float-end m-2">Publish</Button>
@@ -399,8 +320,8 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
                   </Col>
 
                   <Col className="pt-2">
-                    <i className="bi bi-trash float-end me-3" />
-                    <i className="bi bi-pencil float-end me-3" />
+                    <i className="bi bi-trash float-end me-3 text-danger" />
+                    <i className="bi bi-pencil float-end me-3 text-success" />
                   </Col>
                 </Row>
               </Card.Title>
@@ -433,8 +354,8 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
                   </Col>
 
                   <Col className="pt-2">
-                    <i className="bi bi-trash float-end me-3" />
-                    <i className="bi bi-pencil float-end me-3" />
+                    <i className="bi bi-trash float-end me-3 text-danger" />
+                    <i className="bi bi-pencil float-end me-3 text-success" />
                   </Col>
                 </Row>
               </Card.Title>
