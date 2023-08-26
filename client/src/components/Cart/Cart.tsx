@@ -4,6 +4,8 @@ import { Container, Button, Image, Modal, Row, Col } from "react-bootstrap";
 import { Film } from "../../configs/Model";
 import { useNavigate } from "react-router-dom";
 import "./Cart.scss";
+import CartComponent from "./CartComponent";
+import { CartState } from "../../contexts/Context";
 
 interface ModalCartProps {
   show: boolean | undefined;
@@ -82,7 +84,7 @@ const ModalCart = ({
         )}
       </Modal.Body>
       <Modal.Footer>
-        <h5 className="pe-5 me-5">{`${store.length} items in your cart`}</h5>
+        <h5 className="pe-5 me-5">{`${cart.length} items in your cart`}</h5>
         <Button variant="secondary" onClick={handleCloseModal}>
           Close
         </Button>

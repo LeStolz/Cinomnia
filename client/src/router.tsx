@@ -1,4 +1,4 @@
-import { Outlet, createBrowserRouter } from "react-router-dom";
+import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
 import { AuthLayout } from "./layouts/AuthLayout";
 import { Signin } from "./pages/Signin/Signin";
 import { NavbarLayout } from "./layouts/NavbarLayout";
@@ -56,8 +56,16 @@ export const router = createBrowserRouter([
         element: <SignedInOnlyLayout adminOnly />,
         children: [
           {
-            element: <NavbarLayout fade={true} />,
-            children: [{ path: "test", element: <Home /> }],
+            element: <DashboardLayout />,
+            children: [
+              {
+                path: "dashboard",
+                element: <Navigate to="film-crud" />,
+              },
+              { path: "dashboard/film-crud", element: <FilmCrud /> },
+              { path: "dashboard/user-crud", element: <UserCrud /> },
+              { path: "dashboard/genre-crud", element: <GenreCrud /> },
+            ],
           },
         ],
       },

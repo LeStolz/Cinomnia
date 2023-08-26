@@ -63,8 +63,8 @@ export function Hero({ movies }: HeroProps) {
                     height: "90vh",
                   }}
                 ></Container>
-                <Container fluid className="position-absolute h-50 ms-5 w-auto">
-                  <Container className="w-50 m-0">
+                <Container fluid className="position-absolute ms-5 w-auto">
+                  <Container className="hero-text m-0">
                     <h1
                       className="text-uppercase m-0 p-0 fw-bolder text-primary"
                       style={{

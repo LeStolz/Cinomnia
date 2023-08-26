@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Navbar,
   Nav,
@@ -6,9 +6,12 @@ import {
   Form,
   InputGroup,
   Button,
+  FormControl,
 } from "react-bootstrap";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Cart } from "./Cart/Cart";
+import { CartState } from "../contexts/Context";
+import { useAuth } from "../contexts/AuthContext";
 
 type HeaderProps = {
   fade: boolean;
@@ -17,10 +20,16 @@ type HeaderProps = {
 export function Header({ fade }: HeaderProps) {
   const [isDark, setIsDark] = useState(true);
   const [isScrolled, setIsScrolled] = useState(fade);
-  const [searchKey, setSearchKey] = useState("");
-  const [searchKeyNotEmpty, setSearchKeyNotEmpty] = useState(false);
+  const [showCartModal, setShowCartModal] = useState(false);
+  const { productDispatch } = CartState();
+  const { getUser } = useAuth();
+  const [user, setUser] = useState<any>(undefined);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    (async () => {
+      setUser(await getUser());
+    })();
+  }, []);
 
   const setTheme = () => {
     document.documentElement.setAttribute(
@@ -36,17 +45,18 @@ export function Header({ fade }: HeaderProps) {
     return () => (window.onscroll = null);
   };
 
-  const searchMovies = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (searchKeyNotEmpty) {
-      navigate(`/search/${searchKey}`);
-    }
+  const handleShowCartModal = () => {
+    setShowCartModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowCartModal(false);
   };
 
   return (
     <Navbar
       expand="md"
-      className={`mb-3 ${
+      className={`mb-3 shadow-sm ${
         fade ? "position-fixed" : "position-sticky top-0"
       } z-3 w-100 ${!fade || isScrolled ? "bg-secondary" : "bg-transparent"}`}
       style={{ transition: "0.4s" }}
@@ -61,23 +71,24 @@ export function Header({ fade }: HeaderProps) {
             <Nav.Link as={NavLink} to="/">
               Home
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/store">
-              Store
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/about">
-              About
-            </Nav.Link>
             <Nav.Link as={NavLink} to="/wishlist">
               My List
             </Nav.Link>
             <Nav.Link as={NavLink} to="/filter">
               Filter
             </Nav.Link>
+            <Nav.Link
+              className={user?.type === "admin" ? "" : "d-none"}
+              as={NavLink}
+              to="/dashboard"
+            >
+              Dashboard
+            </Nav.Link>
           </Nav>
           <Button
             onClick={setTheme}
             variant="outline-primary"
-            className="position-relative rounded-circle w-md h-md"
+            className="position-relative rounded-circle w-md h-md me-3 mb-2 mb-md-0"
           >
             <i
               className={`position-absolute-center bi ${
@@ -85,33 +96,35 @@ export function Header({ fade }: HeaderProps) {
               }`}
             ></i>
           </Button>
-          <Form className="ms-3" onSubmit={searchMovies}>
-            <InputGroup>
-              <Form.Control
+          <Form className="me-3 mb-2 mb-md-0">
+            <InputGroup className="position-relative">
+              <FormControl
                 type="search"
-                placeholder="Search"
+                placeholder="Search film"
+                className="rounded-pill pe-3"
                 aria-label="Search"
-                className="rounded-start-pill"
                 onChange={(e) => {
-                  setSearchKey(e.target.value);
-                  setSearchKeyNotEmpty(e.target.value.trim() !== "");
+                  if (productDispatch) {
+                    productDispatch({
+                      type: "FILTER_BY_SEARCH",
+                      payload: e.target.value,
+                    });
+                  }
                 }}
               />
-              <Button
-                variant="outline-primary"
-                className="rounded-end-pill pe-3"
-                type="submit"
-                disabled={!searchKeyNotEmpty}
+              <div
+                className="position-absolute-center"
+                style={{ left: "100%", transform: "translate(-175%, -50%)" }}
               >
                 <i className="bi bi-search"></i>
-              </Button>
+              </div>
             </InputGroup>
           </Form>
           <Cart />
           <Nav.Link as={NavLink} to="/account">
             <Button
               variant="outline-primary"
-              className="position-relative rounded-circle ms-3 w-md h-md"
+              className="position-relative rounded-circle w-md h-md"
             >
               <i className="position-absolute-center bi bi-person-fill"></i>
             </Button>

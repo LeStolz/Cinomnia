@@ -11,7 +11,11 @@ export function NavbarLayout({ fade }: NavbarLayoutProps) {
   return (
     <>
       <Header fade={fade} />
-      <Container fluid className="p-0 min-vh-100">
+      <Container
+        fluid
+        className="p-0"
+        style={{ minHeight: "calc(100vh - var(--header-size))" }}
+      >
         <Outlet />
       </Container>
       <Footer />

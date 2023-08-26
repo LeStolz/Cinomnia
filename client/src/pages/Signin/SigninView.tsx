@@ -32,9 +32,9 @@ export function SigninView({ onSubmit, onSubmitGoogle }: SigninViewProps) {
 
   return (
     <>
-      <Row className="bg-secondary rounded">
+      <Row className="bg-secondary rounded-3">
         <Col className="p-0 d-none d-lg-block">
-          <Image src="/signin-side.png" className="h-100 rounded" />
+          <Image src="/signin-side.png" className="h-100 rounded-start-3" />
         </Col>
 
         <Col className="ms-0 p-5 text-center">

@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
-    <Container fluid className="bg-secondary p-0 py-3 z-1 position-relative">
-      <Container className="">
+    <Container
+      fluid
+      className="position-relative z-1 bg-secondary p-0 py-3 shadow-sm"
+    >
+      <Container>
         <Row className="mb-3">
           <Col>
             <a
@@ -15,8 +18,8 @@ export function Footer() {
               <span className="m-0 ms-3 h5 fw-bold">Cinomnia</span>
             </a>
             <p className="mt-3">
-              We are creating High Quality Resources and tools to Aid developers
-              during the developement of their projects
+              Cinomnia is your portal to a comprehensive cinematic experience
+              that encapsulates every facet of the human experience.
             </p>
           </Col>
           <Col className="d-flex justify-content-center">
@@ -26,11 +29,17 @@ export function Footer() {
                 About Us
               </Link>
               <br />
-              <Link to="/" className="text-decoration-none">
+              <Link
+                to="https://www.facebook.com/ntthau0963"
+                className="text-decoration-none"
+              >
                 Contact
               </Link>
               <br />
-              <Link to="/" className="text-decoration-none">
+              <Link
+                to="https://www.facebook.com/ntthau0963"
+                className="text-decoration-none"
+              >
                 Blog
               </Link>
             </div>
@@ -38,11 +47,14 @@ export function Footer() {
           <Col className="d-flex justify-content-center">
             <div>
               <h5 className="mt-2 mb-4 fw-bold">Help</h5>
-              <Link to="/" className="text-decoration-none">
+              <Link
+                to="https://www.facebook.com/ntthau0963"
+                className="text-decoration-none"
+              >
                 Support
               </Link>
               <br />
-              <Link to="/login" className="text-decoration-none">
+              <Link to="/signin" className="text-decoration-none">
                 Sign In
               </Link>
             </div>

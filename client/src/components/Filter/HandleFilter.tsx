@@ -15,7 +15,8 @@ const Home = ({ movies }: { movies: Film[] }) => {
       searchQuery,
       // byBought,
       selectedGenres,
-    },updateProducts
+    },
+    updateProducts,
   } = CartState();
 
   useEffect(() => {

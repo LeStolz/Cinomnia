@@ -12,15 +12,15 @@
     | { type: "CLEAR_FILTERS" }
     | { type: "UPDATE_PRODUCTS"; payload: Film[] };
 
-  // Kiểu cho trạng thái sản phẩm
-  export interface ProductState {
-    byRating: number;
-    searchQuery: string;
-    sortByPrice: string;
-    sortByName: string;
-    byBought: boolean;
-    selectedGenres: string[];
-  }
+// Kiểu cho trạng thái sản phẩm
+export interface ProductState {
+  byRating: number;
+  searchQuery: string;
+  sortByPrice: string;
+  sortByName: string;
+  byBought: boolean;
+  selectedGenres: string[];
+}
 
   export interface CartContextProps {
     state: any;
@@ -30,25 +30,25 @@
     updateProducts: (newProducts: Film[]) => void;
   }
 
-  export const Cart = createContext<CartContextProps>({
-    state: {},
-    dispatch: null,
-    productState: {
-      byRating: 0,
-      searchQuery: "",
-      sortByPrice: "",
-      sortByName: "",
-      byBought: false,
-      selectedGenres: []
-    },
-    productDispatch: null,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    updateProducts: () => {},
-  });
+export const Cart = createContext<CartContextProps>({
+  state: {},
+  dispatch: null,
+  productState: {
+    byRating: 0,
+    searchQuery: "",
+    sortByPrice: "",
+    sortByName: "",
+    byBought: false,
+    selectedGenres: [],
+  },
+  productDispatch: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  updateProducts: () => {},
+});
 
-  interface ContextProps {
-    children: ReactNode;
-  }
+interface ContextProps {
+  children: ReactNode;
+}
 
   // export interface productType {
   //   qty: number;
@@ -61,32 +61,34 @@
   //   isBought: boolean;
   // }
 
-  const Context = ({ children }: ContextProps) => {
-    const [state, dispatch] = useReducer(cartReducer, {
-      products: [],
-      cart: [],
-    });
+const Context = ({ children }: ContextProps) => {
+  const [state, dispatch] = useReducer(cartReducer, {
+    products: [],
+    cart: [],
+  });
 
-    const [productState, productDispatch] = useReducer(productReducer, {
-      byRating: 0,
-      selectedGenres:[],
-      searchQuery: "",
-      byBought: false
-    });
+  const [productState, productDispatch] = useReducer(productReducer, {
+    byRating: 0,
+    selectedGenres: [],
+    searchQuery: "",
+    byBought: false,
+  });
 
     const updateProducts = (newProducts: Film[]) => {
       dispatch({ type: "UPDATE_PRODUCTS", payload: newProducts });
     };
 
-    return (
-      <Cart.Provider value={{ state, dispatch, productState, productDispatch, updateProducts }}>
-        {children}
-      </Cart.Provider>
-    );
-  };
+  return (
+    <Cart.Provider
+      value={{ state, dispatch, productState, productDispatch, updateProducts }}
+    >
+      {children}
+    </Cart.Provider>
+  );
+};
 
-  export const CartState = () => {
-    return React.useContext(Cart);
-  };
+export const CartState = () => {
+  return React.useContext(Cart);
+};
 
-  export default Context;
+export default Context;
