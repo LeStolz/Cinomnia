@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Navbar,
   Nav,
@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Cart } from "./Cart/Cart";
+import { useAuth } from "../contexts/AuthContext";
 
 type HeaderProps = {
   fade: boolean;
@@ -20,6 +21,14 @@ export function Header({ fade }: HeaderProps) {
   const [searchKey, setSearchKey] = useState("");
   const [showCartModal, setShowCartModal] = useState(false);
   const [searchKeyNotEmpty, setSearchKeyNotEmpty] = useState(false);
+  const { getUser } = useAuth();
+  const [user, setUser] = useState<any>(undefined);
+
+  useEffect(() => {
+    (async () => {
+      setUser(await getUser());
+    })();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -54,8 +63,8 @@ export function Header({ fade }: HeaderProps) {
   return (
     <Navbar
       expand="md"
-      className={`mb-3 ${
-        fade ? "position-fixed" : "position-sticky"
+      className={`mb-3 shadow-sm ${
+        fade ? "position-fixed" : "position-sticky top-0"
       } z-3 w-100 ${!fade || isScrolled ? "bg-secondary" : "bg-transparent"}`}
       style={{ transition: "0.4s" }}
     >
@@ -69,12 +78,6 @@ export function Header({ fade }: HeaderProps) {
             <Nav.Link as={NavLink} to="/">
               Home
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/store">
-              Store
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/about">
-              About
-            </Nav.Link>
             <Nav.Link as={NavLink} to="/wishlist">
               Wishlist
             </Nav.Link>
@@ -84,11 +87,18 @@ export function Header({ fade }: HeaderProps) {
             <Nav.Link as={NavLink} to="/filter">
               Filter
             </Nav.Link>
+            <Nav.Link
+              className={user?.type === "admin" ? "" : "d-none"}
+              as={NavLink}
+              to="/dashboard"
+            >
+              Dashboard
+            </Nav.Link>
           </Nav>
           <Button
             onClick={setTheme}
             variant="outline-primary"
-            className="position-relative rounded-circle w-md h-md"
+            className="position-relative rounded-circle w-md h-md me-3 mb-2 mb-md-0"
           >
             <i
               className={`position-absolute-center bi ${
@@ -96,7 +106,7 @@ export function Header({ fade }: HeaderProps) {
               }`}
             ></i>
           </Button>
-          <Form className="ms-3" onSubmit={searchMovies}>
+          <Form className="me-3 mb-2 mb-md-0" onSubmit={searchMovies}>
             <InputGroup>
               <Form.Control
                 type="search"
@@ -120,7 +130,7 @@ export function Header({ fade }: HeaderProps) {
           </Form>
           <Button
             variant="outline-primary"
-            className="position-relative rounded-circle ms-3 w-md h-md"
+            className="position-relative rounded-circle me-3 mb-2 mb-md-0 w-md h-md"
             id="store"
             onClick={handleShowCartModal}
           >
@@ -132,7 +142,7 @@ export function Header({ fade }: HeaderProps) {
           <Nav.Link as={NavLink} to="/account">
             <Button
               variant="outline-primary"
-              className="position-relative rounded-circle ms-3 w-md h-md"
+              className="position-relative rounded-circle w-md h-md"
             >
               <i className="position-absolute-center bi bi-person-fill"></i>
             </Button>
