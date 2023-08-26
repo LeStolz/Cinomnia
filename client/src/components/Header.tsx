@@ -6,9 +6,11 @@ import {
   Form,
   InputGroup,
   Button,
+  FormControl,
 } from "react-bootstrap";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Cart } from "./Cart/Cart";
+import { CartState } from "../contexts/Context";
 
 type HeaderProps = {
   fade: boolean;
@@ -20,6 +22,7 @@ export function Header({ fade }: HeaderProps) {
   const [searchKey, setSearchKey] = useState("");
   const [showCartModal, setShowCartModal] = useState(false);
   const [searchKeyNotEmpty, setSearchKeyNotEmpty] = useState(false);
+  const { productDispatch } = CartState();
 
   const navigate = useNavigate();
 
@@ -98,16 +101,24 @@ export function Header({ fade }: HeaderProps) {
           </Button>
           <Form className="ms-3" onSubmit={searchMovies}>
             <InputGroup>
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-                className="rounded-start-pill"
-                onChange={(e) => {
-                  setSearchKey(e.target.value);
-                  setSearchKeyNotEmpty(e.target.value.trim() !== "");
-                }}
-              />
+              {useLocation().pathname.split("/")[1] !== "cart" && (
+                <Navbar.Text className="search">
+                  <FormControl
+                    type="search"
+                    placeholder="Search a film..."
+                    className="rounded-start-pill pe-3 border-outline-primary"
+                    aria-label="Search"
+                    onChange={(e) => {
+                      if (productDispatch) {
+                        productDispatch({
+                          type: "FILTER_BY_SEARCH",
+                          payload: e.target.value,
+                        });
+                      }
+                    }}
+                  />
+                </Navbar.Text>
+              )}
               <Button
                 variant="outline-primary"
                 className="rounded-end-pill pe-3"
