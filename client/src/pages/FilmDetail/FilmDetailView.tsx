@@ -141,7 +141,7 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
      
                   <Button className="w-25 mx-2 text-center w-25">
                     <Link to="" className="text-decoration-none text-light">
-                      <i class="bi bi-tv-fill me-2" />
+                      <i className="bi bi-tv-fill me-2" />
                       Watch right now
                     </Link>
                   </Button>
