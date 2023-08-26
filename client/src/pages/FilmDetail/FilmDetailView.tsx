@@ -90,6 +90,7 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
                     <span className="fw-bold">
                       Release Date:
                       <span className="fw-light">
+                        {" "}
                         {new Date(movie?.release_date).toLocaleDateString(
                           "en-GB",
                           {
@@ -126,24 +127,26 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
                     <Row>
                       <div className="d-flex w-100 justify-content-around fs-1 p-1">
                         <h5>Ranked #1</h5>
-                        <h5>Popularity #1</h5>
+                        <h5>Price: {movie.price} VND</h5>
                       </div>
                     </Row>
                   </Col>
                 </Row>
 
                 <Row className="d-flex mt-3">
-                  <Button className="w-25 mx-2 text-center">
+                  <Button className="w-25 mx-2 text-center w-25">
                     <i className="bi bi-cart4 me-2" />
                     Add to cart
                   </Button>
-
-                  <Button className="w-25 mx-2 text-center">
-                    <i className="bi bi-star-fill me-2" />
-                    Review
+     
+                  <Button className="w-25 mx-2 text-center w-25">
+                    <Link to="" className="text-decoration-none text-light">
+                      <i class="bi bi-tv-fill me-2" />
+                      Watch right now
+                    </Link>
                   </Button>
 
-                  <Button className="w-25 mx-2 text-center">
+                  <Button className="w-25 mx-2 text-center w-25">
                     <i className="bi bi-currency-dollar me-2" />
                     Buy
                   </Button>
@@ -188,7 +191,7 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
                           {movie.casts[0].name}
                         </Link>
                       </p>
-                      <small className="mt-0">
+                      <small className="mt-0 float-start">
                         {movie.casts[0].crews[0].job
                           ? movie.casts[0].crews[0].job
                           : " "}
@@ -248,7 +251,7 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
                           {movie.casts[2].name}
                         </Link>
                       </p>
-                      <small className="mt-0">
+                      <small className="mt-0 float-start">
                         {movie.casts[2].crews[0].job
                           ? movie.casts[2].crews[0].job
                           : " "}
