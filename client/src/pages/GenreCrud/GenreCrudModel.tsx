@@ -3,9 +3,13 @@ import { api } from "../../utils/api";
 export class GenreCrudModel {
   getGenre = async (id: string) => {
     try {
-      const genres = await api.get(`/genres/${id}`);
+      const genre = await api.get(`/genres/${id}`);
 
-      return genres.data;
+      if (genre.data.length === 0) {
+        throw new Error(`${id} not found`);
+      } else {
+        return genre.data[0];
+      }
     } catch (err) {
       throw null;
     }
