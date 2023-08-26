@@ -16,7 +16,6 @@ films.get("/:id", async (req, res) => {
   const filmId = req.params.id;
   try {
     const film = await Film.find({ id: filmId });
-    // console.log(film);
     if (film) {
       res.json(film);
     } else {
@@ -31,15 +30,10 @@ films.get("/:searchKey", async (req, res) => {
   const searchKey = req.params.searchKey;
   try {
     const films = await Film.find({
-      $or: [
-        { title: { $regex: searchKey, $options: "i" } },
-        { id: searchKey }, 
-      ],
+      $or: [{ title: { $regex: searchKey, $options: "i" } }, { id: searchKey }],
     });
-    console.log(films);
     res.json(films);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch films." });
   }
 });
-

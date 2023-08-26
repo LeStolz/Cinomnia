@@ -8,9 +8,9 @@ export interface HomeViewProps {
 
 export function HomeView({ movies }: HomeViewProps) {
   return (
-    <Container fluid className="home p-0">
-      <Hero movies={movies}/>
-      <ContainerSlider movies={movies}/>
+    <Container fluid className="p-0 m-0" style={{ overflow: "hidden" }}>
+      <Hero movies={movies} />
+      <ContainerSlider movies={movies} />
     </Container>
   );
 }

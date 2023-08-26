@@ -3,7 +3,7 @@ import { api } from "../utils/api";
 
 type Film = {
   id: number;
-  name: string; 
+  name: string;
 };
 export function ActorsComponent() {
   const [films, setFilms] = useState<Film[]>([]);
@@ -12,7 +12,6 @@ export function ActorsComponent() {
     const fetchActors = async () => {
       try {
         const response = await api.get("/actors");
-        console.log(response);
         setFilms(response.data);
       } catch (error) {
         console.error("Failed to fetch Actor:", error);

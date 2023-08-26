@@ -75,7 +75,6 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = (props) => {
     localStorage.setItem("watchlist", JSON.stringify(state.watchlist));
     localStorage.setItem("watched", JSON.stringify(state.watched));
     localStorage.setItem("store", JSON.stringify(state.store));
-
   }, [state]);
 
   // Actions
@@ -115,7 +114,7 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = (props) => {
         moveToWatchlist,
         removeFromWatched,
         addMovieToStore,
-        removeMovieFromStore
+        removeMovieFromStore,
         // Add any other action functions here
       }}
     >

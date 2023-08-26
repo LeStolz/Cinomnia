@@ -82,7 +82,7 @@ export function MovieSlider({ data, title, number }: MovieSliderProps) {
               >
                 <Row>
                   {slide.map((movie: Film, columnIndex) => (
-                    <Col key={movie._id} className="ps-1 pe-1">
+                    <Col key={movie._id} className="px-1">
                       <MovieCard
                         movieData={movie}
                         className={getColumnClassName(

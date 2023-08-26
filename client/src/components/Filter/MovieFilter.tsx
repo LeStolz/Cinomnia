@@ -1,6 +1,10 @@
 import { Button, Form } from "react-bootstrap";
 import { CartState } from "../../contexts/Context";
 import Rating from "./Rating";
+import { useEffect, useState } from "react";
+import { FilterModel } from "../../pages/Filter/FilterModel";
+import { Genre } from "../../configs/Model";
+import "./filterStyle.scss"
 
 const SortFilter = (props: any) => {
   const { productDispatch } = CartState();
@@ -13,10 +17,10 @@ const SortFilter = (props: any) => {
           <Form.Check
             className="ps-5"
             inline
-            label={props.labe1}
+            label={props.label1}
             name={props.nameGroup}
             type="radio"
-            id={`inline-1`}
+            id={`${props.label1}`}
             onChange={() => {
               if (productDispatch) {
                 return productDispatch({
@@ -36,7 +40,7 @@ const SortFilter = (props: any) => {
             label={props.label2}
             name={props.nameGroup}
             type="radio"
-            id={`inline-2`}
+            id={`${props.label2}`}
             onChange={() => {
               if (productDispatch) {
                 return productDispatch({
@@ -56,8 +60,31 @@ const SortFilter = (props: any) => {
 const MovieFilter = () => {
   const {
     productDispatch,
-    productState: { byRating, byBought, sortByName, sortByPrice, selectedGenres },
+    productState: {
+      byRating,
+      byBought,
+      sortByName,
+      sortByPrice,
+      selectedGenres,
+    },
   } = CartState();
+
+  const [genresFromDb, setGenres] = useState<Genre[]>([]);
+
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const fetchedGenres = await FilterModel.getGenres();
+        setGenres(fetchedGenres);
+      } catch (error) {
+        console.error("Error fetching genres:", error);
+      }
+    };
+
+    fetchGenres();
+  }, []);
+
+  const genresName = genresFromDb.map((elm) => elm.name);
 
   // make state for rating
 
@@ -67,47 +94,32 @@ const MovieFilter = () => {
       <Form>
         <h4>Search by genre</h4>
         <div key={`inline-checkbox`} className="mb-3">
-          {[
-            "Animation",
-            "Adventure",
-            "Action",
-            "Comedy",
-            "Crime",
-            "Drama",
-            "Fantasy",
-            "Family",
-            "History",
-            "Horror",
-            "Music",
-            "Mystery",
-            "Romance",
-            "Science Fiction",
-            "Thriller",
-            "War",
-            "Western",
-            "Documentary",
-          ].map((label, index) => (
+          {genresName.map((label, index) => (
             <div key={index} className="ps-4">
-              <Form.Check
-                inline
-                label={label}
-                name="group0"
-                type="checkbox"
-                id={`inline-4`}
-                onChange={() => {
-                  if (productDispatch) {
-                    const updatedGenres = selectedGenres.includes(label)
-                      ? selectedGenres.filter((selectedGenre) => selectedGenre !== label)
-                      : [...selectedGenres, label];
+              <label htmlFor={`checkbox-${index}`}>
+                <Form.Check
+                  inline
+                  label={label}
+                  name="group0"
+                  type="checkbox"
+                  id={`checkbox-${index}`}
+                  onChange={() => {
+                    if (productDispatch) {
+                      const updatedGenres = selectedGenres.includes(label)
+                        ? selectedGenres.filter(
+                            (selectedGenre) => selectedGenre !== label
+                          )
+                        : [...selectedGenres, label];
 
-                    return productDispatch({
-                      type: "FILTER_BY_GENRE",
-                      payload: updatedGenres,
-                    });
-                  }
-                }}
-                checked={selectedGenres.includes(label)}
-              />
+                      return productDispatch({
+                        type: "FILTER_BY_GENRE",
+                        payload: updatedGenres,
+                      });
+                    }
+                  }}
+                  checked={selectedGenres.includes(label)}
+                />
+              </label>
             </div>
           ))}
         </div>
@@ -115,7 +127,7 @@ const MovieFilter = () => {
       <SortFilter
         head={"price"}
         type={"SORT_BY_PRICE"}
-        labe1={"Ascending"}
+        label1={"Ascending"}
         label2={"Descending"}
         nameGroup={"group1"}
         state={sortByPrice}
@@ -124,7 +136,7 @@ const MovieFilter = () => {
       <SortFilter
         head={"name"}
         type={"SORT_BY_NAME"}
-        labe1={"A -> Z"}
+        label1={"A -> Z"}
         label2={"Z -> A"}
         nameGroup={"group2"}
         state={sortByName}

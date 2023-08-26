@@ -1,6 +1,5 @@
 import { CSSProperties, FC } from "react";
 
-
 interface RatingProps {
   rating: number;
   onClick: (index: number) => void;
