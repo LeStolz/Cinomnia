@@ -24,6 +24,6 @@ export function Home() {
     };
     fetchData();
   }, []);
-
+  console.log(movies)
   return <HomeView movies={movies} />;
 }

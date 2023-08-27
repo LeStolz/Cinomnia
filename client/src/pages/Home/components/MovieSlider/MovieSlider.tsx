@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react";
 import { MovieCard } from "../../../../components/MovieCard/MovieCard";
-import { Container, Carousel, Row, Col } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
 import { Film } from "../../../../configs/Model";
-import "./MovieSlider.scss";
 import { MovieCardSkeleton } from "../../../../components/MovieCard/MovieCardSkeleton";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/swiper-bundle.css";
+import "./MovieSlider.scss";
 
 interface MovieSliderProps {
   data: Film[];
@@ -12,91 +15,62 @@ interface MovieSliderProps {
 }
 
 export function MovieSlider({ data, title, number }: MovieSliderProps) {
-  const [numCols, setNumCols] = useState(5);
+  const [slidesPerView, setSlidesPerView] = useState(7);
 
   useEffect(() => {
-    function updateNumCols() {
+    function handleResize() {
       const screenWidth = window.innerWidth;
-      if (screenWidth > 1200) {
-        setNumCols(5);
-      } else if (screenWidth > 992) {
-        setNumCols(4);
-      } else if (screenWidth > 768) {
-        setNumCols(2);
+      if (screenWidth >= 1600) {
+        setSlidesPerView(8);
+      } else if (screenWidth >= 1400) {
+        setSlidesPerView(7);
+      } else if (screenWidth >= 1200) {
+        setSlidesPerView(6);
+      } else if (screenWidth >= 992) {
+        setSlidesPerView(5);
+      } else if (screenWidth >= 768) {
+        setSlidesPerView(4);
+      } else if (screenWidth >= 576) {
+        setSlidesPerView(3);
       } else {
-        setNumCols(1);
+        setSlidesPerView(2);
       }
     }
 
-    window.addEventListener("resize", updateNumCols);
-    updateNumCols();
-
-    return () => window.removeEventListener("resize", updateNumCols);
+    handleResize(); // Call on initial render
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
-
-  const slides: Film[][] = [];
-  const numSlides = Math.ceil(data.length / numCols);
-  for (let i = 0; i < numSlides; i++) {
-    const startIndex = i * numCols;
-    const endIndex = Math.min(startIndex + numCols, data.length);
-    const slideData = data.slice(startIndex, endIndex);
-    slides.push(slideData);
-  }
-
-  const getColumnClassName = (index: number, slideLength: number) => {
-    if (slideLength === 1) {
-      return "only";
-    }
-    if (index === 0) {
-      return "first";
-    }
-    if (index === slideLength - 1) {
-      return "last";
-    }
-    return "";
-  };
+  const skeletonSlides = new Array(slidesPerView).fill(null);
 
   return (
     <Container fluid className="p-0 mb-5">
       <h2 className="ps-5">{title}</h2>
       <Container fluid className="media-container p-0">
-        <Carousel interval={50000000} className="media-scroller ps-2 pe-2">
-          {data.length === 0 ? ( // Check if data is not loaded
-            <Carousel.Item key={0} className="media-group">
-              {/* Render MovieCardSkeleton */}
-              <Row>
-                {Array.from({ length: numCols }).map((_, columnIndex) => (
-                  <Col key={columnIndex} className="ps-1 pe-1">
-                    <MovieCardSkeleton />
-                  </Col>
-                ))}
-              </Row>
-            </Carousel.Item>
-          ) : (
-            // Render MovieCard components
-            slides.map((slide, slideIndex) => (
-              <Carousel.Item
-                key={slideIndex}
-                className="media-group"
-                id={`group${number}${slideIndex}`}
-              >
-                <Row>
-                  {slide.map((movie: Film, columnIndex) => (
-                    <Col key={movie._id} className="px-1">
-                      <MovieCard
-                        movieData={movie}
-                        className={getColumnClassName(
-                          columnIndex,
-                          slide.length
-                        )}
-                      />
-                    </Col>
-                  ))}
-                </Row>
-              </Carousel.Item>
-            ))
-          )}
-        </Carousel>
+        <Swiper
+          className="swiper-slider"
+          id={`slide-${number}`}
+          loop={true}
+          modules={[Navigation]}
+          spaceBetween={5}
+          slidesPerView={slidesPerView}
+          navigation={true}
+        >
+          {data.length === 0
+            ? skeletonSlides.map((_, index) => (
+                <SwiperSlide key={index}>
+                  <MovieCardSkeleton />
+                </SwiperSlide>
+              ))
+            : // Render MovieCard components
+              data.map((slide) => (
+                <SwiperSlide key={slide._id} className="h-auto">
+                  <MovieCard movieData={slide} className="items-scale" />
+                </SwiperSlide>
+              ))}
+        </Swiper>
       </Container>
     </Container>
   );

@@ -1,15 +1,16 @@
-import React, { createContext, useReducer, ReactNode, Dispatch } from "react";
-import { cartReducer, productReducer } from "./Reducers";
+  import React, { createContext, useReducer, ReactNode, Dispatch } from "react";
+  import { cartReducer, productReducer } from "./Reducers";
+  import { Film } from "../configs/Model";
 
-export type ProductAction =
-  | { type: "SORT_BY_PRICE"; payload: string }
-  | { type: "SORT_BY_NAME"; payload: string }
-  | { type: "FILTER_BY_RATING"; payload: number }
-  | { type: "FILTER_BY_BOUGHT" }
-  | { type: "FILTER_BY_GENRE"; payload: string[] }
-  | { type: "FILTER_BY_SEARCH"; payload: string }
-  | { type: "CLEAR_FILTERS" }
-  | { type: "UPDATE_PRODUCTS"; payload: productType[] };
+  export type ProductAction =
+    | { type: "SORT_BY_PRICE"; payload: string }
+    | { type: "SORT_BY_NAME"; payload: string }
+    | { type: "FILTER_BY_RATING"; payload: number }
+    | { type: "FILTER_BY_BOUGHT"}
+    | { type: "FILTER_BY_GENRE", payload: string[]}
+    | { type: "FILTER_BY_SEARCH"; payload: string }
+    | { type: "CLEAR_FILTERS" }
+    | { type: "UPDATE_PRODUCTS"; payload: Film[] };
 
 // Kiểu cho trạng thái sản phẩm
 export interface ProductState {
@@ -21,13 +22,13 @@ export interface ProductState {
   selectedGenres: string[];
 }
 
-export interface CartContextProps {
-  state: any;
-  dispatch: Dispatch<any> | null;
-  productState: ProductState;
-  productDispatch: Dispatch<ProductAction> | null;
-  updateProducts: (newProducts: productType[]) => void;
-}
+  export interface CartContextProps {
+    state: any;
+    dispatch: Dispatch<any> | null;
+    productState: ProductState;
+    productDispatch: Dispatch<ProductAction> | null;
+    updateProducts: (newProducts: Film[]) => void;
+  }
 
 export const Cart = createContext<CartContextProps>({
   state: {},
@@ -49,16 +50,16 @@ interface ContextProps {
   children: ReactNode;
 }
 
-export interface productType {
-  qty: number;
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  ratings: number;
-  genres: object;
-  isBought: boolean;
-}
+  // export interface productType {
+  //   qty: number;
+  //   id: number;
+  //   title: string;
+  //   price: number;
+  //   image: string;
+  //   ratings: number;
+  //   genres: object;
+  //   isBought: boolean;
+  // }
 
 const Context = ({ children }: ContextProps) => {
   const [state, dispatch] = useReducer(cartReducer, {
@@ -73,9 +74,9 @@ const Context = ({ children }: ContextProps) => {
     byBought: false,
   });
 
-  const updateProducts = (newProducts: productType[]) => {
-    dispatch({ type: "UPDATE_PRODUCTS", payload: newProducts });
-  };
+    const updateProducts = (newProducts: Film[]) => {
+      dispatch({ type: "UPDATE_PRODUCTS", payload: newProducts });
+    };
 
   return (
     <Cart.Provider

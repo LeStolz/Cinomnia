@@ -1,5 +1,17 @@
 import mongoose from "mongoose";
 
+const FilmSchema = new mongoose.Schema({
+  film: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "Film",
+    required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+  },
+});
+
 const UserSchema = new mongoose.Schema(
   {
     email: {
@@ -17,16 +29,13 @@ const UserSchema = new mongoose.Schema(
       min: 0,
       default: 0,
     },
-    ownedShows: {
-      type: [mongoose.SchemaTypes.ObjectId],
-      ref: "Show",
-      default: [],
-    },
     createdAt: {
       type: Date,
       immutable: true,
       default: () => Date.now(),
     },
+    bought: [FilmSchema],
+    wishlist: [FilmSchema],
   },
   {
     statics: {},

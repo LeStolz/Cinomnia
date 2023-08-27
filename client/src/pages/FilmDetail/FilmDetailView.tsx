@@ -304,23 +304,23 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
                   <Form.Control as="textarea" rows={3} />
                 </Form.Group>
 
-                <Button className="float-end m-2">Publish</Button>
-              </Card.Text>
-            </Card>
+              <Button className="float-end m-2">Publish</Button>
+            </Card.Text>
+          </Card>
 
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="pt-2 ps-2">
-                <Row className="w-auto mt-3">
-                  <Col className="d-flex col-4 pe-0 w-auto me-2">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <p className="mb-0 fw-bold">Vinh</p>
+          <Card className="bg-secondary my-3 rounded">
+            <Card.Title className="pt-2 ps-2">
+              <Row className="w-auto mt-3">
+                <Col className="d-flex col-4 pe-0 w-auto me-2">
+                  <Image src="/logo.png" className="w-lg h-md me-2" />
+                  <div>
+                    <p className="mb-0 fw-bold">Vinh</p>
 
-                      <small className="mt-0 fw-light fs-6">
-                        April 12 at 2:28pm
-                      </small>
-                    </div>
-                  </Col>
+                    <small className="mt-0 fw-light fs-6">
+                      April 12 at 2:28pm
+                    </small>
+                  </div>
+                </Col>
 
                   <Col className="pt-2">
                     <i className="bi bi-trash float-end me-3 text-danger" />
@@ -329,32 +329,32 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
                 </Row>
               </Card.Title>
 
-              <Card.Text>
-                <p className="pt-2 ps-2">
-                  First of all, I have seen the original FMA and although it was
-                  very popular and original, the pacing and conclusion did not
-                  sit too well with me. Brotherhood is meant to be a remake of
-                  the original, this time sticking to the manga all the way
-                  through, but there were people who thought it would spoil the
-                  franchise. That myth should be dispelled, as there's only one
-                  word to describe this series - EPIC.12
-                </p>
-              </Card.Text>
-            </Card>
+            <Card.Text>
+              <p className="pt-2 ps-2">
+                First of all, I have seen the original FMA and although it was
+                very popular and original, the pacing and conclusion did not sit
+                too well with me. Brotherhood is meant to be a remake of the
+                original, this time sticking to the manga all the way through,
+                but there were people who thought it would spoil the franchise.
+                That myth should be dispelled, as there's only one word to
+                describe this series - EPIC.12
+              </p>
+            </Card.Text>
+          </Card>
 
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="pt-2 ps-2">
-                <Row>
-                  <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <p className="mb-0 fw-bold">Vinh</p>
+          <Card className="bg-secondary my-3 rounded">
+            <Card.Title className="pt-2 ps-2">
+              <Row>
+                <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
+                  <Image src="/logo.png" className="w-lg h-md me-2" />
+                  <div>
+                    <p className="mb-0 fw-bold">Vinh</p>
 
-                      <small className="mt-0 fw-light fs-6">
-                        April 12 at 2:28pm
-                      </small>
-                    </div>
-                  </Col>
+                    <small className="mt-0 fw-light fs-6">
+                      April 12 at 2:28pm
+                    </small>
+                  </div>
+                </Col>
 
                   <Col className="pt-2">
                     <i className="bi bi-trash float-end me-3 text-danger" />

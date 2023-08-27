@@ -24,6 +24,20 @@ const videos = new mongoose.Schema({
   video_full: String,
 });
 
+const review = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  content: String,
+  createdAt: {
+    type: Date,
+    immutable: true,
+    default: () => Date.now(),
+  },
+});
+
 const FilmSchema = new mongoose.Schema(
   {
     id: {
@@ -34,13 +48,14 @@ const FilmSchema = new mongoose.Schema(
     release_date: Date,
     rating: Number,
     ranking: Number,
-    review: [],
+    review: [review],
     poster: { img_500: String, img_1280: String },
     genres: [genre],
     casts: [cast],
     directors: [director],
     videos: videos,
     price: Number,
+    durations: Number,
   },
   {
     timestamps: true,
