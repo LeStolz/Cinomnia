@@ -52,7 +52,7 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
       ) {
         setIsIconLike(props);
       } else if (props === "bi bi-heart") {
-        addFilmToWishlist(movieData, "wishlist", 0);
+        addFilmToWishlist(movieData, "wishlist");
         addMovieToWatchlist(movieData);
         setIsIconLike(props);
       }

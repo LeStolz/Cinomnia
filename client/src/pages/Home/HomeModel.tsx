@@ -1,8 +1,7 @@
 import { api } from "../../utils/api";
 import { Film } from "../../configs/Model";
 import { Genre } from "../../configs/Model";
-import { Director } from "../../configs/Model";
-import { Actor } from "../../configs/Model";
+import { Person } from "../../configs/Model";
 
 export class HomeModel {
   assignGenreToFilms = (films: Film[], genreData: Genre[]): Film[] => {
@@ -32,7 +31,7 @@ export class HomeModel {
   async getActors() {
     try {
       const response = await api.get("/actors");
-      return response.data as Actor[];
+      return response.data as Person[];
     } catch (error) {
       console.error("Error fetching actors:", error);
       return [];
@@ -42,7 +41,7 @@ export class HomeModel {
   async getDirectors() {
     try {
       const response = await api.get("/directors");
-      return response.data as Director[];
+      return response.data as Person[];
     } catch (error) {
       console.error("Error fetching directors:", error);
       return [];

@@ -45,7 +45,7 @@ export const router = createBrowserRouter([
               { path: "about", element: <About /> },
               { path: "payment", element: <Payment /> },
               { path: "successful", element: <PaymentNotification /> },
-              { path: "cast-detail", element: <CastDetail /> },
+              { path: "cast-detail/:id", element: <CastDetail /> },
               { path: "wishlist", element: <MyList /> },
               { path: "search/:search", element: <Search /> },
               { path: "player/:id", element: <Player /> },

@@ -20,7 +20,6 @@ type HeaderProps = {
 export function Header({ fade }: HeaderProps) {
   const [isDark, setIsDark] = useState(true);
   const [isScrolled, setIsScrolled] = useState(fade);
-  const [showCartModal, setShowCartModal] = useState(false);
   const { productDispatch } = CartState();
   const { getUser } = useAuth();
   const [user, setUser] = useState<any>(undefined);
@@ -43,14 +42,6 @@ export function Header({ fade }: HeaderProps) {
   window.onscroll = () => {
     setIsScrolled(window.scrollY <= 0 ? false : true);
     return () => (window.onscroll = null);
-  };
-
-  const handleShowCartModal = () => {
-    setShowCartModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowCartModal(false);
   };
 
   return (

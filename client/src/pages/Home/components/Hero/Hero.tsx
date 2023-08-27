@@ -32,7 +32,7 @@ export function Hero({ movies }: HeroProps) {
     <>
       {" "}
       {movies.length == 0 ? (
-        <Skeleton height={300} />
+        <Skeleton height={500} />
       ) : (
         <Swiper
           className="hero"
@@ -63,7 +63,7 @@ export function Hero({ movies }: HeroProps) {
                     height: "90vh",
                   }}
                 ></Container>
-                <Container fluid className="position-absolute ms-5 w-auto">
+                <Container fluid className="position-absolute ms-5 w-50">
                   <Container className="hero-text m-0">
                     <h1
                       className="text-uppercase m-0 p-0 fw-bolder text-primary"

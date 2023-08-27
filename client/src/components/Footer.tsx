@@ -30,14 +30,14 @@ export function Footer() {
               </Link>
               <br />
               <Link
-                to="https://www.facebook.com/ntthau0963"
+                to="https://www.facebook.com/han.gu0963/"
                 className="text-decoration-none"
               >
                 Contact
               </Link>
               <br />
               <Link
-                to="https://www.facebook.com/ntthau0963"
+                to="https://www.facebook.com/han.gu0963/"
                 className="text-decoration-none"
               >
                 Blog
@@ -48,7 +48,7 @@ export function Footer() {
             <div>
               <h5 className="mt-2 mb-4 fw-bold">Help</h5>
               <Link
-                to="https://www.facebook.com/ntthau0963"
+                to="https://www.facebook.com/han.gu0963/"
                 className="text-decoration-none"
               >
                 Support
