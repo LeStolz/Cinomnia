@@ -1,7 +1,7 @@
 import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
-import { Film, User } from "../../configs/Model";
+import { Film } from "../../configs/Model";
 import { useFilm } from "../../contexts/FilmContext";
 import ReviewForm from "../../components/Review";
 import CircularRate from "../../components/CircularRate/CircularRate";
@@ -194,6 +194,7 @@ export function PlayerView({
                               <SwiperSlide
                                 key={idx}
                                 className="cast-items position-relative overflow-hidden p-0"
+                                onClick={() => navigate(`/cast-detail/${cast.id}`)}
                               >
                                 <Image
                                   key={`cast-${idx}`}

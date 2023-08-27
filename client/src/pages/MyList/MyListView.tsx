@@ -40,10 +40,10 @@ export function MyListView({wishlist, bought} : MyListViewProps) {
     };
   }, []);
   return (
-    <Container fluid className="p-0">
+    <Container fluid className="p-0 overflow-hidden">
       {bought.filter((data) => data.status === "watching").length > 0 ? (
-        <Container fluid className="p-0 m-5">
-          <h2>Watching</h2>
+        <Container fluid className="p-0">
+          <h2 className="ms-5">Watching</h2>
           <Swiper
             className="swiper-slider"
             modules={[Navigation]}
@@ -66,8 +66,8 @@ export function MyListView({wishlist, bought} : MyListViewProps) {
         </Container>
       )}
       {bought.filter((data) => data.status === "watched").length > 0 ? (
-        <Container fluid className="p-0 m-5">
-          <h2>Watched</h2>
+        <Container fluid className="p-0">
+          <h2 className="ms-5">Watched</h2>
           <Swiper
             className="swiper-slider"
             modules={[Navigation]}
@@ -90,8 +90,8 @@ export function MyListView({wishlist, bought} : MyListViewProps) {
         </Container>
       )}
       {wishlist.length > 0 ? (
-        <Container fluid className="p-0 m-5">
-          <h2>Wishlist</h2>
+        <Container fluid className="p-0">
+          <h2 className="ms-5">Wishlist</h2>
           <Swiper
             className="swiper-slider"
             modules={[Navigation]}
@@ -112,8 +112,8 @@ export function MyListView({wishlist, bought} : MyListViewProps) {
         </Container>
       )}
       {bought.length > 0 ? (
-        <Container fluid className="p-0 m-5">
-          <h2>Bought</h2>
+        <Container fluid className="p-0">
+          <h2 className="ms-5">Bought</h2>
           <Swiper
             className="swiper-slider"
             modules={[Navigation]}
