@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import {
   Col,
@@ -12,6 +12,10 @@ import {
 } from "react-bootstrap";
 import { Film } from "../../configs/Model";
 import { Loading } from "../../components/Loading/Loading";
+import { Edit } from "../../components/Edit";
+import { ImageEdit } from "../../components/ImageEdit";
+import { MultiEdit } from "../../components/MultiEdit";
+import { api } from "../../utils/api";
 
 type FilmDetailView = {
   movie: Film | undefined;
@@ -21,9 +25,22 @@ type FilmDetailView = {
 export function FilmDetailView({ movie, editMode }: FilmDetailView) {
   const videoUrl = movie?.videos?.trailers[0]?.link || null;
   const [playerReady, setPlayerReady] = useState(false);
+  const [genres, setGenres] = useState([]);
+  const [actors, setActors] = useState([]);
+  const [directors, setDirectors] = useState([]);
   const handlePlayerReady = () => {
     setPlayerReady(true);
   };
+
+  useEffect(() => {
+    if (editMode) {
+      (async () => {
+        setGenres((await api.get("/genres")).data);
+        setActors((await api.get("/actors")).data);
+        setDirectors((await api.get("/directors")).data);
+      })();
+    }
+  }, []);
 
   if (!movie) {
     return <Loading />;
@@ -38,7 +55,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
               {playerReady ? (
                 <ReactPlayer
                   url={videoUrl}
-                  className="rounded"
+                  className="rounded-3"
                   playing={true}
                   loop
                   muted
@@ -60,57 +77,103 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
 
         <Row className="mt-3">
           <Col className="order-1 col-lg-4 col-sm-12">
-            <Card className="bg-secondary rounded">
-              <Card.Title className="text-center mb-0 py-2 fs-2 bg-light-subtle">
-                {editMode ? (
-                  movie.title
-                ) : (
-                  <></>
-                  // <Edit nam e="title" value={movie.title}></Edit>
-                )}
+            <Card className="bg-secondary rounded-3">
+              <Card.Title className="text-center mb-0 py-2 fs-2 bg-light-subtle rounded-top-3">
+                <Edit
+                  editMode={editMode}
+                  type="text"
+                  name="title"
+                  defaultValue={movie.title}
+                  isRequired
+                />
               </Card.Title>
               <Card.Text>
-                <Image
-                  src={`${movie.poster.img_500}`}
+                <ImageEdit
+                  editMode={editMode}
+                  name="poster.img_500"
+                  defaultValue={movie.poster.img_500}
+                  isRequired
                   className="h-100 w-100"
                 />
 
                 <ul className="list-unstyled fw-bold ps-2 mt-3">
                   <li className="fw-light">
                     <span className="fw-bold">
-                      Director: {movie.directors[0].name}
+                      Director:{" "}
+                      <MultiEdit
+                        editMode={editMode}
+                        data={directors.map((director: any) => ({
+                          id: director.name,
+                          name: director.name,
+                        }))}
+                        name="director"
+                        defaultValue={[
+                          {
+                            id: movie.directors[0].name,
+                            name: movie.directors[0].name,
+                          },
+                        ]}
+                        func={(genres: any) =>
+                          genres.map((genre: any) => (
+                            <>
+                              <Link
+                                className="text-decoration-none"
+                                to=""
+                                key={`genre-${genre.id}`}
+                              >
+                                {genre.name !== "" && genre.name}
+                              </Link>{" "}
+                            </>
+                          ))
+                        }
+                        isRequired
+                      />
                     </span>
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">Genres:</span>{" "}
-                    {movie?.genres &&
-                      movie?.genres.map((genre) => (
-                        <>
-                          <Link to="" key={`genre-${genre.id}`}>
-                            {genre.name !== "" && genre.name}
-                          </Link>{" "}
-                        </>
-                      ))}
+                    <MultiEdit
+                      editMode={editMode}
+                      data={genres}
+                      name="genres"
+                      defaultValue={movie?.genres}
+                      func={(genres: any) =>
+                        genres.map((genre: any) => (
+                          <>
+                            <Link
+                              className="text-decoration-none"
+                              to=""
+                              key={`genre-${genre.id}`}
+                            >
+                              {genre.name !== "" && genre.name}
+                            </Link>{" "}
+                          </>
+                        ))
+                      }
+                      isRequired
+                    />
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">
                       Release Date:
                       <span className="fw-light">
                         {" "}
-                        {new Date(movie?.release_date).toLocaleDateString(
-                          "en-GB",
-                          {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
+                        <Edit
+                          editMode={editMode}
+                          type="date"
+                          name="relase_date"
+                          defaultValue={movie?.release_date}
+                          func={(x: any) =>
+                            new Date(x).toLocaleDateString("en-GB", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })
                           }
-                        )}
+                          isRequired
+                        />
                       </span>
                     </span>{" "}
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Rating:</span>{" "}
-                    {movie.rating.toFixed(1)}
                   </li>
                 </ul>
               </Card.Text>
@@ -118,22 +181,39 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
           </Col>
 
           <Col className="order-2 col-lg-8 col-sm-12 my-md-3 my-lg-0">
-            <Card className="bg-secondary rounded">
-              <Card.Title className="ps-3 py-2 bg-light-subtle">
+            <Card className="bg-secondary rounded-3">
+              <Card.Title className="py-3 ps-3 bg-light-subtle rounded-top-3">
                 Information
               </Card.Title>
               <Card.Body>
                 <Row className="py-sm-2 py-md-0">
                   <Col className="col-md-2 text-center col-sm-12">
-                    <h5 className="rounded border bg-secondary p-1">Score</h5>
-                    <h3>{movie.rating.toFixed(1)}</h3>
+                    <h5 className="rounded-3 border bg-secondary p-1">Score</h5>
+                    <h3>
+                      <Edit
+                        editMode={editMode}
+                        type="number"
+                        name="rating"
+                        defaultValue={movie.rating}
+                        isRequired
+                      />
+                    </h3>
                   </Col>
 
                   <Col className="">
                     <Row>
                       <div className="d-flex w-100 justify-content-around fs-1 p-1">
                         <h5>Ranked #1</h5>
-                        <h5>Price: {movie.price} VND</h5>
+                        <h5>
+                          <Edit
+                            editMode={editMode}
+                            type="number"
+                            name="price"
+                            defaultValue={movie.price}
+                            func={(x: any) => `Price: ${x} VND`}
+                            isRequired
+                          />
+                        </h5>
                       </div>
                     </Row>
                   </Col>
@@ -144,11 +224,11 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                     <i className="bi bi-cart4 me-2" />
                     Add to cart
                   </Button>
-     
+
                   <Button className="w-25 mx-2 text-center w-25">
                     <Link to="" className="text-decoration-none text-light">
                       <i className="bi bi-tv-fill me-2" />
-                      Watch right now
+                      Watch now
                     </Link>
                   </Button>
 
@@ -160,19 +240,27 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
               </Card.Body>
             </Card>
 
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="py-3 ps-3 bg-light-subtle">
+            <Card className="bg-secondary my-3 rounded-3">
+              <Card.Title className="py-3 ps-3 bg-light-subtle rounded-top-3">
                 Sypnosis
               </Card.Title>
               <Card.Text>
                 <p className="fs-6 p-3" style={{ textAlign: "justify" }}>
-                  {movie.overview}
+                  <Edit
+                    editMode={editMode}
+                    type="textarea"
+                    name="overview"
+                    defaultValue={movie.overview}
+                    isRequired
+                  />
                 </p>
               </Card.Text>
             </Card>
 
-            <Card className=" bg-secondary my-3 rounded">
-              <Card.Title className="p-3 bg-light-subtle">Actors</Card.Title>
+            <Card className=" bg-secondary my-3 rounded-3">
+              <Card.Title className="p-3 bg-light-subtle rounded-top-3">
+                Actors
+              </Card.Title>
               <Card.Text className="p-3">
                 <hr className="" />
 
@@ -186,7 +274,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                             "https://placehold.co/47x71"
                           : "https://placehold.co/47x71"
                       }
-                      className="w-lg me-2 rounded"
+                      className="w-lg me-2 rounded-3"
                     />
                     <div>
                       <p>
@@ -229,7 +317,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                             "https://placehold.co/47x71"
                           : "https://placehold.co/47x71"
                       }
-                      className="w-lg ms-2 rounded"
+                      className="w-lg ms-2 rounded-3"
                     />
                   </Col>
                 </Row>
@@ -246,7 +334,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                             "https://placehold.co/47x71"
                           : "https://placehold.co/47x71"
                       }
-                      className="w-lg me-2 rounded"
+                      className="w-lg me-2 rounded-3"
                     />
                     <div>
                       <p>
@@ -290,7 +378,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                             "https://placehold.co/47x71"
                           : "https://placehold.co/47x71"
                       }
-                      className="w-lg ms-2 rounded"
+                      className="w-lg ms-2 rounded-3"
                     />
                   </Col>
                 </Row>
@@ -298,8 +386,8 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
               </Card.Text>
             </Card>
 
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="p-3 mb-0 bg-light-subtle">
+            <Card className="bg-secondary my-3 rounded-3">
+              <Card.Title className="p-3 mb-0 bg-light-subtle rounded-top-3">
                 Review
               </Card.Title>
               <Card.Text className="">
@@ -310,23 +398,23 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                   <Form.Control as="textarea" rows={3} />
                 </Form.Group>
 
-              <Button className="float-end m-2">Publish</Button>
-            </Card.Text>
-          </Card>
+                <Button className="float-end m-2">Publish</Button>
+              </Card.Text>
+            </Card>
 
-          <Card className="bg-secondary my-3 rounded">
-            <Card.Title className="pt-2 ps-2">
-              <Row className="w-auto mt-3">
-                <Col className="d-flex col-4 pe-0 w-auto me-2">
-                  <Image src="/logo.png" className="w-lg h-md me-2" />
-                  <div>
-                    <p className="mb-0 fw-bold">Vinh</p>
+            <Card className="bg-secondary my-3 rounded-3">
+              <Card.Title className="pt-2 ps-2">
+                <Row className="w-auto mt-3">
+                  <Col className="d-flex col-4 pe-0 w-auto me-2">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <p className="mb-0 fw-bold">Vinh</p>
 
-                    <small className="mt-0 fw-light fs-6">
-                      April 12 at 2:28pm
-                    </small>
-                  </div>
-                </Col>
+                      <small className="mt-0 fw-light fs-6">
+                        April 12 at 2:28pm
+                      </small>
+                    </div>
+                  </Col>
 
                   <Col className="pt-2">
                     <i className="bi bi-trash float-end me-3 text-danger" />
@@ -335,32 +423,32 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                 </Row>
               </Card.Title>
 
-            <Card.Text>
-              <p className="pt-2 ps-2">
-                First of all, I have seen the original FMA and although it was
-                very popular and original, the pacing and conclusion did not sit
-                too well with me. Brotherhood is meant to be a remake of the
-                original, this time sticking to the manga all the way through,
-                but there were people who thought it would spoil the franchise.
-                That myth should be dispelled, as there's only one word to
-                describe this series - EPIC.12
-              </p>
-            </Card.Text>
-          </Card>
+              <Card.Text>
+                <p className="pt-2 ps-2">
+                  First of all, I have seen the original FMA and although it was
+                  very popular and original, the pacing and conclusion did not
+                  sit too well with me. Brotherhood is meant to be a remake of
+                  the original, this time sticking to the manga all the way
+                  through, but there were people who thought it would spoil the
+                  franchise. That myth should be dispelled, as there's only one
+                  word to describe this series - EPIC.12
+                </p>
+              </Card.Text>
+            </Card>
 
-          <Card className="bg-secondary my-3 rounded">
-            <Card.Title className="pt-2 ps-2">
-              <Row>
-                <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
-                  <Image src="/logo.png" className="w-lg h-md me-2" />
-                  <div>
-                    <p className="mb-0 fw-bold">Vinh</p>
+            <Card className="bg-secondary my-3 rounded-3">
+              <Card.Title className="pt-2 ps-2">
+                <Row>
+                  <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <p className="mb-0 fw-bold">Vinh</p>
 
-                    <small className="mt-0 fw-light fs-6">
-                      April 12 at 2:28pm
-                    </small>
-                  </div>
-                </Col>
+                      <small className="mt-0 fw-light fs-6">
+                        April 12 at 2:28pm
+                      </small>
+                    </div>
+                  </Col>
 
                   <Col className="pt-2">
                     <i className="bi bi-trash float-end me-3 text-danger" />

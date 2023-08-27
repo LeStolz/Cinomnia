@@ -9,7 +9,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import { FilmCrudView } from "./FilmCrud";
-import { FormEvent, createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export function FilmCrudView({
@@ -17,16 +17,10 @@ export function FilmCrudView({
   getFilms,
   getFilm,
   delFilm,
-  addFilm,
-  updateFilm,
 }: FilmCrudView) {
   const searchRef = createRef<HTMLInputElement>();
-  const filmRef = createRef<HTMLInputElement>();
-  const editRef = createRef<HTMLInputElement>();
   const [show, setShow] = useState(false);
   const [prevSearch, setPrevSearch] = useState("");
-  const [adding, setAdding] = useState(false);
-  const [editting, setEditting] = useState("");
   const [modalHeader, setModalHeader] = useState("");
   const [modalBody, setModalBody] = useState<any>("");
   const [modalAction, setModalAction] = useState<() => void>(() => () => {});
@@ -126,64 +120,6 @@ export function FilmCrudView({
     );
   };
 
-  const onAdd = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    try {
-      await addFilm(filmRef?.current?.value!);
-    } catch (err: any) {
-      handleShow(
-        `Failed to add ${filmRef?.current?.value!}`,
-        err.response.data.error,
-        () => handleClose,
-        "Ok"
-      );
-
-      return;
-    }
-
-    setAdding(false);
-    handleShow(
-      `Added ${filmRef?.current?.value!}`,
-      `Successfully added ${filmRef?.current?.value!}`,
-      () => handleClose,
-      "Ok"
-    );
-
-    await onSearch();
-  };
-
-  const onEdit = async (
-    event: FormEvent<HTMLFormElement>,
-    id: string,
-    title: string
-  ) => {
-    event.preventDefault();
-
-    try {
-      await updateFilm(id, editRef?.current?.value!);
-    } catch (err: any) {
-      handleShow(
-        `Failed to edit ${title}`,
-        err.response.data.error,
-        () => handleClose,
-        "Ok"
-      );
-
-      return;
-    }
-
-    setEditting("");
-    handleShow(
-      `Editted ${title}`,
-      `Successfully editted ${title}`,
-      () => handleClose,
-      "Ok"
-    );
-
-    await onSearch();
-  };
-
   return (
     <>
       <Modal show={show} onHide={handleClose} centered>
@@ -239,7 +175,7 @@ export function FilmCrudView({
                 <Button
                   variant="dark"
                   className="d-flex align-items-center w-100 rounded-0 px-3"
-                  onClick={() => setAdding(true)}
+                  onClick={() => navigate(`/film-update`)}
                 >
                   <i className="bi bi-plus-circle me-3 fs-4"></i>
                   <span className="fs-4">Add a new film</span>
@@ -278,7 +214,7 @@ export function FilmCrudView({
                       trigger={["hover", "focus"]}
                     >
                       <Button
-                        onClick={() => setEditting(film.id)}
+                        onClick={() => navigate(`/film-update/${film.id}`)}
                         variant="outline-success"
                         className="border-0 position-relative h-md w-md"
                       >

@@ -32,20 +32,4 @@ export class FilmCrudModel {
       throw err;
     }
   };
-
-  addFilm = async (title: string) => {
-    try {
-      await api.post(`/films`, { filmTitle: title });
-    } catch (err: any) {
-      throw err;
-    }
-  };
-
-  updateFilm = async (id: string, title: string) => {
-    try {
-      await api.put(`/films/${id}`, { filmTitle: title });
-    } catch (err: any) {
-      throw err;
-    }
-  };
 }

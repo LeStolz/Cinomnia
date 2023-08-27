@@ -23,6 +23,7 @@ import { FilmCrud } from "./pages/FilmCrud/FilmCrud";
 import { GenreCrud } from "./pages/GenreCrud/GenreCrud";
 import { UserCrud } from "./pages/UserCrud/UserCrud";
 import ScrollToTop from "./components/ScrollToTop";
+import { FilmUpdate } from "./pages/FilmUpdate/FilmUpdate";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,13 @@ export const router = createBrowserRouter([
               { path: "dashboard/film-crud", element: <FilmCrud /> },
               { path: "dashboard/user-crud", element: <UserCrud /> },
               { path: "dashboard/genre-crud", element: <GenreCrud /> },
+            ],
+          },
+          {
+            element: <NavbarLayout fade={false} />,
+            children: [
+              { path: "film-update/:id", element: <FilmUpdate /> },
+              { path: "film-update", element: <FilmUpdate /> },
             ],
           },
         ],
