@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import ReactPlayer from "react-player";
 import { GlobalContext } from "../../contexts/GlobalState";
+import { useFilm } from "../../contexts/FilmContext";
 import { Film } from "../../configs/Model";
 import "./MovieCard.scss";
 
 interface MovieCardProps {
   movieData: Film;
-  className: string; // Add this line
+  className: string;
 }
 
 export function MovieCard({ movieData, className }: MovieCardProps) {
@@ -16,7 +17,7 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
     useContext(GlobalContext);
   const { addMovieToStore, removeMovieFromStore, store } =
     useContext(GlobalContext);
-
+  const { addFilmToWishlist, removeFilmFromWishlist } = useFilm();
   const isMovieInStore = store.some(
     (movie: Film) => movie._id === movieData._id
   );
@@ -40,7 +41,8 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
   const handleIconLike = (props: string) => {
     if (isMovieInWatchlist) {
       if (props === "bi bi-hand-thumbs-down") {
-        removeMovieFromWatchlist(movieData.id);
+        removeMovieFromWatchlist(movieData._id);
+        removeFilmFromWishlist(movieData);
         setIsIconLike("bi bi-hand-thumbs-up");
       }
     } else {
@@ -50,6 +52,7 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
       ) {
         setIsIconLike(props);
       } else if (props === "bi bi-heart") {
+        addFilmToWishlist(movieData, "wishlist", 0);
         addMovieToWatchlist(movieData);
         setIsIconLike(props);
       }
@@ -58,7 +61,7 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
 
   const handleAddToStore = () => {
     if (isMovieInStore) {
-      removeMovieFromStore(movieData.id);
+      removeMovieFromStore(movieData._id);
     } else {
       addMovieToStore(movieData);
     }
@@ -67,12 +70,15 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
   const handlePlayClick = (props: string) => {
     navigate(`/${props}/${movieData.id}`);
   };
-
   return (
-    <Container fluid className="p-0 h-100 w-100 media-element shadow" onMouseLeave={handleLeave}>
+    <Container
+      fluid
+      className="p-0 h-100 w-100 shadow"
+      onMouseLeave={handleLeave}
+    >
       <Container
         fluid
-        className={`items h-100 w-100 p-0 rounded position-relative ${className}`}
+        className={`${className} h-100 w-100 p-0 rounded position-relative ${className}`}
       >
         {isHovered && movieData.videos?.trailers[0]?.link && (
           <Container
@@ -93,7 +99,10 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
             />
           </Container>
         )}
-        <Container fluid className="p-0 image z-1 position-relative h-100 w-100">
+        <Container
+          fluid
+          className="p-0 image z-1 position-relative h-100 w-100"
+        >
           <Image
             className="rounded w-100 h-100"
             src={`${movieData.poster.img_500}`}
@@ -103,6 +112,7 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
           <Container
             fluid
             className="movie-name-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center rounded-top overflow-hidden"
+            onClick={() => handlePlayClick("player")}
           >
             <h4 className="text-truncate">{movieData.title}</h4>
           </Container>
@@ -134,7 +144,7 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
                 onClick={handleAddToStore}
               >
                 <i
-                  className={`position-absolute-center fs-3 ${
+                  className={`position-absolute-center ${
                     isMovieInStore ? "bi bi-check text-success" : "bi bi-plus"
                   }`}
                 ></i>
@@ -200,7 +210,7 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
                 : "16+"}
             </span>
 
-            <ul className="d-flex text-white p-0 m-0 genre-list fw-lighter fs-6 list-unstyled">
+            <ul className="d-flex text-white p-0 m-0 genre-list fw-lighter list-unstyled">
               {movieData.genres &&
                 movieData.genres.map((genre) => (
                   <li key={`genre-${genre.id}`} className="me-1">

@@ -1,61 +1,48 @@
 import { Card, Button } from "react-bootstrap";
-import { CartState } from "../../contexts/Context";
+import { GlobalContext } from "../../contexts/GlobalState";
 import Rating from "./Rating";
-import { productType } from "../../contexts/Context";
+import { useContext } from "react";
+import { Film } from "../../configs/Model";
 
-const SingleProduct = ({ prod }: { prod: productType }) => {
-  const {
-    state: { cart },
-    dispatch,
-  } = CartState();
-
+const SingleProduct = ({ prod }: { prod: Film }) => {
+  const { addMovieToStore, removeMovieFromStore, store } =
+    useContext(GlobalContext);
+  const isMovieInStore = store.some((movie: Film) => movie._id === prod._id);
   const price =
     typeof prod.price === "number" ? prod.price.toString() : prod.price;
-
+  const handleAddToStore = () => {
+    if (isMovieInStore) {
+      removeMovieFromStore(prod._id);
+    } else {
+      addMovieToStore(prod);
+    }
+  };
   return (
     <>
       <div className="products">
         <Card>
-          <Card.Img variant="top" src={prod.image} alt={prod.title} />
+          <Card.Img variant="top" src={prod.poster.img_1280} alt={prod.title} />
           <Card.Body>
             <Card.Title>{prod.title}</Card.Title>
             <Card.Subtitle style={{ paddingBottom: 10 }}>
               <div>VND {price.split(".")[0]}</div>
               <Rating
-                rating={prod.ratings}
+                rating={prod.rating}
                 onClick={function (index: number): void {
                   throw new Error("Function not implemented.");
                 }}
               />
             </Card.Subtitle>
-            {cart.some((p: { id: number }) => p.id === prod.id) ? (
-              <Button
-                variant="danger"
-                onClick={() => {
-                  if (dispatch) {
-                    dispatch({
-                      type: "REMOVE_FROM_CART",
-                      payload: prod,
-                    });
-                  }
-                }}
-              >
-                Remove from Cart
-              </Button>
-            ) : (
-              <Button
-                onClick={() => {
-                  if (dispatch) {
-                    dispatch({
-                      type: "ADD_TO_CART",
-                      payload: prod,
-                    });
-                  }
-                }}
-              >
-                Add to Cart
-              </Button>
-            )}
+            <Button
+              variant={isMovieInStore ? "outline-light" : "primary"}
+              title={isMovieInStore ? "Remove from Cart" : "Add to Cart"}
+              className={`position-relative rounded me-1 ${
+                isMovieInStore ? "border border-2" : ""
+              }`}
+              onClick={handleAddToStore}
+            >
+              {isMovieInStore ? "Remove From Cart" : "Add To Cart"}
+            </Button>
           </Card.Body>
         </Card>
       </div>

@@ -13,12 +13,14 @@ export function FilmDetail() {
       const getPlayer = async () => {
         const cachedFilm = sessionStorage.getItem(`cachedFilm${id}`);
         if (cachedFilm) {
-          setMovie(JSON.parse(cachedFilm));
+          const parsedCachedFilm = JSON.parse(cachedFilm);
+          setMovie(parsedCachedFilm.film);
         } else {
           try {
-            const filmDocument = await FilmDetailModel.fetchMovieById(id);
+            const model = new FilmDetailModel();
+            const filmDocument = await model.fetchMovieById(id);
             if (filmDocument) {
-              setMovie(filmDocument);
+              setMovie(filmDocument.film);
               sessionStorage.setItem(
                 `cachedFilm${id}`,
                 JSON.stringify(filmDocument)

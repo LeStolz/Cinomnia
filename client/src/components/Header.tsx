@@ -72,10 +72,7 @@ export function Header({ fade }: HeaderProps) {
               Home
             </Nav.Link>
             <Nav.Link as={NavLink} to="/wishlist">
-              Wishlist
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/watch-history">
-              History
+              My List
             </Nav.Link>
             <Nav.Link as={NavLink} to="/filter">
               Filter
@@ -123,17 +120,7 @@ export function Header({ fade }: HeaderProps) {
               </div>
             </InputGroup>
           </Form>
-          <Button
-            variant="outline-primary"
-            className="position-relative rounded-circle me-3 mb-2 mb-md-0 w-md h-md"
-            id="store"
-            onClick={handleShowCartModal}
-          >
-            <i className="position-absolute-center bi bi-cart-fill"></i>
-          </Button>
-
-          <Cart show={showCartModal} handleClose={handleCloseModal} />
-
+          <Cart />
           <Nav.Link as={NavLink} to="/account">
             <Button
               variant="outline-primary"

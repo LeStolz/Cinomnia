@@ -96,6 +96,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                     <span className="fw-bold">
                       Release Date:
                       <span className="fw-light">
+                        {" "}
                         {new Date(movie?.release_date).toLocaleDateString(
                           "en-GB",
                           {
@@ -132,24 +133,26 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                     <Row>
                       <div className="d-flex w-100 justify-content-around fs-1 p-1">
                         <h5>Ranked #1</h5>
-                        <h5>Popularity #1</h5>
+                        <h5>Price: {movie.price} VND</h5>
                       </div>
                     </Row>
                   </Col>
                 </Row>
 
                 <Row className="d-flex mt-3">
-                  <Button className="w-25 mx-2 text-center">
+                  <Button className="w-25 mx-2 text-center w-25">
                     <i className="bi bi-cart4 me-2" />
                     Add to cart
                   </Button>
-
-                  <Button className="w-25 mx-2 text-center">
-                    <i className="bi bi-star-fill me-2" />
-                    Review
+     
+                  <Button className="w-25 mx-2 text-center w-25">
+                    <Link to="" className="text-decoration-none text-light">
+                      <i className="bi bi-tv-fill me-2" />
+                      Watch right now
+                    </Link>
                   </Button>
 
-                  <Button className="w-25 mx-2 text-center">
+                  <Button className="w-25 mx-2 text-center w-25">
                     <i className="bi bi-currency-dollar me-2" />
                     Buy
                   </Button>
@@ -194,7 +197,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                           {movie.casts[0].name}
                         </Link>
                       </p>
-                      <small className="mt-0">
+                      <small className="mt-0 float-start">
                         {movie.casts[0].crews[0].job
                           ? movie.casts[0].crews[0].job
                           : " "}
@@ -254,7 +257,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                           {movie.casts[2].name}
                         </Link>
                       </p>
-                      <small className="mt-0">
+                      <small className="mt-0 float-start">
                         {movie.casts[2].crews[0].job
                           ? movie.casts[2].crews[0].job
                           : " "}
@@ -307,23 +310,23 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                   <Form.Control as="textarea" rows={3} />
                 </Form.Group>
 
-                <Button className="float-end m-2">Publish</Button>
-              </Card.Text>
-            </Card>
+              <Button className="float-end m-2">Publish</Button>
+            </Card.Text>
+          </Card>
 
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="pt-2 ps-2">
-                <Row className="w-auto mt-3">
-                  <Col className="d-flex col-4 pe-0 w-auto me-2">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <p className="mb-0 fw-bold">Vinh</p>
+          <Card className="bg-secondary my-3 rounded">
+            <Card.Title className="pt-2 ps-2">
+              <Row className="w-auto mt-3">
+                <Col className="d-flex col-4 pe-0 w-auto me-2">
+                  <Image src="/logo.png" className="w-lg h-md me-2" />
+                  <div>
+                    <p className="mb-0 fw-bold">Vinh</p>
 
-                      <small className="mt-0 fw-light fs-6">
-                        April 12 at 2:28pm
-                      </small>
-                    </div>
-                  </Col>
+                    <small className="mt-0 fw-light fs-6">
+                      April 12 at 2:28pm
+                    </small>
+                  </div>
+                </Col>
 
                   <Col className="pt-2">
                     <i className="bi bi-trash float-end me-3 text-danger" />
@@ -332,32 +335,32 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                 </Row>
               </Card.Title>
 
-              <Card.Text>
-                <p className="pt-2 ps-2">
-                  First of all, I have seen the original FMA and although it was
-                  very popular and original, the pacing and conclusion did not
-                  sit too well with me. Brotherhood is meant to be a remake of
-                  the original, this time sticking to the manga all the way
-                  through, but there were people who thought it would spoil the
-                  franchise. That myth should be dispelled, as there's only one
-                  word to describe this series - EPIC.12
-                </p>
-              </Card.Text>
-            </Card>
+            <Card.Text>
+              <p className="pt-2 ps-2">
+                First of all, I have seen the original FMA and although it was
+                very popular and original, the pacing and conclusion did not sit
+                too well with me. Brotherhood is meant to be a remake of the
+                original, this time sticking to the manga all the way through,
+                but there were people who thought it would spoil the franchise.
+                That myth should be dispelled, as there's only one word to
+                describe this series - EPIC.12
+              </p>
+            </Card.Text>
+          </Card>
 
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="pt-2 ps-2">
-                <Row>
-                  <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <p className="mb-0 fw-bold">Vinh</p>
+          <Card className="bg-secondary my-3 rounded">
+            <Card.Title className="pt-2 ps-2">
+              <Row>
+                <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
+                  <Image src="/logo.png" className="w-lg h-md me-2" />
+                  <div>
+                    <p className="mb-0 fw-bold">Vinh</p>
 
-                      <small className="mt-0 fw-light fs-6">
-                        April 12 at 2:28pm
-                      </small>
-                    </div>
-                  </Col>
+                    <small className="mt-0 fw-light fs-6">
+                      April 12 at 2:28pm
+                    </small>
+                  </div>
+                </Col>
 
                   <Col className="pt-2">
                     <i className="bi bi-trash float-end me-3 text-danger" />

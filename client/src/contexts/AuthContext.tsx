@@ -89,33 +89,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const signin = async (user: User, remember: boolean) => {
-    try {
-      setPersistence(
-        auth,
-        remember ? browserLocalPersistence : browserSessionPersistence
-      );
+    setPersistence(
+      auth,
+      remember ? browserLocalPersistence : browserSessionPersistence
+    );
 
-      await sendSignInLinkToEmail(auth, user.email, {
-        url: import.meta.env.VITE_CLIENT_URL,
-        handleCodeInApp: true,
-      });
+    await sendSignInLinkToEmail(auth, user.email, {
+      url: import.meta.env.VITE_CLIENT_URL,
+      handleCodeInApp: true,
+    });
 
-      window.localStorage.setItem("emailForSignIn", user.email);
-    } catch (err) {
-      throw err;
-    }
+    window.localStorage.setItem("emailForSignIn", user.email);
   };
 
   const signinWithGoogle = async () => {
-    try {
-      setPersistence(auth, browserLocalPersistence);
+    setPersistence(auth, browserLocalPersistence);
 
-      const res = await signInWithPopup(auth, new GoogleAuthProvider());
-      await api.post("/users/signin", { email: res.user.email });
-      navigate("/");
-    } catch (err) {
-      throw err;
-    }
+    const res = await signInWithPopup(auth, new GoogleAuthProvider());
+    await api.post("/users/signin", { email: res.user.email });
+    navigate("/");
   };
 
   const signout = async () => {
