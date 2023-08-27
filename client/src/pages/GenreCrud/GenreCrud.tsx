@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GenreCrudView } from "./GenreCrudView";
 import { GenreCrudModel } from "./GenreCrudModel";
 
@@ -14,12 +14,6 @@ export type GenreCrudView = {
 export function GenreCrud() {
   const [genres, setGenres] = useState<any[]>([]);
   const model = new GenreCrudModel();
-
-  useEffect(() => {
-    (async () => {
-      setGenres(await model.getGenres(""));
-    })();
-  }, []);
 
   const getGenres = async (search: string) => {
     setGenres(await model.getGenres(search));

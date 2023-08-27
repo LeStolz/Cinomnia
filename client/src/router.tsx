@@ -22,6 +22,7 @@ import { UserCrud } from "./pages/UserCrud/UserCrud";
 import { FilmCrud } from "./pages/FilmCrud/FilmCrud";
 import { GenreCrud } from "./pages/GenreCrud/GenreCrud";
 import { DashboardLayout } from "./layouts/DashboardLayout";
+import ScrollToTop from "./components/ScrollToTop";
 
 export const router = createBrowserRouter([
   {
@@ -84,8 +85,11 @@ export const router = createBrowserRouter([
 
 function ContextWrapper() {
   return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
+    <>
+      <ScrollToTop />
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
+    </>
   );
 }

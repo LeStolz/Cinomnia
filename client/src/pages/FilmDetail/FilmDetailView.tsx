@@ -13,20 +13,27 @@ import {
 import { Film } from "../../configs/Model";
 import { Loading } from "../../components/Loading/Loading";
 
-export function FilmDetailView({ movie }: { movie: Film | undefined }) {
+type FilmDetailView = {
+  movie: Film | undefined;
+  editMode?: boolean;
+};
+
+export function FilmDetailView({ movie, editMode }: FilmDetailView) {
   const videoUrl = movie?.videos?.trailers[0]?.link || null;
   const [playerReady, setPlayerReady] = useState(false);
   const handlePlayerReady = () => {
     setPlayerReady(true);
   };
+
   if (!movie) {
     return <Loading />;
   }
+
   return (
     <Container className="p-0">
-      <Container className="pt-5" fluid>
+      <Container fluid>
         <Row className="d-none d-md-block mt-5 mb-2">
-          {videoUrl ? (
+          {videoUrl && (
             <>
               {playerReady ? (
                 <ReactPlayer
@@ -48,12 +55,6 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
                 onReady={handlePlayerReady}
               />
             </>
-          ) : (
-            <Container className="d-flex align-items-center justify-content-center w-100 h-100">
-              <p className="text-center text-muted">
-                Sorry, this video is unavailable
-              </p>
-            </Container>
           )}
         </Row>
 
@@ -61,7 +62,12 @@ export function FilmDetailView({ movie }: { movie: Film | undefined }) {
           <Col className="order-1 col-lg-4 col-sm-12">
             <Card className="bg-secondary rounded">
               <Card.Title className="text-center mb-0 py-2 fs-2 bg-light-subtle">
-                {movie.title}
+                {editMode ? (
+                  movie.title
+                ) : (
+                  <></>
+                  // <Edit nam e="title" value={movie.title}></Edit>
+                )}
               </Card.Title>
               <Card.Text>
                 <Image
