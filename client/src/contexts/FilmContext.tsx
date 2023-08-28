@@ -6,7 +6,8 @@ import { api } from "../utils/api";
 type FilmContext = {
   addFilmToWishlist: (movieData: Film, status: string) => Promise<void>;
   removeFilmFromWishlist: (movieData: Film) => Promise<void>;
-  // getWishlist: () => Promise<ListFilm[]>;
+  addFilmToStore: (movieData: Film, price: number) => Promise<void>;
+  removeFilmFromStore: (movieData: Film) => Promise<void>;
 };
 
 const FilmContext = createContext<FilmContext | null>(null);
@@ -25,7 +26,7 @@ export function FilmProvider({ children }: FilmProviderProps) {
     try {
       await api.put("/users/add-wishlish", {
         email: (await getUser()).email,
-        filmId: movieData,
+        filmId: movieData._id,
         status: status,
       });
     } catch (error) {
@@ -43,21 +44,34 @@ export function FilmProvider({ children }: FilmProviderProps) {
     }
   };
 
-  const getWishlist = async () => {
+  const addFilmToStore = async (movieData: Film, price: number) => {
     try {
-      const user = await getUser();
-      const response = await api.get(`/users/wishlist/${user.email}`);
-      return response.data;
+      await api.put("/users/add-store", {
+        email: (await getUser()).email,
+        filmId: movieData._id,
+        price: price,
+      });
     } catch (error) {
-      console.error("Error getting wishlist:", error);
-      return [];
+      console.error("Error add film to store:", error);
+    }
+  };
+
+  const removeFilmFromStore = async (movieData: Film) => {
+    try {
+      await api.put("/users/remove-store", {
+        email: (await getUser()).email,
+        filmId: movieData._id,
+      });
+    } catch (error) {
+      console.error("Error removing film from store:", error);
     }
   };
 
   const value = {
     addFilmToWishlist,
     removeFilmFromWishlist,
-    getWishlist,
+    addFilmToStore,
+    removeFilmFromStore,
   };
 
   return <FilmContext.Provider value={value}>{children}</FilmContext.Provider>;

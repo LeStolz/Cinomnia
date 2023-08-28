@@ -1,7 +1,6 @@
 import express from "express";
 import { Genre } from "../models/Genre";
 import { Film } from "../models/Film";
-
 const genres = express.Router();
 
 genres.get("/", async (req: any, res) => {

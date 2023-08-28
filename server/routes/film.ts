@@ -161,13 +161,23 @@ films.put("/:id/update-duration", async (req, res) => {
     res.status(500).json({ error: "Failed to update duration." });
   }
 });
-films.get("/ratings", async (req, res) => {
+films.put("/:id/update-status", async (req, res) => {
+  const filmId = req.params.id;
+  const newStatus = req.body.status;
+
   try {
-    const films = await Film.find({}, { _id: 0, rating: 1 });
-    console.log(films);
-    const ratings = films.map((film) => film.rating);
-    res.json(ratings);
+    const film = await Film.findOneAndUpdate(
+      { id: filmId },
+      { $set: { status: newStatus } },
+      { new: true }
+    );
+
+    if (film) {
+      res.json(film);
+    } else {
+      res.status(404).json({ error: "Film not found." });
+    }
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch ratings." });
+    res.status(500).json({ error: "Failed to update status." });
   }
 });

@@ -54,7 +54,15 @@ const FilmSchema = new mongoose.Schema(
     directors: [director],
     videos: videos,
     price: Number,
-    durations: Number,
+    durations: {
+      type: Number,
+      require: true,
+    },
+    status: {
+      type: String,
+      required: true,
+      default: "default",
+    },
   },
   {
     timestamps: true,

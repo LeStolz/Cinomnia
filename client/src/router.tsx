@@ -5,7 +5,7 @@ import { NavbarLayout } from "./layouts/NavbarLayout";
 import { Home } from "./pages/Home/Home";
 import { Store } from "./pages/Store/Store";
 import { About } from "./pages/About/About";
-import { Payment } from "./components/Payment/Payment";
+import { Payment } from "./pages/Payment/Payment";
 import { PaymentNotification } from "./components/Payment/PaymentNotification";
 import { Search } from "./components/Search/Search";
 import { AuthProvider } from "./contexts/AuthContext";

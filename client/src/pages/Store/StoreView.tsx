@@ -2,26 +2,25 @@ import React from "react";
 import { Container, Row, Col, Form, Button, Image } from "react-bootstrap";
 import { Film } from "../../configs/Model";
 import { useNavigate } from "react-router-dom";
+import { Payment } from "../Payment/Payment";
 import "./Store.scss";
+import { PurchaseHistory } from "../../components/PurchaseHistory/PurchaseHistory";
 
 interface StoreProps {
   store: Film[];
   handleClose: (id: string) => void;
-  buyMovie: (movieData: Film, status: string) => void;
 }
 
-export function StoreView({ store, handleClose, buyMovie }: StoreProps) {
+export function StoreView({ store, handleClose }: StoreProps) {
   const navigate = useNavigate();
   const totalRating = store.reduce((accumulator: number, movie: Film) => {
-    return accumulator + movie.rating;
+    return accumulator + movie.price;
   }, 0);
 
-  const handleGoToCheckout = async () => {
+  const handleDeleteAllItems = async () => {
     store.forEach((movie: Film) => {
-      buyMovie(movie, "bought");
       handleClose(movie._id);
     });
-    navigate("/payment");
   };
 
   return (
@@ -102,12 +101,12 @@ export function StoreView({ store, handleClose, buyMovie }: StoreProps) {
                           </span>
                         </Col>
                         <Col className="d-flex flex-column align-items-end">
-                          <span className="text-primary text-right">{`$${(
-                            movie.rating * 1
-                          ).toFixed(2)},00`}</span>
-                          <p className="text-primary h6">{`$${(
-                            movie.rating * 1.25
-                          ).toFixed(2)},00`}</p>
+                          <span className="text-primary text-right">{`${(
+                            movie.price * 0.91
+                          ).toFixed(2)} VND`}</span>
+                          <h5 className="text-primary">{`${movie.price.toFixed(
+                            2
+                          )} VND`}</h5>
                         </Col>
                       </Row>
                       <Row className="p-0 d-flex justify-content-between">
@@ -174,16 +173,28 @@ export function StoreView({ store, handleClose, buyMovie }: StoreProps) {
                   </Row>
                   <Row>
                     <Col xs={12}>
-                      <Button variant="link" className="text-decoration-none">
-                        <i className="bi bi-download me-1"></i>
-                        Download Cart
-                      </Button>
-                      <Button variant="link" className="text-decoration-none">
+                      <PurchaseHistory/>
+                      <Button
+                        variant="link"
+                        className="text-decoration-none"
+                        onClick={handleDeleteAllItems}
+                      >
                         <i className="bi bi-trash-fill me-1"></i>
                         Remove Cart
                       </Button>
                     </Col>
-                    <Row></Row>
+                    <Row>
+                      <Container className="d-flex justify-content-between">
+                        <span>Discount:</span>
+                        <span>$.....</span>
+                      </Container>
+                      <Container className="d-flex justify-content-between">
+                        <h5>Total Price:</h5>
+                        <h5 className="text-primary text-right">{`$${totalRating.toFixed(
+                          2
+                        )}`}</h5>
+                      </Container>
+                    </Row>
                   </Row>
                 </Form.Group>
               </Form>
@@ -194,49 +205,9 @@ export function StoreView({ store, handleClose, buyMovie }: StoreProps) {
               sm={6}
               md={6}
               lg={12}
-              className=" bg-secondary border border-1 ps-4 pe-4 pt-3 rounded mb-2"
+              className="border border-1 rounded p-0 shadow"
             >
-              <Row>
-                <Container className="d-flex justify-content-between">
-                  <span>Discount:</span>
-                  <span>$.....</span>
-                </Container>
-                <Container className="d-flex justify-content-between">
-                  <h5>Total Price:</h5>
-                  <h5 className="text-primary text-right">{`$${(
-                    totalRating * 1.25
-                  ).toFixed(2)},00`}</h5>
-                </Container>
-              </Row>
-              <Row>
-                <Col xs={6} sm={6} md={6} lg={12}>
-                  <Button
-                    className="w-100 rounded-pill mt-3"
-                    variant="primary"
-                    onClick={handleGoToCheckout}
-                  >
-                    Go to checkout
-                  </Button>
-                </Col>
-                <Col xs={6} sm={6} md={6} lg={12}>
-                  <Button
-                    className="w-100 rounded-pill mt-3"
-                    variant="outline-primary"
-                    onClick={() => navigate("/")}
-                  >
-                    Back to Home
-                  </Button>
-                </Col>
-              </Row>
-              <Row>
-                <Button
-                  className="w-100 rounded-pill mt-2 mb-2 text-decoration-none"
-                  variant="link"
-                >
-                  <i className="bi bi-credit-card-2-back-fill me-1"></i>
-                  Change Payment
-                </Button>
-              </Row>
+              <Payment />
             </Col>
           </Row>
         </Col>

@@ -45,7 +45,7 @@ export function MyListView({wishlist, bought} : MyListViewProps) {
         <Container fluid className="p-0">
           <h2 className="ms-5">Watching</h2>
           <Swiper
-            className="swiper-slider"
+            className="swiper-slider ms-5"
             modules={[Navigation]}
             spaceBetween={2}
             slidesPerView={slidesPerView}
@@ -69,7 +69,7 @@ export function MyListView({wishlist, bought} : MyListViewProps) {
         <Container fluid className="p-0">
           <h2 className="ms-5">Watched</h2>
           <Swiper
-            className="swiper-slider"
+            className="swiper-slider ms-5"
             modules={[Navigation]}
             spaceBetween={2}
             slidesPerView={slidesPerView}
@@ -93,7 +93,7 @@ export function MyListView({wishlist, bought} : MyListViewProps) {
         <Container fluid className="p-0">
           <h2 className="ms-5">Wishlist</h2>
           <Swiper
-            className="swiper-slider"
+            className="swiper-slider ms-5"
             modules={[Navigation]}
             spaceBetween={2}
             slidesPerView={slidesPerView}
@@ -112,10 +112,10 @@ export function MyListView({wishlist, bought} : MyListViewProps) {
         </Container>
       )}
       {bought.length > 0 ? (
-        <Container fluid className="p-0">
+        <Container fluid className="p-0 my-5">
           <h2 className="ms-5">Bought</h2>
           <Swiper
-            className="swiper-slider"
+            className="swiper-slider ms-5"
             modules={[Navigation]}
             spaceBetween={2}
             slidesPerView={slidesPerView}
