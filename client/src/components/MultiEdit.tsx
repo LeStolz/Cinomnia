@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { WithContext as ReactTags } from "react-tag-input";
 
@@ -7,16 +7,15 @@ export function MultiEdit({
   data,
   name,
   defaultValue,
-  isRequired,
   single,
+  onChange,
   func,
+  icon,
+  removeOnDone,
+  placeholder,
 }: any) {
   const [editting, setEditting] = useState(false);
   const [input, setInput] = useState<any>(defaultValue);
-
-  useEffect(() => {
-    console.log(input);
-  }, [input]);
 
   const handleDelete = (i: any) => {
     setInput(input.filter((_tag: any, index: any) => index !== i));
@@ -38,20 +37,28 @@ export function MultiEdit({
     <div className={`position-relative ${editting ? "d-block" : "d-inline"}`}>
       <span hidden={!editting}>
         <ReactTags
-          tags={input.map((datum: any) => ({
-            id: typeof datum.id === "number" ? datum.id.toString() : datum.id,
-            text: datum.name || datum.text,
-          }))}
+          tags={
+            input
+              ? input.map((datum: any) => ({
+                  id:
+                    typeof datum.id === "number"
+                      ? datum.id.toString()
+                      : datum.id,
+                  text: datum.name || datum.text,
+                }))
+              : []
+          }
           suggestions={data.map((datum: any) => ({
             id: typeof datum.id === "number" ? datum.id.toString() : datum.id,
             text: datum.name || datum.text,
           }))}
+          placeholder={placeholder}
           handleDelete={handleDelete}
           handleAddition={handleAddition}
           inputFieldPosition="top"
           delimiters={[188, 13]}
           autocomplete
-          minQueryLength={1}
+          minQueryLength={2}
           name={name}
         />
       </span>
@@ -72,9 +79,21 @@ export function MultiEdit({
             left: "100%",
             transform: editting ? "" : "translateY(-50%)",
           }}
-          onClick={() => setEditting((editting) => !editting)}
+          onClick={() => {
+            if (editting) {
+              onChange(input);
+            }
+            if (removeOnDone) {
+              setInput([]);
+            }
+            setEditting((editting) => !editting);
+          }}
         >
-          <i className="position-absolute-center bi bi-pencil"></i>
+          <i
+            className={`position-absolute-center bi bi-${
+              icon ? icon : "pencil"
+            }`}
+          ></i>{" "}
         </Button>
       </OverlayTrigger>
     </div>

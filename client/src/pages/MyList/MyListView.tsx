@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { ListFilm } from "../../configs/Model";
 import { MovieCard } from "../../components/MovieCard/MovieCard";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/swiper-bundle.css";
 
 interface MyListViewProps {
-    wishlist: ListFilm[];
-    bought: ListFilm[];
+  wishlist: ListFilm[];
+  bought: ListFilm[];
 }
-export function MyListView({wishlist, bought} : MyListViewProps) {
+export function MyListView({ wishlist, bought }: MyListViewProps) {
   const [slidesPerView, setSlidesPerView] = useState(7);
 
   useEffect(() => {

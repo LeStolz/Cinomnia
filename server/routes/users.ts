@@ -43,42 +43,36 @@ users.get("/", async (req: any, res) => {
   }
 });
 
-// users.put("/:id", async (req, res) => {
-//   const userId = req.params.id;
-//   const userEmail = req.body.userEmail;
+users.put("/:email", async (req, res) => {
+  const userEmail = req.params.email;
 
-//   try {
-//     if (await User.findOne({ email: userEmail })) {
-//       return res.status(400).json({ error: `${userEmail} already exists.` });
-//     } else {
-//       await User.updateOne({ id: userId }, { $set: { email: userEmail } });
-//       return res.status(200).send();
-//     }
-//   } catch (err) {
-//     return res.status(500).json({ error: "Failed to edit user." });
-//   }
-// });
+  try {
+    await User.updateOne({ email: userEmail }, { $set: req.body });
+    return res.status(200).send();
+  } catch (err) {
+    return res.status(500).json({ error: "Failed to edit user." });
+  }
+});
 
-// users.post("/", async (req, res) => {
-//   const { userEmail } = req.body;
+users.post("/", async (req, res) => {
+  const { userEmail } = req.body;
 
-//   try {
-//     const user = await User.findOne({ email: userEmail });
+  try {
+    const user = await User.findOne({ email: userEmail });
 
-//     if (user) {
-//       return res.status(400).json({ error: `${userEmail} already exists.` });
-//     } else {
-//       await User.create({
-//         id: new Date().valueOf(),
-//         email: userEmail,
-//       });
+    if (user) {
+      return res.status(400).json({ error: `${userEmail} already exists.` });
+    } else {
+      await User.create({
+        email: userEmail,
+      });
 
-//       return res.status(200).send();
-//     }
-//   } catch (err) {
-//     res.status(500).json({ error: "Failed to add user." });
-//   }
-// });
+      return res.status(200).send();
+    }
+  } catch (err) {
+    res.status(500).json({ error: "Failed to add user." });
+  }
+});
 
 users.delete("/:email", async (req, res) => {
   try {
@@ -90,7 +84,10 @@ users.delete("/:email", async (req, res) => {
 });
 
 users.put("/add-bought", async (req, res) => {
+  console.log("WHAT");
+
   const { email, filmId, status, currentDuration } = req.body;
+
   try {
     const user = await User.findOne({ email });
     if (!user) {

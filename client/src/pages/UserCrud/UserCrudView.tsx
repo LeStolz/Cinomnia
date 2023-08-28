@@ -10,28 +10,27 @@ import {
 } from "react-bootstrap";
 import { UserCrudView } from "./UserCrud";
 import { FormEvent, createRef, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export function UserCrudView({
   users,
   getUsers,
-  getUser,
   delUser,
   addUser,
-  updateUser,
 }: UserCrudView) {
   const searchRef = createRef<HTMLInputElement>();
   const userRef = createRef<HTMLInputElement>();
-  const editRef = createRef<HTMLInputElement>();
   const [show, setShow] = useState(false);
   const [prevSearch, setPrevSearch] = useState("");
   const [adding, setAdding] = useState(false);
-  const [editting, setEditting] = useState("");
   const [modalHeader, setModalHeader] = useState("");
   const [modalBody, setModalBody] = useState("");
   const [modalAction, setModalAction] = useState<() => void>(() => () => {});
   const [modalActionName, setModalActionName] = useState("");
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [nav, setNav] = useState<any>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(onSearch, 500);
@@ -50,12 +49,14 @@ export function UserCrudView({
     header: string,
     body: string,
     modalAction: () => void,
-    modalActionName: string
+    modalActionName: string,
+    nav?: string
   ) => {
     setModalHeader(header);
     setModalBody(body);
     setModalAction(modalAction);
     setModalActionName(modalActionName);
+    setNav(nav);
     setShow(true);
   };
 
@@ -67,20 +68,6 @@ export function UserCrudView({
     setPrevSearch((prevSearch) => (search != null ? search : prevSearch));
 
     setLoading(false);
-  };
-
-  const onMoreInfo = async (id: string) => {
-    try {
-      const user = await getUser(id);
-      handleShow(user.email, `ID: ${user.id}`, () => handleClose, "Ok");
-    } catch (err: any) {
-      handleShow(
-        `${id} not found`,
-        err.response.data.error,
-        () => handleClose,
-        "Ok"
-      );
-    }
   };
 
   const delUserWrapped = async (email: string, id: string) => {
@@ -142,42 +129,18 @@ export function UserCrudView({
     await onSearch();
   };
 
-  const onEdit = async (
-    event: FormEvent<HTMLFormElement>,
-    id: string,
-    email: string
-  ) => {
-    event.preventDefault();
-
-    try {
-      await updateUser(id, editRef?.current?.value!);
-    } catch (err: any) {
-      handleShow(
-        `Failed to edit ${email}`,
-        err.response.data.error,
-        () => handleClose,
-        "Ok"
-      );
-
-      return;
-    }
-
-    setEditting("");
-    handleShow(
-      `Editted ${email}`,
-      `Successfully editted ${email}`,
-      () => handleClose,
-      "Ok"
-    );
-
-    await onSearch();
-  };
-
   return (
     <>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>{modalHeader}</Modal.Title>
+          <Modal.Title>
+            {modalHeader}{" "}
+            {nav != undefined && (
+              <Link to={nav}>
+                <i className="bi bi-escape"></i>
+              </Link>
+            )}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>{modalBody}</Modal.Body>
         <Modal.Footer>
@@ -218,14 +181,57 @@ export function UserCrudView({
                 className="d-flex align-items-center bg-transparent p-0"
                 key={-1}
               >
-                <Button
-                  variant="dark"
-                  className="d-flex align-items-center w-100 rounded-0 px-3"
-                  onClick={() => setAdding(true)}
-                >
-                  <i className="bi bi-plus-circle me-3 fs-4"></i>
-                  <span className="fs-4">Add a new user</span>
-                </Button>
+                {adding ? (
+                  <Form
+                    className="w-100 d-flex align-items-center"
+                    onSubmit={onAdd}
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="User"
+                      aria-label="User"
+                      className="rounded-2 w-100 mx-3 my-2"
+                      ref={userRef}
+                      required
+                    />
+
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>Add</Tooltip>}
+                      trigger={["hover", "focus"]}
+                    >
+                      <Button
+                        type="submit"
+                        variant="outline-success"
+                        className="border-0 position-relative h-md w-md"
+                      >
+                        <i className="position-absolute-center bi bi-plus-circle"></i>
+                      </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>Cancel</Tooltip>}
+                      trigger={["hover", "focus"]}
+                    >
+                      <Button
+                        variant="outline-primary"
+                        className="border-0 position-relative h-md w-md me-3"
+                        onClick={() => setAdding(false)}
+                      >
+                        <i className="position-absolute-center bi bi-x-lg"></i>
+                      </Button>
+                    </OverlayTrigger>
+                  </Form>
+                ) : (
+                  <Button
+                    variant="dark"
+                    className="d-flex align-items-center w-100 rounded-0 px-3"
+                    onClick={() => setAdding(true)}
+                  >
+                    <i className="bi bi-plus-circle me-3 fs-4"></i>
+                    <span className="fs-4">Add a new user</span>
+                  </Button>
+                )}
               </ListGroup.Item>
               {loading ? (
                 <span className="fs-4 mt-2 text-center">
@@ -247,7 +253,7 @@ export function UserCrudView({
                       trigger={["hover", "focus"]}
                     >
                       <Button
-                        onClick={() => onMoreInfo(user.id)}
+                        onClick={() => navigate(`/account/${user.email}/ `)}
                         variant="outline-info"
                         className="border-0 position-relative h-md w-md"
                       >
@@ -260,7 +266,9 @@ export function UserCrudView({
                       trigger={["hover", "focus"]}
                     >
                       <Button
-                        onClick={() => setEditting(user.id)}
+                        onClick={() =>
+                          navigate(`/account-update/${user.email}/ `)
+                        }
                         variant="outline-success"
                         className="border-0 position-relative h-md w-md"
                       >
@@ -275,7 +283,7 @@ export function UserCrudView({
                       <Button
                         variant="outline-primary"
                         className="border-0 position-relative h-md w-md"
-                        onClick={() => delUserWrapped(user.email, user.id)}
+                        onClick={() => delUserWrapped(user.email, user.email)}
                       >
                         <i className="position-absolute-center bi bi-x-lg"></i>
                       </Button>

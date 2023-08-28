@@ -8,7 +8,7 @@ export class UserCrudModel {
       if (user.data.length === 0) {
         throw new Error(`${id} not found`);
       } else {
-        return user.data[0];
+        return user.data;
       }
     } catch (err) {
       throw null;

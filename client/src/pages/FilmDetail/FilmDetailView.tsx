@@ -9,6 +9,7 @@ import {
   Card,
   Button,
   Carousel,
+  Form,
 } from "react-bootstrap";
 import { Film, Person } from "../../configs/Model";
 import { useNavigate } from "react-router-dom";
@@ -17,20 +18,19 @@ import { Edit } from "../../components/Edit";
 import { ImageEdit } from "../../components/ImageEdit";
 import { MultiEdit } from "../../components/MultiEdit";
 import { api } from "../../utils/api";
-
-type FilmDetailView = {
-  movie: Film | undefined;
-  editMode?: boolean;
-};
 import Review from "../../components/Review";
 
 interface FilmDetailProps {
   movie: Film | undefined;
   filmRatingIndex: number | null;
+  editMode?: boolean;
 }
 
-export function FilmDetailView({ movie, filmRatingIndex }: FilmDetailProps) {
-  const navigate = useNavigate();
+export function FilmDetailView({
+  movie,
+  filmRatingIndex,
+  editMode,
+}: FilmDetailProps) {
   const videoUrl =
     movie?.videos?.trailers[0]?.link || movie?.videos?.video_full;
   const [playerReady, setPlayerReady] = useState(false);
@@ -51,17 +51,13 @@ export function FilmDetailView({ movie, filmRatingIndex }: FilmDetailProps) {
     }
   }, []);
 
-  const getCharacters = (cast: Person) => {
-    const filteredCrew = cast.crews.filter((crew) => crew.id === movie?.id);
-  };
-
   if (!movie) {
     return <Loading />;
   } else {
     return (
       <Container className="p-0">
         <Row className="d-none d-md-block mb-2">
-          {videoUrl ? (
+          {videoUrl && (
             <>
               {playerReady ? (
                 <ReactPlayer
@@ -83,12 +79,6 @@ export function FilmDetailView({ movie, filmRatingIndex }: FilmDetailProps) {
                 onReady={handlePlayerReady}
               />
             </>
-          ) : (
-            <Container className="d-flex align-items-center justify-content-center w-100 h-100">
-              <p className="text-center text-muted z-">
-                Sorry, this video is unavailable
-              </p>
-            </Container>
           )}
         </Row>
 
@@ -169,8 +159,6 @@ export function FilmDetailView({ movie, filmRatingIndex }: FilmDetailProps) {
                       }
                       isRequired
                     />
-                    {/* <Link to="">Action</Link>, <Link to="">Adventure</Link>,{" "}
-                      <Link to="">Drama</Link>, <Link to="">Fantasy</Link> */}
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">Theme:</span>{" "}

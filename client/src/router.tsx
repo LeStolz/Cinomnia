@@ -24,6 +24,7 @@ import { GenreCrud } from "./pages/GenreCrud/GenreCrud";
 import { UserCrud } from "./pages/UserCrud/UserCrud";
 import ScrollToTop from "./components/ScrollToTop";
 import { FilmUpdate } from "./pages/FilmUpdate/FilmUpdate";
+import { AccountUpdate } from "./pages/AccountUpdate/AccountUpdate";
 
 export const router = createBrowserRouter([
   {
@@ -78,6 +79,8 @@ export const router = createBrowserRouter([
             children: [
               { path: "film-update/:id", element: <FilmUpdate /> },
               { path: "film-update", element: <FilmUpdate /> },
+              { path: "account/:id/", element: <Account /> },
+              { path: "account-update/:id/", element: <AccountUpdate /> },
             ],
           },
         ],

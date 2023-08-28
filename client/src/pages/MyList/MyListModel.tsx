@@ -1,7 +1,9 @@
 import { api } from "../../utils/api";
-import { Film, User } from "../../configs/Model";
+import { User } from "../../configs/Model";
 export class MyListModel {
-  getWishlist = async (user : User) => {
+  getWishlist = async (user: User) => {
+    if (!user) return;
+
     try {
       const response = await api.get(`/users/wishlist/${user.email}`);
       return response.data;
@@ -11,6 +13,8 @@ export class MyListModel {
     }
   };
   getBought = async (user: User) => {
+    if (!user) return;
+
     try {
       const response = await api.get(`/users/bought/${user.email}`);
       return response.data;
