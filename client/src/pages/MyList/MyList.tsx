@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useParams } from "react-router";
 import { api } from "../../utils/api";
 
-export function MyList() {
+export function MyList({ stuff }: any) {
   const [wishlist, setWishlist] = useState<ListFilm[]>([]);
   const [bought, setBought] = useState<ListFilm[]>([]);
   const { getUser } = useAuth();
@@ -39,7 +39,7 @@ export function MyList() {
       } catch (error) {}
     };
     fetchWishlist();
-  }, [user]);
+  }, [user, stuff]);
 
   return <MyListView wishlist={wishlist} bought={bought} />;
 }

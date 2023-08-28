@@ -19,17 +19,24 @@ export class AccountUpdateModel {
 
   addBoughts = async (email: string, films: any) => {
     try {
-      await api.put("/users/add-bought", {
-        email,
-        filmId: films[0].id,
-        status: "bought",
-      });
-
       for (const film of films) {
         await api.put("/users/add-bought", {
           email,
-          filmId: film.id,
+          filmId: film,
           status: "bought",
+        });
+      }
+    } catch (err: any) {
+      throw err;
+    }
+  };
+
+  removeBoughts = async (email: string, films: any) => {
+    try {
+      for (const film of films) {
+        await api.put("/users/remove-bought", {
+          email,
+          filmId: film,
         });
       }
     } catch (err: any) {

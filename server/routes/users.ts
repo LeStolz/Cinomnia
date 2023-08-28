@@ -3,6 +3,20 @@ import { User } from "../models/User";
 
 export const users = express.Router();
 
+users.get("/", async (req: any, res) => {
+  try {
+    const allUsers = req.query?.search
+      ? await User.find({
+          email: { $regex: req.query.search, $options: "i" },
+        })
+      : await User.find();
+
+    res.json(allUsers);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch users." });
+  }
+});
+
 users.post("/signin", async (req, res) => {
   const { email } = req.body;
 
@@ -18,74 +32,7 @@ users.post("/signin", async (req, res) => {
   return res.status(200).send();
 });
 
-users.get("/:email", async (req, res) => {
-  const email = req.params.email;
-  const user = await User.findOne({ email });
-
-  if (user == null) {
-    return res.status(400).send("User not found");
-  } else {
-    return res.status(200).json(user);
-  }
-});
-
-users.get("/", async (req: any, res) => {
-  try {
-    const allUsers = req.query?.search
-      ? await User.find({
-          email: { $regex: req.query.search, $options: "i" },
-        })
-      : await User.find();
-
-    res.json(allUsers);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch users." });
-  }
-});
-
-users.put("/:email", async (req, res) => {
-  const userEmail = req.params.email;
-
-  try {
-    await User.updateOne({ email: userEmail }, { $set: req.body });
-    return res.status(200).send();
-  } catch (err) {
-    return res.status(500).json({ error: "Failed to edit user." });
-  }
-});
-
-users.post("/", async (req, res) => {
-  const { userEmail } = req.body;
-
-  try {
-    const user = await User.findOne({ email: userEmail });
-
-    if (user) {
-      return res.status(400).json({ error: `${userEmail} already exists.` });
-    } else {
-      await User.create({
-        email: userEmail,
-      });
-
-      return res.status(200).send();
-    }
-  } catch (err) {
-    res.status(500).json({ error: "Failed to add user." });
-  }
-});
-
-users.delete("/:email", async (req, res) => {
-  try {
-    await User.deleteOne({ email: req.params.email });
-    return res.status(200).send("Deleted user.");
-  } catch (err: any) {
-    return res.status(500).json({ error: err.message });
-  }
-});
-
 users.put("/add-bought", async (req, res) => {
-  console.log("WHAT");
-
   const { email, filmId, status, currentDuration } = req.body;
 
   try {
@@ -105,6 +52,30 @@ users.put("/add-bought", async (req, res) => {
     return res.status(200).json(user);
   } catch (error) {
     console.error("Error buying film:", error);
+    return res.status(500).send("Internal server error");
+  }
+});
+
+users.put("/remove-bought", async (req, res) => {
+  const { email, filmId } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).send("User not found");
+    }
+
+    const filmExists = user.bought.some(
+      (item) => item.film.toString() === filmId
+    );
+
+    if (!filmExists) {
+      user.bought.pull({ film: filmId._id });
+      await user.save();
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
     return res.status(500).send("Internal server error");
   }
 });
@@ -210,5 +181,56 @@ users.put("/update-status", async (req, res) => {
   } catch (error) {
     console.error("Error updating film status:", error);
     return res.status(500).send("Internal server error");
+  }
+});
+
+users.get("/:email", async (req, res) => {
+  const email = req.params.email;
+  const user = await User.findOne({ email });
+
+  if (user == null) {
+    return res.status(400).send("User not found");
+  } else {
+    return res.status(200).json(user);
+  }
+});
+
+users.put("/:email", async (req, res) => {
+  const userEmail = req.params.email;
+
+  try {
+    await User.updateOne({ email: userEmail }, { $set: req.body });
+    return res.status(200).send();
+  } catch (err) {
+    return res.status(500).json({ error: "Failed to edit user." });
+  }
+});
+
+users.post("/", async (req, res) => {
+  const { userEmail } = req.body;
+
+  try {
+    const user = await User.findOne({ email: userEmail });
+
+    if (user) {
+      return res.status(400).json({ error: `${userEmail} already exists.` });
+    } else {
+      await User.create({
+        email: userEmail,
+      });
+
+      return res.status(200).send();
+    }
+  } catch (err) {
+    res.status(500).json({ error: "Failed to add user." });
+  }
+});
+
+users.delete("/:email", async (req, res) => {
+  try {
+    await User.deleteOne({ email: req.params.email });
+    return res.status(200).send("Deleted user.");
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
   }
 });

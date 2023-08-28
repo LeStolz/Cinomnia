@@ -31,7 +31,11 @@ export function AccountView({
 
   useEffect(() => {
     (async () => {
-      setUser(await getUser());
+      if (id) {
+        setUser((await api.get(`/users/${id}`)).data);
+      } else {
+        setUser(await getUser());
+      }
       setFilms((await api.get("/films")).data);
     })();
   }, []);
@@ -47,7 +51,7 @@ export function AccountView({
   return (
     <Container>
       <div className="w-100 d-flex align-items-center">
-        <h2 className="me-3">{id ? id : user?.email || ""}</h2>
+        <h2 className="me-3">{user?.email || ""}</h2>
         <Edit
           editMode={editMode}
           type="select"
@@ -68,7 +72,7 @@ export function AccountView({
           defaultValue={user?.balance}
           isRequired
           func={(x: any) => (
-            <h4>
+            <h4 className="m-0">
               Balance: <span>{x}</span> VND
             </h4>
           )}
@@ -76,13 +80,13 @@ export function AccountView({
         />
 
         {!id && (
-          <Button variant="primary" onClick={onSignout}>
+          <Button variant="primary" onClick={onSignout} className="ms-auto">
             Sign out
           </Button>
         )}
       </div>
       <hr></hr>
-      <MyList></MyList>
+      <MyList stuff={boughtFilms}></MyList>
       {editMode && (
         <div className="ms-5 mb-3">
           <span className="mb-5">Add bought films</span>
@@ -103,16 +107,33 @@ export function AccountView({
                 icon="plus-circle"
                 removeOnDone
                 isRequired
-                onChange={(films: any) => addBoughts(user?.email, films)}
+                onChange={async (fs: any) => {
+                  await addBoughts(
+                    user?.email,
+                    films.filter((film: any) => {
+                      return fs.map((f: any) => f.id).includes(String(film.id));
+                    })
+                  );
+
+                  setBoughtFilms(
+                    (await api.get(`users/bought/${user?.email}`)).data
+                  );
+                }}
               />
               <br></br>
               <span className="mb-5">Remove bought films</span>
               <MultiEdit
                 editMode={editMode}
-                data={boughtFilms.map((film: any) => ({
-                  id: film.id,
-                  name: film.title,
-                }))}
+                data={films
+                  .filter((film: any) => {
+                    return boughtFilms
+                      .map((f: any) => String(f.film.id))
+                      .includes(String(film.id));
+                  })
+                  .map((film: any) => ({
+                    id: film.id,
+                    name: film.title,
+                  }))}
                 defaultValue={[]}
                 name="boughtFilms"
                 func={(genres: any) =>
@@ -122,7 +143,18 @@ export function AccountView({
                 icon="x-circle"
                 removeOnDone
                 isRequired
-                onChange={(films: any) => removeBoughts(user?.email, films)}
+                onChange={async (fs: any) => {
+                  await removeBoughts(
+                    user?.email,
+                    films.filter((film: any) => {
+                      return fs.map((f: any) => f.id).includes(String(film.id));
+                    })
+                  );
+
+                  setBoughtFilms(
+                    (await api.get(`users/bought/${user?.email}`)).data
+                  );
+                }}
               />
             </>
           ) : (
