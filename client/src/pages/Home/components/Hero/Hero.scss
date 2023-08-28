@@ -1,6 +1,12 @@
 $primary: #ec2d4d;
 @media (min-width: 768px) {
   .hero {
+    .overview {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+    }
     .swiper-pagination-bullet {
       background-color: $primary;
     }

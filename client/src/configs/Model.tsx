@@ -73,21 +73,7 @@ export type Genre = {
   name: string;
 };
 
-export type Actor = {
-  id: number;
-  name: string;
-  biography: string;
-  birthday: Date;
-  gender: string;
-  img: { img_500: string; img_1280: string };
-  crews: {
-    id: number;
-    job: string;
-    img_character: { img_500: string; img_1280: string };
-  }[];
-};
-
-export type Director = {
+export type Person = {
   id: number;
   name: string;
   biography: string;
@@ -102,7 +88,7 @@ export type Director = {
 };
 export type Review = {
   _id: string;
-  user: User;
+  user: string;
   content: string;
   createdAt: Date;
 };

@@ -3,6 +3,7 @@ import { api } from "../utils/api";
 import { Review } from "../configs/Model";
 import { Button, Card, Container, Image, Form } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
+import { User } from "../configs/Model";
 
 interface ReviewProps {
   filmId: number;
@@ -11,6 +12,7 @@ interface ReviewProps {
 const Review: React.FC<ReviewProps> = ({ filmId }) => {
   const { getUser } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [user, setUser] = useState<User>();
   const [newReview, setNewReview] = useState("");
   const [editedReviewId, setEditedReviewId] = useState("");
   const [editedReviewContent, setEditedReviewContent] = useState("");
@@ -19,10 +21,15 @@ const Review: React.FC<ReviewProps> = ({ filmId }) => {
     fetchReviews();
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      setUser(await getUser());
+    })();
+  }, []);
+
   const fetchReviews = async () => {
     try {
       const response = await api.get(`/films/${filmId}`);
-      console.log(response.data[0].review);
       setReviews(response.data[0].review);
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -35,8 +42,10 @@ const Review: React.FC<ReviewProps> = ({ filmId }) => {
         console.error("Review content cannot be empty.");
         return;
       }
-
-      await api.post(`/films/${filmId}`, { review: newReview });
+      await api.post(`/films/${filmId}`, {
+        review: newReview,
+        user: user?.email || "anonymous",
+      });
       fetchReviews();
       setNewReview("");
     } catch (error) {
@@ -85,15 +94,15 @@ const Review: React.FC<ReviewProps> = ({ filmId }) => {
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (e.key === "Enter") {
-      e.preventDefault(); 
+      e.preventDefault();
       submitReview();
     }
   };
 
   return (
     <div>
-      <h2>Reviews</h2>
-      <div className="shadow border-0 rounded">
+      <Card className="shadow border-0 bg-secondary my-3 rounded">
+        <Card.Title className="p-3 mb-0 bg-light-subtle">Review</Card.Title>
         <div className="p-2 d-flex">
           <Image
             className="rounded-circle shadow-1-strong me-3"
@@ -112,10 +121,12 @@ const Review: React.FC<ReviewProps> = ({ filmId }) => {
             placeholder="What are you thinking"
           />
           <div className="m-2 clearfix">
-            <Button onClick={submitReview}>Submit</Button>
+            <Button className="float-end m-2" onClick={submitReview}>
+              Publish
+            </Button>
           </div>
         </div>
-      </div>
+      </Card>
 
       <ul className="list-unstyled m-3">
         {reviews.map((review) => (
@@ -138,8 +149,7 @@ const Review: React.FC<ReviewProps> = ({ filmId }) => {
                         <div className="d-flex justify-content-between align-items-center mb-3">
                           <Container>
                             <h6 className="text-primary fw-bold mb-0">
-                              lara_stewart
-                              {/* {review.user.email} */}
+                              {review?.user}
                             </h6>
                             <Form.Control
                               type="text"
@@ -190,8 +200,8 @@ const Review: React.FC<ReviewProps> = ({ filmId }) => {
                         <div className="d-flex justify-content-between align-items-center mb-3">
                           <Container>
                             <h6 className="text-primary fw-bold mb-0">
-                              lara_stewart
-                              {/* {review.user.email} */}
+                              {/* lara_stewart */}
+                              {review?.user || "anonymous"}
                             </h6>
                             <span className="ms-2">{review.content}</span>
                           </Container>
@@ -207,20 +217,18 @@ const Review: React.FC<ReviewProps> = ({ filmId }) => {
                               variant="link"
                               className="text-decoration-none"
                               onClick={() => deleteReview(review._id)}
+                              hidden={review?.user !== user?.email}
                             >
                               Delete
                             </Button>
                             •
-                            {/* <a href="#!" className="link-grey">
-                              Reply
-                            </a>{" "}
-                            • */}
                             <Button
                               variant="link"
                               className="text-decoration-none"
                               onClick={() =>
                                 editReview(review._id, review.content)
                               }
+                              hidden={review?.user !== user?.email}
                             >
                               Edit
                             </Button>

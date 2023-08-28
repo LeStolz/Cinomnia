@@ -29,7 +29,6 @@ export function Player() {
           try {
             const filmData = await model.fetchMovieById(id);
             if (filmData) {
-              console.log("filmData", filmData);
               setMovie(filmData.film);
               setRelatedFilms(filmData.relatedFilms);
               sessionStorage.setItem(

@@ -7,10 +7,11 @@ import {
   Image,
   Row,
   Card,
-  Form,
   Button,
+  Carousel,
 } from "react-bootstrap";
-import { Film } from "../../configs/Model";
+import { Film, Person } from "../../configs/Model";
+import { useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading/Loading";
 import { Edit } from "../../components/Edit";
 import { ImageEdit } from "../../components/ImageEdit";
@@ -21,9 +22,17 @@ type FilmDetailView = {
   movie: Film | undefined;
   editMode?: boolean;
 };
+import Review from "../../components/Review";
 
-export function FilmDetailView({ movie, editMode }: FilmDetailView) {
-  const videoUrl = movie?.videos?.trailers[0]?.link || null;
+interface FilmDetailProps {
+  movie: Film | undefined;
+  filmRatingIndex: number | null;
+}
+
+export function FilmDetailView({ movie, filmRatingIndex }: FilmDetailProps) {
+  const navigate = useNavigate();
+  const videoUrl =
+    movie?.videos?.trailers[0]?.link || movie?.videos?.video_full;
   const [playerReady, setPlayerReady] = useState(false);
   const [genres, setGenres] = useState([]);
   const [actors, setActors] = useState([]);
@@ -42,15 +51,17 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
     }
   }, []);
 
+  const getCharacters = (cast: Person) => {
+    const filteredCrew = cast.crews.filter((crew) => crew.id === movie?.id);
+  };
+
   if (!movie) {
     return <Loading />;
-  }
-
-  return (
-    <Container className="p-0">
-      <Container fluid>
-        <Row className="d-none d-md-block mt-5 mb-2">
-          {videoUrl && (
+  } else {
+    return (
+      <Container className="p-0">
+        <Row className="d-none d-md-block mb-2">
+          {videoUrl ? (
             <>
               {playerReady ? (
                 <ReactPlayer
@@ -72,10 +83,16 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                 onReady={handlePlayerReady}
               />
             </>
+          ) : (
+            <Container className="d-flex align-items-center justify-content-center w-100 h-100">
+              <p className="text-center text-muted z-">
+                Sorry, this video is unavailable
+              </p>
+            </Container>
           )}
         </Row>
 
-        <Row className="mt-3">
+        <Row className="">
           <Col className="order-1 col-lg-4 col-sm-12">
             <Card className="bg-secondary rounded-3">
               <Card.Title className="text-center mb-0 py-2 fs-2 bg-light-subtle rounded-top-3">
@@ -118,7 +135,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                             <>
                               <Link
                                 className="text-decoration-none"
-                                to=""
+                                to={`/cast-detail/${movie?.directors[0].id}`}
                                 key={`genre-${genre.id}`}
                               >
                                 {genre.name !== "" && genre.name}
@@ -152,6 +169,12 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                       }
                       isRequired
                     />
+                    {/* <Link to="">Action</Link>, <Link to="">Adventure</Link>,{" "}
+                      <Link to="">Drama</Link>, <Link to="">Fantasy</Link> */}
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Theme:</span>{" "}
+                    <Link to="">Military</Link>
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">
@@ -175,6 +198,20 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                       </span>
                     </span>{" "}
                   </li>
+                </ul>
+              </Card.Text>
+            </Card>
+
+            <Card className="mt-3 bg-secondary rounded">
+              <Card.Title className="text-center py-2 bg-light-subtle">
+                Statistics
+              </Card.Title>
+              <Card.Text>
+                <ul className="list-unstyled fw-bold ps-2">
+                  <li>Ranked: #{filmRatingIndex}</li>
+                  <li>Popularity: #3</li>
+                  <li>Members: 3,192,363</li>
+                  <li>Favorites: 218,364</li>
                 </ul>
               </Card.Text>
             </Card>
@@ -203,7 +240,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                   <Col className="">
                     <Row>
                       <div className="d-flex w-100 justify-content-around fs-1 p-1">
-                        <h5>Ranked #1</h5>
+                        <h5>Ranked #{filmRatingIndex}</h5>
                         <h5>
                           <Edit
                             editMode={editMode}
@@ -216,19 +253,26 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
                         </h5>
                       </div>
                     </Row>
+
+                    <Row>
+                      <p>
+                        <Link to="">Spring 2009</Link> | <Link to="">TV</Link> |{" "}
+                        <Link to="">Bones</Link>
+                      </p>
+                    </Row>
                   </Col>
                 </Row>
 
                 <Row className="d-flex mt-3">
-                  <Button className="w-25 mx-2 text-center w-25">
-                    <i className="bi bi-cart4 me-2" />
-                    Add to cart
+                  <Button className="w-25 mx-2">Add to list</Button>
+                  <Button className="w-25 mx-2">
+                    Review <i className="bi bi-star-fill ps-1" />
                   </Button>
 
                   <Button className="w-25 mx-2 text-center w-25">
                     <Link to="" className="text-decoration-none text-light">
                       <i className="bi bi-tv-fill me-2" />
-                      Watch now
+                      Watch right now
                     </Link>
                   </Button>
 
@@ -257,137 +301,88 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
               </Card.Text>
             </Card>
 
-            <Card className=" bg-secondary my-3 rounded-3">
-              <Card.Title className="p-3 bg-light-subtle rounded-top-3">
-                Actors
+            <Card className="bg-secondary my-3 rounded">
+              <Card.Title className="p-3 bg-light-subtle">
+                Related Film
               </Card.Title>
-              <Card.Text className="p-3">
-                <hr className="" />
-
-                <Row className="pb-0 d-flex justify-content-between">
-                  <Col className="d-flex pe-0 col-4 w-auto">
-                    <Image
-                      src={
-                        movie.casts[0].img
-                          ? movie.casts[0].img.img_500 ||
-                            movie.casts[0].img.img_1280 ||
-                            "https://placehold.co/47x71"
-                          : "https://placehold.co/47x71"
-                      }
-                      className="w-lg me-2 rounded-3"
-                    />
-                    <div>
-                      <p>
-                        <Link
-                          to=""
-                          className="mb-0 fw-bold text-primary text-decoration-none float-start"
-                        >
-                          {movie.casts[0].name}
-                        </Link>
-                      </p>
-                      <small className="mt-0 float-start">
-                        {movie.casts[0].crews[0].job
-                          ? movie.casts[0].crews[0].job
-                          : " "}
-                      </small>
-                    </div>
-                  </Col>
-
-                  <Col className="d-flex col-4 pe-0 w-auto me-2">
-                    <div>
-                      <p>
-                        <Link
-                          to=""
-                          className="mb-0 fw-bold text-primary text-decoration-none float-end"
-                        >
-                          {movie.casts[1].name}
-                        </Link>
-                      </p>
-                      <small className="mt-0 float-end">
-                        {movie.casts[1].crews[0].job
-                          ? movie.casts[1].crews[0].job
-                          : " "}
-                      </small>
-                    </div>
-                    <Image
-                      src={
-                        movie.casts[1].img
-                          ? movie.casts[1].img.img_500 ||
-                            movie.casts[1].img.img_1280 ||
-                            "https://placehold.co/47x71"
-                          : "https://placehold.co/47x71"
-                      }
-                      className="w-lg ms-2 rounded-3"
-                    />
-                  </Col>
-                </Row>
-
-                <hr className="" />
-
-                <Row className="pb-0 d-flex justify-content-between mb-2">
-                  <Col className="d-flex pe-0 col-4 w-auto">
-                    <Image
-                      src={
-                        movie.casts[2].img
-                          ? movie.casts[2].img.img_500 ||
-                            movie.casts[2].img.img_1280 ||
-                            "https://placehold.co/47x71"
-                          : "https://placehold.co/47x71"
-                      }
-                      className="w-lg me-2 rounded-3"
-                    />
-                    <div>
-                      <p>
-                        <Link
-                          to=""
-                          className="mb-0 fw-bold text-primary text-decoration-none float-start"
-                        >
-                          {movie.casts[2].name}
-                        </Link>
-                      </p>
-                      <small className="mt-0 float-start">
-                        {movie.casts[2].crews[0].job
-                          ? movie.casts[2].crews[0].job
-                          : " "}
-                      </small>
-                    </div>
-                  </Col>
-
-                  <Col className="d-flex col-4 pe-0 w-auto me-2">
-                    <div>
-                      <p>
-                        <Link
-                          to=""
-                          className="mb-0 fw-bold text-primary text-decoration-none float-end"
-                        >
-                          {movie.casts[3].name}
-                        </Link>
-                      </p>
-
-                      <small className="mt-0 float-end">
-                        {movie.casts[3].crews[0].job
-                          ? movie.casts[3].crews[0].job
-                          : " "}
-                      </small>
-                    </div>
-                    <Image
-                      src={
-                        movie.casts[3].img
-                          ? movie.casts[3].img.img_500 ||
-                            movie.casts[3].img.img_1280 ||
-                            "https://placehold.co/47x71"
-                          : "https://placehold.co/47x71"
-                      }
-                      className="w-lg ms-2 rounded-3"
-                    />
-                  </Col>
-                </Row>
-                <hr className="" />
+              <Card.Text>
+                <ul className="p-3 list-unstyled">
+                  <li className="fw-light">
+                    <span className="fw-bold">Adalitation:</span> Fullmetal
+                    Alchemist
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Alternative version:</span>{" "}
+                    Fullmetal Alchemist
+                  </li>
+                  <li className="fw-light">
+                    <span className="fw-bold">Side story:</span>{" "}
+                    <Link to="">Fullmetal Alchemist: Brotherhood Specials</Link>
+                    ,{" "}
+                    <Link to="">
+                      Fullmetal Alchemist: The Sacred Star of Milos
+                    </Link>
+                  </li>
+                </ul>
               </Card.Text>
             </Card>
 
-            <Card className="bg-secondary my-3 rounded-3">
-              <Card.Title className="p-3 mb-0 bg-light-subtle rounded-top-3">
+            <Card className=" bg-secondary my-3 rounded">
+              <Card.Title className="p-3 bg-light-subtle">
+                Characters & Voice Actors
+              </Card.Title>
+              <Card.Text className="p-3">
+                <div className="d-flex justify-content-between">
+                  <small>Characters</small>
+                  <small>Actors</small>
+                </div>
+
+                <hr />
+
+                {movie.casts &&
+                  movie.casts.map(
+                    (cast, idx) =>
+                      cast && (
+                        <>
+                          <Row className="pb-0 d-flex justify-content-between">
+                            <Col className="d-flex pe-0 col-4 w-auto">
+                              <Image
+                                key={`${cast.id}${idx}`}
+                                className="w-lg me-2 rounded"
+                                src={
+                                  cast.img
+                                    ? cast.img.img_500 || cast.img.img_1280
+                                    : "https://placehold.co/47x71"
+                                }
+                              />
+                              <div>
+                                <Link to="" className="text-decoration-none">
+                                  <p className="mb-0 fw-bold">{cast.name}</p>
+                                </Link>
+                              </div>
+                            </Col>
+                            <Col className="d-flex col-4 pe-0 w-auto me-2">
+                              <div>
+                                <Link to="" className="text-decoration-none">
+                                  <p className="mb-0 fw-bold">Park Romi</p>
+                                </Link>
+                                <small className="mt-0">Japanese</small>
+                              </div>
+                              <Image
+                                src="/logo.png"
+                                className="w-lg h-md ms-2"
+                              />
+                            </Col>
+                          </Row>
+                          <hr />
+                        </>
+                      )
+                  )}
+              </Card.Text>
+            </Card>
+
+            <Card className="bg-secondary my-3 rounded">
+              <Card.Title className="p-3 mb-0 bg-light-subtle">
                 Review
               </Card.Title>
               <Card.Text className="">
@@ -402,7 +397,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
               </Card.Text>
             </Card>
 
-            <Card className="bg-secondary my-3 rounded-3">
+            <Card className="bg-secondary my-3 rounded">
               <Card.Title className="pt-2 ps-2">
                 <Row className="w-auto mt-3">
                   <Col className="d-flex col-4 pe-0 w-auto me-2">
@@ -436,7 +431,7 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
               </Card.Text>
             </Card>
 
-            <Card className="bg-secondary my-3 rounded-3">
+            <Card className="bg-secondary my-3 rounded">
               <Card.Title className="pt-2 ps-2">
                 <Row>
                   <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
@@ -470,6 +465,6 @@ export function FilmDetailView({ movie, editMode }: FilmDetailView) {
           </Col>
         </Row>
       </Container>
-    </Container>
-  );
+    );
+  }
 }

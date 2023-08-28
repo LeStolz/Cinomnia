@@ -26,8 +26,7 @@ const videos = new mongoose.Schema({
 
 const review = new mongoose.Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    type: String,
     required: true,
   },
   content: String,
