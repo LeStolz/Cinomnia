@@ -22,6 +22,9 @@ import { DashboardLayout } from "./layouts/DashboardLayout";
 import { FilmCrud } from "./pages/FilmCrud/FilmCrud";
 import { GenreCrud } from "./pages/GenreCrud/GenreCrud";
 import { UserCrud } from "./pages/UserCrud/UserCrud";
+import ScrollToTop from "./components/ScrollToTop";
+import { FilmUpdate } from "./pages/FilmUpdate/FilmUpdate";
+import { AccountUpdate } from "./pages/AccountUpdate/AccountUpdate";
 
 export const router = createBrowserRouter([
   {
@@ -71,6 +74,15 @@ export const router = createBrowserRouter([
               { path: "dashboard/genre-crud", element: <GenreCrud /> },
             ],
           },
+          {
+            element: <NavbarLayout fade={false} />,
+            children: [
+              { path: "film-update/:id", element: <FilmUpdate /> },
+              { path: "film-update", element: <FilmUpdate /> },
+              { path: "account/:id/", element: <Account /> },
+              { path: "account-update/:id/", element: <AccountUpdate /> },
+            ],
+          },
         ],
       },
       {
@@ -83,10 +95,13 @@ export const router = createBrowserRouter([
 
 function ContextWrapper() {
   return (
-    <AuthProvider>
-      <FilmProvider>
-        <Outlet />
-      </FilmProvider>
-    </AuthProvider>
+    <>
+      <ScrollToTop />
+      <AuthProvider>
+        <FilmProvider>
+          <Outlet />
+        </FilmProvider>
+      </AuthProvider>
+    </>
   );
 }

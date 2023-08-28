@@ -13,7 +13,7 @@ export function NavbarLayout({ fade }: NavbarLayoutProps) {
       <Header fade={fade} />
       <Container
         fluid
-        className="p-0"
+        className="p-0 overflow-x-hidden"
         style={{ minHeight: "calc(100vh - var(--header-size))" }}
       >
         <Outlet />

@@ -71,3 +71,21 @@ $light-indicator-background: black;
 .h-xl {
   height: 5rem;
 }
+
+.ReactTags__tagInputField {
+  @extend .form-control;
+  @extend .rounded-end-0;
+  @extend .mb-2;
+  width: 100%;
+  height: 2.35rem;
+}
+
+.ReactTags__suggestions {
+  cursor: pointer;
+}
+
+.ReactTags__remove {
+  @extend .btn;
+  @extend .btn-primary;
+  @extend .mx-2;
+}

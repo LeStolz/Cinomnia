@@ -9,7 +9,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import { GenreCrudView } from "./GenreCrud";
-import { FormEvent, createRef, useState } from "react";
+import { FormEvent, createRef, useEffect, useState } from "react";
 
 export function GenreCrudView({
   genres,
@@ -30,6 +30,20 @@ export function GenreCrudView({
   const [modalBody, setModalBody] = useState("");
   const [modalAction, setModalAction] = useState<() => void>(() => () => {});
   const [modalActionName, setModalActionName] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(onSearch, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search]);
+
+  useEffect(() => {
+    (async () => {
+      await onSearch();
+    })();
+  }, []);
 
   const handleClose = () => setShow(false);
   const handleShow = (
@@ -46,10 +60,13 @@ export function GenreCrudView({
   };
 
   const onSearch = async () => {
-    const search = searchRef.current?.value;
+    setLoading(true);
 
+    const search = searchRef.current?.value;
     await getGenres(search != null ? search : prevSearch);
     setPrevSearch((prevSearch) => (search != null ? search : prevSearch));
+
+    setLoading(false);
   };
 
   const onMoreInfo = async (id: string) => {
@@ -183,7 +200,7 @@ export function GenreCrudView({
                 placeholder="Search"
                 aria-label="Search"
                 className="rounded-start-2"
-                onChange={onSearch}
+                onChange={(event) => setSearch(event.target.value)}
                 ref={searchRef}
               />
             </Form>
@@ -253,7 +270,11 @@ export function GenreCrudView({
                   </Button>
                 )}
               </ListGroup.Item>
-              {genres.length === 0 ? (
+              {loading ? (
+                <span className="fs-4 mt-2 text-center">
+                  <div className="mt-3 spinner-border" role="status"></div>
+                </span>
+              ) : genres.length === 0 ? (
                 <span className="fs-4 mt-2 text-center">No genre found</span>
               ) : (
                 genres.map((genre) => (

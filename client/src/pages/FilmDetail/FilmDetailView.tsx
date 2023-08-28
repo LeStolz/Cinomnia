@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import {
   Col,
@@ -9,29 +9,47 @@ import {
   Card,
   Button,
   Carousel,
+  Form,
 } from "react-bootstrap";
 import { Film, Person } from "../../configs/Model";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading/Loading";
+import { Edit } from "../../components/Edit";
+import { ImageEdit } from "../../components/ImageEdit";
+import { MultiEdit } from "../../components/MultiEdit";
+import { api } from "../../utils/api";
 import Review from "../../components/Review";
 
 interface FilmDetailProps {
   movie: Film | undefined;
   filmRatingIndex: number | null;
+  editMode?: boolean;
 }
 
-export function FilmDetailView({ movie, filmRatingIndex }: FilmDetailProps) {
-  const navigate = useNavigate();
+export function FilmDetailView({
+  movie,
+  filmRatingIndex,
+  editMode,
+}: FilmDetailProps) {
   const videoUrl =
     movie?.videos?.trailers[0]?.link || movie?.videos?.video_full;
   const [playerReady, setPlayerReady] = useState(false);
+  const [genres, setGenres] = useState([]);
+  const [actors, setActors] = useState([]);
+  const [directors, setDirectors] = useState([]);
   const handlePlayerReady = () => {
     setPlayerReady(true);
   };
 
-  const getCharacters = (cast: Person) => {
-    const filteredCrew = cast.crews.filter((crew) => crew.id === movie?.id);
-  };
+  useEffect(() => {
+    if (editMode) {
+      (async () => {
+        setGenres((await api.get("/genres")).data);
+        setActors((await api.get("/actors")).data);
+        setDirectors((await api.get("/directors")).data);
+      })();
+    }
+  }, []);
 
   if (!movie) {
     return <Loading />;
@@ -39,12 +57,12 @@ export function FilmDetailView({ movie, filmRatingIndex }: FilmDetailProps) {
     return (
       <Container className="p-0">
         <Row className="d-none d-md-block mb-2">
-          {videoUrl ? (
+          {videoUrl && (
             <>
               {playerReady ? (
                 <ReactPlayer
                   url={videoUrl}
-                  className="rounded"
+                  className="rounded-3"
                   playing={true}
                   loop
                   muted
@@ -61,108 +79,112 @@ export function FilmDetailView({ movie, filmRatingIndex }: FilmDetailProps) {
                 onReady={handlePlayerReady}
               />
             </>
-          ) : (
-            <Container className="d-flex align-items-center justify-content-center w-100 h-100">
-              <p className="text-center text-muted z-">
-                Sorry, this video is unavailable
-              </p>
-            </Container>
           )}
         </Row>
 
         <Row className="">
           <Col className="order-1 col-lg-4 col-sm-12">
-            <Card className="bg-secondary rounded">
-              <Card.Title className="text-center mb-0 py-2 fs-2 bg-light-subtle">
-                {movie?.title}
+            <Card className="bg-secondary rounded-3">
+              <Card.Title className="text-center mb-0 py-2 fs-2 bg-light-subtle rounded-top-3">
+                <Edit
+                  editMode={editMode}
+                  type="text"
+                  name="title"
+                  defaultValue={movie.title}
+                  isRequired
+                />
               </Card.Title>
               <Card.Text>
-                <Carousel data-bs-theme="dark">
-                  <Carousel.Item>
-                    <Image
-                      src="https://placehold.co/470x200"
-                      className="h-100 w-100"
-                    />
-                    <Carousel.Caption></Carousel.Caption>
-                  </Carousel.Item>
-                  <Carousel.Item>
-                    <Image
-                      src="https://placehold.co/470x200"
-                      className="h-100 w-100"
-                    />
-                    <Carousel.Caption></Carousel.Caption>
-                  </Carousel.Item>
-                  <Carousel.Item>
-                    <Image
-                      src="https://placehold.co/470x200"
-                      className="h-100 w-100"
-                    />
-                    <Carousel.Caption></Carousel.Caption>
-                  </Carousel.Item>
-                </Carousel>
+                <ImageEdit
+                  editMode={editMode}
+                  name="poster.img_500"
+                  defaultValue={movie.poster.img_500}
+                  isRequired
+                  className="h-100 w-100"
+                />
 
                 <ul className="list-unstyled fw-bold ps-2 mt-3">
                   <li className="fw-light">
-                    <span className="fw-bold">Type</span>: TV
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Status:</span> Finished Airing
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Aired:</span>{" "}
-                    {new Date(movie?.release_date).toLocaleDateString("en-GB", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Director:</span>{" "}
-                    <Link to={`/cast-detail/${movie?.directors[0].id}`}>
-                      {movie?.directors[0].name}
-                    </Link>
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Broadcast:</span> Sundays at 17:00
-                    (JST)
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Producers:</span>{" "}
-                    <Link to="">Aniplex </Link>, <Link to="">Square Enix</Link>,{" "}
-                    <Link to="">Mainichi Broadcasting System</Link>,{" "}
-                    <Link to="">Studio Moriken</Link>
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Licensors:</span>{" "}
-                    <Link to="">Funimation</Link>,{" "}
-                    <Link to="">Aniplex of America</Link>
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Source:</span> Manga
+                    <span className="fw-bold">
+                      Director:{" "}
+                      <MultiEdit
+                        editMode={editMode}
+                        data={directors.map((director: any) => ({
+                          id: director.name,
+                          name: director.name,
+                        }))}
+                        name="director"
+                        defaultValue={[
+                          {
+                            id: movie.directors[0].name,
+                            name: movie.directors[0].name,
+                          },
+                        ]}
+                        func={(genres: any) =>
+                          genres.map((genre: any) => (
+                            <>
+                              <Link
+                                className="text-decoration-none"
+                                to={`/cast-detail/${movie?.directors[0].id}`}
+                                key={`genre-${genre.id}`}
+                              >
+                                {genre.name !== "" && genre.name}
+                              </Link>{" "}
+                            </>
+                          ))
+                        }
+                        isRequired
+                      />
+                    </span>
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">Genres:</span>{" "}
-                    {movie?.genres &&
-                      movie?.genres.map((genre) => (
-                        <>
-                          <Link to="" key={`genre-${genre.id}`}>
-                            {genre.name !== "" && genre.name}
-                          </Link>{" "}
-                        </>
-                      ))}
-                    {/* <Link to="">Action</Link>, <Link to="">Adventure</Link>,{" "}
-                      <Link to="">Drama</Link>, <Link to="">Fantasy</Link> */}
+                    <MultiEdit
+                      editMode={editMode}
+                      data={genres}
+                      name="genres"
+                      defaultValue={movie?.genres}
+                      func={(genres: any) =>
+                        genres.map((genre: any) => (
+                          <>
+                            <Link
+                              className="text-decoration-none"
+                              to=""
+                              key={`genre-${genre.id}`}
+                            >
+                              {genre.name !== "" && genre.name}
+                            </Link>{" "}
+                          </>
+                        ))
+                      }
+                      isRequired
+                    />
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">Theme:</span>{" "}
                     <Link to="">Military</Link>
                   </li>
                   <li className="fw-light">
-                    <span className="fw-bold">Duration:</span> 24min. per ep
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Rating:</span>{" "}
-                    {movie?.rating.toFixed(1)}
+                    <span className="fw-bold">
+                      Release Date:
+                      <span className="fw-light">
+                        {" "}
+                        <Edit
+                          editMode={editMode}
+                          type="date"
+                          name="relase_date"
+                          defaultValue={movie?.release_date}
+                          func={(x: any) =>
+                            new Date(x).toLocaleDateString("en-GB", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })
+                          }
+                          isRequired
+                        />
+                      </span>
+                    </span>{" "}
                   </li>
                 </ul>
               </Card.Text>
@@ -184,23 +206,39 @@ export function FilmDetailView({ movie, filmRatingIndex }: FilmDetailProps) {
           </Col>
 
           <Col className="order-2 col-lg-8 col-sm-12 my-md-3 my-lg-0">
-            <Card className="bg-secondary rounded">
-              <Card.Title className="ps-3 py-2 bg-light-subtle">
+            <Card className="bg-secondary rounded-3">
+              <Card.Title className="py-3 ps-3 bg-light-subtle rounded-top-3">
                 Information
               </Card.Title>
               <Card.Body>
                 <Row className="py-sm-2 py-md-0">
                   <Col className="col-md-2 text-center col-sm-12">
-                    <h5 className="rounded border bg-secondary p-1">Score</h5>
-                    <h3>{movie?.rating.toFixed(2)}</h3>
+                    <h5 className="rounded-3 border bg-secondary p-1">Score</h5>
+                    <h3>
+                      <Edit
+                        editMode={editMode}
+                        type="number"
+                        name="rating"
+                        defaultValue={movie.rating}
+                        isRequired
+                      />
+                    </h3>
                   </Col>
 
                   <Col className="">
                     <Row>
-                      <div className="d-flex w-100 justify-content-between fs-1 p-1">
+                      <div className="d-flex w-100 justify-content-around fs-1 p-1">
                         <h5>Ranked #{filmRatingIndex}</h5>
-                        <h5>Popularity #1</h5>
-                        <h5>Member 3,192,411</h5>
+                        <h5>
+                          <Edit
+                            editMode={editMode}
+                            type="number"
+                            name="price"
+                            defaultValue={movie.price}
+                            func={(x: any) => `Price: ${x} VND`}
+                            isRequired
+                          />
+                        </h5>
                       </div>
                     </Row>
 
@@ -218,20 +256,35 @@ export function FilmDetailView({ movie, filmRatingIndex }: FilmDetailProps) {
                   <Button className="w-25 mx-2">
                     Review <i className="bi bi-star-fill ps-1" />
                   </Button>
-                  <Button className="w-25 mx-2">
-                    Episode: 0/64 <i className="bi bi-plus-circle ps-1" />
+
+                  <Button className="w-25 mx-2 text-center w-25">
+                    <Link to="" className="text-decoration-none text-light">
+                      <i className="bi bi-tv-fill me-2" />
+                      Watch right now
+                    </Link>
+                  </Button>
+
+                  <Button className="w-25 mx-2 text-center w-25">
+                    <i className="bi bi-currency-dollar me-2" />
+                    Buy
                   </Button>
                 </Row>
               </Card.Body>
             </Card>
 
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="py-3 ps-3 bg-light-subtle">
+            <Card className="bg-secondary my-3 rounded-3">
+              <Card.Title className="py-3 ps-3 bg-light-subtle rounded-top-3">
                 Sypnosis
               </Card.Title>
               <Card.Text>
                 <p className="fs-6 p-3" style={{ textAlign: "justify" }}>
-                  {movie?.overview}
+                  <Edit
+                    editMode={editMode}
+                    type="textarea"
+                    name="overview"
+                    defaultValue={movie.overview}
+                    isRequired
+                  />
                 </p>
               </Card.Text>
             </Card>
@@ -315,7 +368,88 @@ export function FilmDetailView({ movie, filmRatingIndex }: FilmDetailProps) {
                   )}
               </Card.Text>
             </Card>
-            <Review filmId={movie.id} />
+
+            <Card className="bg-secondary my-3 rounded">
+              <Card.Title className="p-3 mb-0 bg-light-subtle">
+                Review
+              </Card.Title>
+              <Card.Text className="">
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlTextarea1"
+                >
+                  <Form.Control as="textarea" rows={3} />
+                </Form.Group>
+
+                <Button className="float-end m-2">Publish</Button>
+              </Card.Text>
+            </Card>
+
+            <Card className="bg-secondary my-3 rounded">
+              <Card.Title className="pt-2 ps-2">
+                <Row className="w-auto mt-3">
+                  <Col className="d-flex col-4 pe-0 w-auto me-2">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <p className="mb-0 fw-bold">Vinh</p>
+
+                      <small className="mt-0 fw-light fs-6">
+                        April 12 at 2:28pm
+                      </small>
+                    </div>
+                  </Col>
+
+                  <Col className="pt-2">
+                    <i className="bi bi-trash float-end me-3 text-danger" />
+                    <i className="bi bi-pencil float-end me-3 text-success" />
+                  </Col>
+                </Row>
+              </Card.Title>
+
+              <Card.Text>
+                <p className="pt-2 ps-2">
+                  First of all, I have seen the original FMA and although it was
+                  very popular and original, the pacing and conclusion did not
+                  sit too well with me. Brotherhood is meant to be a remake of
+                  the original, this time sticking to the manga all the way
+                  through, but there were people who thought it would spoil the
+                  franchise. That myth should be dispelled, as there's only one
+                  word to describe this series - EPIC.12
+                </p>
+              </Card.Text>
+            </Card>
+
+            <Card className="bg-secondary my-3 rounded">
+              <Card.Title className="pt-2 ps-2">
+                <Row>
+                  <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
+                    <Image src="/logo.png" className="w-lg h-md me-2" />
+                    <div>
+                      <p className="mb-0 fw-bold">Vinh</p>
+
+                      <small className="mt-0 fw-light fs-6">
+                        April 12 at 2:28pm
+                      </small>
+                    </div>
+                  </Col>
+
+                  <Col className="pt-2">
+                    <i className="bi bi-trash float-end me-3 text-danger" />
+                    <i className="bi bi-pencil float-end me-3 text-success" />
+                  </Col>
+                </Row>
+              </Card.Title>
+              <Card.Text>
+                <p className="pt-2 ps-2">
+                  Fullmetal Alchemist: Brotherhood gets an immense amount of
+                  praise in the MAL community. Now this is just the opinion of
+                  one guy. I'm certainly not the law of the land or anything.
+                  However, I personally feel as though calling FMA:B a
+                  masterpiece and the champion of all shows is a bit of a
+                  stretch. 12
+                </p>
+              </Card.Text>
+            </Card>
           </Col>
         </Row>
       </Container>

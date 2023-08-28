@@ -8,7 +8,14 @@ genres.get("/", async (req: any, res) => {
   try {
     const allGenres = req.query?.search
       ? await Genre.find({
-          name: { $regex: req.query.search, $options: "i" },
+          $or: [
+            { name: { $regex: req.query.search, $options: "i" } },
+            {
+              id: Number.isNaN(Number(req.query.search))
+                ? undefined
+                : Number(req.query.search),
+            },
+          ],
         })
       : await Genre.find();
 
