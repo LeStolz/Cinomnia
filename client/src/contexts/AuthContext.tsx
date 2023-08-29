@@ -117,9 +117,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const getUser = async () => {
     if (user && user.email) {
-      const newUser = await api.get(`/users/${user.email}`);
-      setUser(newUser.data);
-      return newUser.data;
+      try {
+        const newUser = await api.get(`/users/${user.email}`);
+        setUser(newUser.data);
+        return newUser.data;
+      } catch {
+        return undefined;
+      }
     }
 
     return null;
