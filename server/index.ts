@@ -10,6 +10,7 @@ import { films } from "./routes/film";
 import { genres } from "./routes/genre";
 import { actors } from "./routes/actor";
 import { directors } from "./routes/director";
+import { payments } from "./routes/payment";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 
@@ -73,6 +74,7 @@ app.use("/films", films);
 app.use("/genres", genres);
 app.use("/actors", actors);
 app.use("/directors", directors);
+app.use("/payment", payments);
 
 app.listen(parseInt(process.env.PORT!), () => {
   console.log("listening on port " + parseInt(process.env.PORT!));

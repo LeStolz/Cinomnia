@@ -16,4 +16,19 @@ export class StoreModel {
       console.error("Error buying film:", error);
     }
   }
+  async addMovieToStore(
+    user: User,
+    movieData: Film,
+    price: number,
+  ) {
+    try {
+      await api.put("/users/add-store", {
+        email: user.email,
+        filmId: movieData,
+        price: price,
+      });
+    } catch (error) {
+      console.error("Error buying film:", error);
+    }
+  }
 }

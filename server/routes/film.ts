@@ -290,6 +290,31 @@ films.put(
     }
   }
 );
+films.put(
+  "/:id/update-status",
+  async (req, res, next) => authenticate(req, res, next),
+  async (req, res) => {
+    const filmId = req.params.id;
+    const newStatus = req.body.status;
+
+    try {
+      const film = await Film.findOneAndUpdate(
+        { id: filmId },
+        { $set: { status: newStatus } },
+        { new: true }
+      );
+
+      if (film) {
+        res.json(film);
+      } else {
+        res.status(404).json({ error: "Film not found." });
+      }
+    } catch (err) {
+      res.status(500).json({ error: "Failed to update status." });
+    }
+  }
+);
+
 films.get(
   "/ratings",
   async (req, res, next) => authenticate(req, res, next),

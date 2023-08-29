@@ -6,6 +6,7 @@ import { GlobalContext } from "../../contexts/GlobalState";
 import { useFilm } from "../../contexts/FilmContext";
 import { Film } from "../../configs/Model";
 import "./MovieCard.scss";
+import { Alert } from "../Alert";
 
 interface MovieCardProps {
   movieData: Film;
@@ -24,6 +25,13 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
   const isMovieInWatchlist = watchlist.some(
     (movie: Film) => movie._id === movieData._id
   );
+
+  const isMoviePurchased = movieData.status !== "default";
+
+  const [show, setShow] = useState(false);
+
+  const handleCloseAlert = () => setShow(false);
+  const handleShowAlert = () => setShow(true);
 
   const navigate = useNavigate();
 
@@ -107,12 +115,11 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
             className="rounded w-100 h-100"
             src={`${movieData.poster.img_500}`}
             alt="movie"
-            onClick={() => handlePlayClick("player")}
           />
           <Container
             fluid
             className="movie-name-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center rounded-top overflow-hidden"
-            onClick={() => handlePlayClick("player")}
+            // onClick={() => handlePlayClick("player")}
           >
             <h4 className="text-truncate">{movieData.title}</h4>
           </Container>
@@ -129,23 +136,34 @@ export function MovieCard({ movieData, className }: MovieCardProps) {
             <Container fluid className="detail-button-left p-0 d-flex">
               <Button
                 variant="light"
-                title="play"
-                className="position-relative rounded-circle w-sm h-sm me-1"
-                onClick={() => handlePlayClick("player")}
+                title={isMoviePurchased ? "Play" : "You need to buy this film"}
+                className={`position-relative rounded-circle w-sm h-sm me-1`}
+                onClick={() => {
+                  if (isMoviePurchased) {
+                    handlePlayClick("player");
+                  }
+                  handleShowAlert();
+                }}
               >
                 <i className="position-absolute-center bi bi-play-fill"></i>
               </Button>
+              <Alert
+                show={show}
+                handleClose={handleCloseAlert}
+                alert="You need to buy this film"
+              />
               <Button
                 variant="outline-light"
                 title={isMovieInStore ? "Remove from Cart" : "Add to Cart"}
                 className={`position-relative rounded-circle w-sm h-sm me-1 ${
-                  isMovieInStore ? "border border-2" : ""
+                  isMovieInStore || isMoviePurchased ? "border border-2" : ""
                 }`}
                 onClick={handleAddToStore}
+                disabled={isMoviePurchased}
               >
                 <i
                   className={`position-absolute-center ${
-                    isMovieInStore ? "bi bi-check text-success" : "bi bi-plus"
+                    isMovieInStore || isMoviePurchased  ? "bi bi-check text-success" : "bi bi-plus"
                   }`}
                 ></i>
               </Button>

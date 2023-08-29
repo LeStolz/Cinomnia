@@ -27,7 +27,8 @@ interface PlayerProps {
   relatedFilms: Film[] | undefined;
   progress: string | undefined;
   updateFilmStatus: (movieData: Film, status: string) => void;
-  updateFilmDuration: (filmId: string, duration: number) => void;
+  updateFilmStatusInFilm: (movieData: Film, status: string) => void;
+  updateFilmDuration: (movieData: Film, duration: number) => void;
 }
 
 export function PlayerView({
@@ -35,6 +36,7 @@ export function PlayerView({
   relatedFilms,
   progress,
   updateFilmStatus,
+  updateFilmStatusInFilm,
   updateFilmDuration,
 }: PlayerProps) {
   const { addMovieToWatchlist, removeMovieFromWatchlist, watchlist } =
@@ -68,9 +70,11 @@ export function PlayerView({
         playerRef.current.seekTo(savedProgress, "seconds");
       }
       updateFilmStatus(movieData, "watching");
+      updateFilmStatusInFilm(movieData, "watching");
     };
     const handleEnded = async () => {
       updateFilmStatus(movieData, "watched");
+      updateFilmStatusInFilm(movieData, "watched");
       // if (playerRef.current) {
       //   const currentTime = playerRef.current.getCurrentTime();
       //   const filmId = movieData._id;
@@ -88,7 +92,7 @@ export function PlayerView({
           `progress-${movieData.id}`,
           currentTime.toString()
         );
-        // updateFilmDuration(movieData._id, currentTime);
+        updateFilmDuration(movieData, currentTime);
       }
     };
 
@@ -194,7 +198,9 @@ export function PlayerView({
                               <SwiperSlide
                                 key={idx}
                                 className="cast-items position-relative overflow-hidden p-0"
-                                onClick={() => navigate(`/cast-detail/${cast.id}`)}
+                                onClick={() =>
+                                  navigate(`/cast-detail/${cast.id}`)
+                                }
                               >
                                 <Image
                                   key={`cast-${idx}`}
@@ -342,7 +348,6 @@ export function PlayerView({
                 </Container>
               </Container>
             </Container>
-            <Container>{duration}</Container>
             <Container className="p-2 border border-1 bg-secondary rounded shadow mb-2">
               <ReviewForm filmId={movieData.id} />
             </Container>
