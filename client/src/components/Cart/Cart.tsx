@@ -108,7 +108,7 @@ export function Cart() {
     <>
       <Button
         variant="outline-primary"
-        className="position-relative rounded-circle ms-3 w-md h-md"
+        className="position-relative rounded-circle me-3 mb-2 mb-md-0 w-md h-md"
         id="store"
         onClick={handleShowCartModal}
       >

@@ -6,9 +6,23 @@ import { Actor } from "../models/Actor";
 export const films = express.Router();
 
 films.get("/", async (req, res) => {
+  const searchKey = req.query.search;
+
   try {
-    const allFilms = await Film.find();
-    res.json(allFilms);
+    const films = searchKey
+      ? await Film.find({
+          $or: [
+            { title: { $regex: searchKey, $options: "i" } },
+            {
+              id: Number.isNaN(Number(searchKey))
+                ? undefined
+                : Number(searchKey),
+            },
+          ],
+        })
+      : await Film.find();
+
+    res.status(200).json(films);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch films." });
   }
