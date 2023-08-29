@@ -53,9 +53,14 @@ export function Player() {
     model.updateFilmStatus(await getUser(), movieData, status);
   };
 
-  const updateFilmDuration = async (filmId: string, duration: number) => {
+  const updateFilmStatusInFilm = async (movieData: Film, status: string) => {
     const model = new PlayerModel();
-    model.updateFilmDuration(filmId, duration);
+    model.updateFilmStatusInFilm(movieData.id, status);
+  };
+
+  const updateFilmDuration = async (movieData: Film, duration: number) => {
+    const model = new PlayerModel();
+    model.updateFilmDuration(movieData.id, duration);
   };
   return (
     <PlayerView
@@ -63,6 +68,7 @@ export function Player() {
       relatedFilms={relatedFilms}
       progress={progress}
       updateFilmStatus={updateFilmStatus}
+      updateFilmStatusInFilm={updateFilmStatusInFilm}
       updateFilmDuration={updateFilmDuration}
     />
   );

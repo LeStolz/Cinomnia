@@ -51,7 +51,7 @@ users.put(
   "/add-bought",
   async (req, res, next) => authenticate(req, res, next),
   async (req, res) => {
-    const { email, filmId, status, currentDuration } = req.body;
+    const { email, filmId, status } = req.body;
 
     try {
       const user = await User.findOne({ email });
@@ -63,7 +63,7 @@ users.put(
         (item) => item.film.toString() === filmId
       );
       if (!filmExists) {
-        user.bought.push({ film: filmId, status, currentDuration });
+        user.bought.push({ film: filmId, status });
         await user.save();
       }
 
@@ -103,6 +103,29 @@ users.put(
   }
 );
 
+users.put("/add-history", async (req, res) => {
+  const { email, filmId } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).send("User not found");
+    }
+
+    const filmExists = user.history.some(
+      (item) => item.film.toString() === filmId
+    );
+    if (!filmExists) {
+      user.history.push({ film: filmId });
+      await user.save();
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error("Error update history purchase:", error);
+    return res.status(500).send("Internal server error");
+  }
+});
+
 users.put(
   "/add-wishlish",
   async (req, res, next) => authenticate(req, res, next),
@@ -114,7 +137,7 @@ users.put(
         return res.status(400).send("User not found");
       }
 
-      user.wishlist.push({ film: filmId, status, currentDuration });
+      user.wishlist.push({ film: filmId, status });
       await user.save();
 
       return res.status(200).json(user);
@@ -193,6 +216,39 @@ users.get(
     }
   }
 );
+users.get("/bought/:email", async (req, res) => {
+  const email = req.params.email;
+  try {
+    const user = await User.findOne({ email }).populate({
+      path: "bought.film",
+      populate: { path: "genres" },
+    });
+    if (!user) {
+      return res.status(400).send("User not found");
+    }
+    return res.status(200).json(user.bought);
+  } catch (error) {
+    console.error("Error getting bought:", error);
+    return res.status(500).send("Internal server error");
+  }
+});
+
+users.get("/history/:email", async (req, res) => {
+  const email = req.params.email;
+  try {
+    const user = await User.findOne({ email }).populate({
+      path: "history.film",
+      populate: { path: "genres" },
+    });
+    if (!user) {
+      return res.status(400).send("User not found");
+    }
+    return res.status(200).json(user.history);
+  } catch (error) {
+    console.error("Error getting purchase history:", error);
+    return res.status(500).send("Internal server error");
+  }
+});
 
 users.put(
   "/update-status",

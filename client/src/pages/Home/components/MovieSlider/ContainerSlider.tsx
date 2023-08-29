@@ -41,28 +41,30 @@ export function ContainerSlider({ movies }: HomeViewProps) {
         number={1}
       />
       <MovieSlider
-        data={watchlist}
-        title="Watch list And Recommend for you"
-        number={2}
-      />
-      <MovieSlider
         data={getRangeMovies(30, 50)}
         title="Top pick for you"
-        number={3}
+        number={2}
       />
       <MovieSlider
         data={getRangeMovies(40, 60)}
         title="Continue Watching for you"
-        number={4}
+        number={3}
       />
       <MovieSlider
         data={getRangeMovies(66, 76)}
         title="Exciting TV Sci-Fi & Fantasy"
+        number={4}
+      />
+      <MovieSlider
+        data={getRangeMovies(15, 35)}
+        title="Blockbuster Movies"
         number={5}
       />
-      {/* <MovieSlider data={getRandomMovies()} title="Blockbuster Movies" number={6}/>
-      <MovieSlider data={getRandomMovies()} title="Psychologial TV Thrillers" number={7}/> */}
-      {/* <Slider slides={getRandomMovies()} /> */}
+      <MovieSlider
+        data={getRangeMovies(35,65)}
+        title="Psychologial TV Thrillers"
+        number={6}
+      />
     </Container>
   );
 }

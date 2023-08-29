@@ -8,22 +8,17 @@ export function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const cachedMovies = sessionStorage.getItem("cachedMovies");
-      if (cachedMovies) {
-        setMovies(JSON.parse(cachedMovies));
-      } else {
-        const model = new HomeModel();
-        try {
-          const fetchedMovies = await model.fetchData();
-          setMovies(fetchedMovies);
-          sessionStorage.setItem("cachedMovies", JSON.stringify(fetchedMovies));
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
+      const model = new HomeModel();
+      try {
+        const fetchedMovies = await model.fetchData();
+        setMovies(fetchedMovies);
+        // sessionStorage.setItem("cachedMovies", JSON.stringify(fetchedMovies));
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, []);
-  console.log(movies)
+  console.log(movies);
   return <HomeView movies={movies} />;
 }

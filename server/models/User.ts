@@ -12,6 +12,19 @@ const FilmSchema = new mongoose.Schema({
   },
 });
 
+const MovieSchema = new mongoose.Schema({
+  film: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "Film",
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    immutable: true,
+    default: () => Date.now(),
+  },
+});
+
 const UserSchema = new mongoose.Schema(
   {
     email: {
@@ -34,8 +47,9 @@ const UserSchema = new mongoose.Schema(
       immutable: true,
       default: () => Date.now(),
     },
-    bought: [FilmSchema],
     wishlist: [FilmSchema],
+    bought: [FilmSchema],
+    history: [MovieSchema],
   },
   {
     statics: {},

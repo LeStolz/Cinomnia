@@ -58,7 +58,7 @@ const ModalCart = ({
                           {new Date(movie.release_date).getFullYear()}
                         </span>
                         <h6 className="text-primary">{`${(
-                          movie.rating * 1.25
+                          movie.price * 0.91
                         ).toFixed(2)} $`}</h6>
                       </Col>
                       <Col>
@@ -94,8 +94,6 @@ const ModalCart = ({
     </Modal>
   );
 };
-
-export default Cart;
 
 export function Cart() {
   const { removeMovieFromStore, store } = useContext(GlobalContext);

@@ -60,7 +60,8 @@ export class PlayerModel {
       }
     }
   }
-  async updateFilmDuration(filmId: string, duration: number) {
+
+  async updateFilmDuration(filmId: number, duration: number) {
     try {
       const response = await api.put(`/films/${filmId}/update-duration`, {
         duration: duration,
@@ -70,6 +71,19 @@ export class PlayerModel {
       console.log("Film duration updated:", updatedFilm);
     } catch (error) {
       console.error("Error updating film duration:", error);
+    }
+  }
+
+  async updateFilmStatusInFilm(filmId: number, newStatus: string) {
+    try {
+      const response = await api.put(`/films/${filmId}/update-status`, {
+        status: newStatus,
+      });
+
+      const updatedFilm = response.data;
+      console.log("Film status updated:", updatedFilm);
+    } catch (error) {
+      console.error("Error updating film status:", error);
     }
   }
 }

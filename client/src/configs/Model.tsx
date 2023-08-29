@@ -66,6 +66,7 @@ export type Film = {
   };
   price: number;
   duration: number;
+  status: string;
 };
 
 export type Genre = {
@@ -96,7 +97,12 @@ export type Review = {
 export type ListFilm = {
   film: Film;
   status: string;
-  currentDuration?: number;
+};
+
+export type PurchaseHistory = {
+  email: string;
+  film: Film;
+  createdAt: Date;
 };
 
 export type User = {
