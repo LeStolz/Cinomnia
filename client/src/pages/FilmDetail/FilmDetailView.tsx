@@ -1,52 +1,57 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
-import {
-  Col,
-  Container,
-  Image,
-  Row,
-  Card,
-  Button,
-  Carousel,
-  Form,
-} from "react-bootstrap";
-import { Film, Person } from "../../configs/Model";
-import { useNavigate } from "react-router-dom";
+import { Col, Container, Image, Row, Card, Button } from "react-bootstrap";
 import { Loading } from "../../components/Loading/Loading";
 import { Edit } from "../../components/Edit";
 import { ImageEdit } from "../../components/ImageEdit";
 import { MultiEdit } from "../../components/MultiEdit";
 import { api } from "../../utils/api";
 import Review from "../../components/Review";
+import { VideoEdit } from "../../components/VideoEdit";
 
-interface FilmDetailProps {
-  movie: Film | undefined;
-  filmRatingIndex: number | null;
-  editMode?: boolean;
-}
+type FilmDetailProps = any;
 
 export function FilmDetailView({
   movie,
   filmRatingIndex,
   editMode,
+  setTitle,
+  setDate,
+  setRating,
+  setPrice,
+  setOverview,
+  setPoster,
+  setGenre,
+  setCast,
+  setDirector,
+  setTrailer,
+  setVideo,
+  onSubmit,
 }: FilmDetailProps) {
   const videoUrl =
     movie?.videos?.trailers[0]?.link || movie?.videos?.video_full;
-  const [playerReady, setPlayerReady] = useState(false);
   const [genres, setGenres] = useState([]);
   const [actors, setActors] = useState([]);
   const [directors, setDirectors] = useState([]);
-  const handlePlayerReady = () => {
-    setPlayerReady(true);
-  };
 
   useEffect(() => {
     if (editMode) {
       (async () => {
         setGenres((await api.get("/genres")).data);
-        setActors((await api.get("/actors")).data);
-        setDirectors((await api.get("/directors")).data);
+        setActors(
+          (await api.get("/actors")).data.filter(
+            (v: any, i: number, a: any) => {
+              return a.indexOf(a.find((x: any) => x.id === v.id)) === i;
+            }
+          )
+        );
+        setDirectors(
+          (await api.get("/directors")).data.filter(
+            (v: any, i: number, a: any) => {
+              return a.indexOf(a.find((x: any) => x.id === v.id)) === i;
+            }
+          )
+        );
       })();
     }
   }, []);
@@ -57,28 +62,34 @@ export function FilmDetailView({
     return (
       <Container className="p-0">
         <Row className="d-none d-md-block mb-2">
+          {editMode && (
+            <VideoEdit
+              editMode={editMode}
+              name="video"
+              defaultValue={movie?.videos?.video_full}
+              isRequired
+              className="rounded-3"
+              playing={true}
+              loop
+              muted
+              width="100%"
+              onChange={(x: any) => setVideo(x)}
+            />
+          )}
+
           {videoUrl && (
-            <>
-              {playerReady ? (
-                <ReactPlayer
-                  url={videoUrl}
-                  className="rounded-3"
-                  playing={true}
-                  loop
-                  muted
-                  width="100%"
-                />
-              ) : (
-                <Container className="bg-black d-flex align-items-center justify-content-center w-100 h-100">
-                  <p className="text-center text-white">Loading video...</p>
-                </Container>
-              )}
-              <ReactPlayer
-                className="d-none"
-                url={videoUrl}
-                onReady={handlePlayerReady}
-              />
-            </>
+            <VideoEdit
+              editMode={editMode}
+              name="trailer"
+              defaultValue={videoUrl}
+              isRequired
+              className="rounded-3"
+              playing={true}
+              loop
+              muted
+              onChange={(x: any) => setTrailer(x)}
+              width="100%"
+            />
           )}
         </Row>
 
@@ -91,6 +102,7 @@ export function FilmDetailView({
                   type="text"
                   name="title"
                   defaultValue={movie.title}
+                  onChange={(x: any) => setTitle(x)}
                   isRequired
                 />
               </Card.Title>
@@ -98,9 +110,10 @@ export function FilmDetailView({
                 <ImageEdit
                   editMode={editMode}
                   name="poster.img_500"
-                  defaultValue={movie.poster.img_500}
+                  defaultValue={movie.poster?.img_500}
                   isRequired
                   className="h-100 w-100"
+                  onChange={(x: any) => setPoster(x)}
                 />
 
                 <ul className="list-unstyled fw-bold ps-2 mt-3">
@@ -110,14 +123,14 @@ export function FilmDetailView({
                       <MultiEdit
                         editMode={editMode}
                         data={directors.map((director: any) => ({
-                          id: director.name,
+                          id: director.id,
                           name: director.name,
                         }))}
                         name="director"
                         defaultValue={[
                           {
-                            id: movie.directors[0].name,
-                            name: movie.directors[0].name,
+                            id: movie?.directors[0]?.id,
+                            name: movie?.directors[0]?.name,
                           },
                         ]}
                         func={(genres: any) =>
@@ -125,14 +138,15 @@ export function FilmDetailView({
                             <>
                               <Link
                                 className="text-decoration-none"
-                                to={`/cast-detail/${movie?.directors[0].id}`}
-                                key={`genre-${genre.id}`}
+                                to={`/cast-detail/${movie?.directors[0]?.id}`}
+                                key={`genre-${genre?.id}`}
                               >
-                                {genre.name !== "" && genre.name}
+                                {genre?.name !== "" && genre?.name}
                               </Link>{" "}
                             </>
                           ))
                         }
+                        onChange={(x: any) => setDirector(x)}
                         isRequired
                       />
                     </span>
@@ -157,12 +171,9 @@ export function FilmDetailView({
                           </>
                         ))
                       }
+                      onChange={(x: any) => setGenre(x)}
                       isRequired
                     />
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Theme:</span>{" "}
-                    <Link to="">Military</Link>
                   </li>
                   <li className="fw-light">
                     <span className="fw-bold">
@@ -181,25 +192,12 @@ export function FilmDetailView({
                               day: "numeric",
                             })
                           }
+                          onChange={(x: any) => setDate(x)}
                           isRequired
                         />
                       </span>
                     </span>{" "}
                   </li>
-                </ul>
-              </Card.Text>
-            </Card>
-
-            <Card className="mt-3 bg-secondary rounded">
-              <Card.Title className="text-center py-2 bg-light-subtle">
-                Statistics
-              </Card.Title>
-              <Card.Text>
-                <ul className="list-unstyled fw-bold ps-2">
-                  <li>Ranked: #{filmRatingIndex}</li>
-                  <li>Popularity: #3</li>
-                  <li>Members: 3,192,363</li>
-                  <li>Favorites: 218,364</li>
                 </ul>
               </Card.Text>
             </Card>
@@ -220,6 +218,7 @@ export function FilmDetailView({
                         type="number"
                         name="rating"
                         defaultValue={movie.rating}
+                        onChange={(x: any) => setRating(x)}
                         isRequired
                       />
                     </h3>
@@ -236,31 +235,27 @@ export function FilmDetailView({
                             name="price"
                             defaultValue={movie.price}
                             func={(x: any) => `Price: ${x} VND`}
+                            onChange={(x: any) => setPrice(x)}
                             isRequired
                           />
                         </h5>
                       </div>
                     </Row>
-
-                    <Row>
-                      <p>
-                        <Link to="">Spring 2009</Link> | <Link to="">TV</Link> |{" "}
-                        <Link to="">Bones</Link>
-                      </p>
-                    </Row>
                   </Col>
                 </Row>
 
                 <Row className="d-flex mt-3">
-                  <Button className="w-25 mx-2">Add to list</Button>
                   <Button className="w-25 mx-2">
-                    Review <i className="bi bi-star-fill ps-1" />
+                    <Link to="" className="text-decoration-none text-light">
+                      <i className="bi bi-cart me-2" />
+                      Add to Cart
+                    </Link>
                   </Button>
 
                   <Button className="w-25 mx-2 text-center w-25">
                     <Link to="" className="text-decoration-none text-light">
                       <i className="bi bi-tv-fill me-2" />
-                      Watch right now
+                      Watch now
                     </Link>
                   </Button>
 
@@ -283,175 +278,84 @@ export function FilmDetailView({
                     type="textarea"
                     name="overview"
                     defaultValue={movie.overview}
+                    onChange={(x: any) => setOverview(x)}
                     isRequired
                   />
                 </p>
               </Card.Text>
             </Card>
 
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="p-3 bg-light-subtle">
-                Related Film
+            <Card className=" bg-secondary my-3 rounded-3">
+              <Card.Title className="p-3 bg-light-subtle rounded-top-3">
+                Characters
               </Card.Title>
-              <Card.Text>
-                <ul className="p-3 list-unstyled">
-                  <li className="fw-light">
-                    <span className="fw-bold">Adalitation:</span> Fullmetal
-                    Alchemist
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Alternative version:</span>{" "}
-                    Fullmetal Alchemist
-                  </li>
-                  <li className="fw-light">
-                    <span className="fw-bold">Side story:</span>{" "}
-                    <Link to="">Fullmetal Alchemist: Brotherhood Specials</Link>
-                    ,{" "}
-                    <Link to="">
-                      Fullmetal Alchemist: The Sacred Star of Milos
-                    </Link>
-                  </li>
-                </ul>
-              </Card.Text>
-            </Card>
+              <Card.Text className="px-5 py-2">
+                <div className="mb-3">
+                  {movie && movie.casts && actors && actors.length !== 0 ? (
+                    <>
+                      <MultiEdit
+                        editMode={editMode}
+                        data={actors.map((actor: any) => ({
+                          id: actor.id,
+                          name: actor.name,
+                        }))}
+                        defaultValue={movie.casts.filter(
+                          (cast: any) => cast != null
+                        )}
+                        name="actor"
+                        func={(casts: any) => {
+                          casts = casts.map((cast: any) =>
+                            typeof cast.id !== "number"
+                              ? Number(cast.id)
+                              : cast.id
+                          );
+                          casts = actors.filter((actor: any) =>
+                            casts.includes(actor.id)
+                          );
 
-            <Card className=" bg-secondary my-3 rounded">
-              <Card.Title className="p-3 bg-light-subtle">
-                Characters & Voice Actors
-              </Card.Title>
-              <Card.Text className="p-3">
-                <div className="d-flex justify-content-between">
-                  <small>Characters</small>
-                  <small>Actors</small>
-                </div>
-
-                <hr />
-
-                {movie.casts &&
-                  movie.casts.map(
-                    (cast, idx) =>
-                      cast && (
-                        <>
-                          <Row className="pb-0 d-flex justify-content-between">
-                            <Col className="d-flex pe-0 col-4 w-auto">
-                              <Image
-                                key={`${cast.id}${idx}`}
-                                className="w-lg me-2 rounded"
-                                src={
-                                  cast.img
-                                    ? cast.img.img_500 || cast.img.img_1280
-                                    : "https://placehold.co/47x71"
-                                }
-                              />
-                              <div>
-                                <Link to="" className="text-decoration-none">
+                          return casts.map((cast: any) => (
+                            <>
+                              <Row className="pb-0 d-flex justify-content-between">
+                                <Col className="d-flex pe-0 col-4 w-auto">
+                                  <Image
+                                    key={cast.id}
+                                    className="w-lg me-2 rounded"
+                                    src={
+                                      cast.img
+                                        ? cast.img.img_500 || cast.img.img_1280
+                                        : "https://placehold.co/47x71"
+                                    }
+                                  />
                                   <p className="mb-0 fw-bold">{cast.name}</p>
-                                </Link>
-                              </div>
-                            </Col>
-                            <Col className="d-flex col-4 pe-0 w-auto me-2">
-                              <div>
-                                <Link to="" className="text-decoration-none">
-                                  <p className="mb-0 fw-bold">Park Romi</p>
-                                </Link>
-                                <small className="mt-0">Japanese</small>
-                              </div>
-                              <Image
-                                src="/logo.png"
-                                className="w-lg h-md ms-2"
-                              />
-                            </Col>
-                          </Row>
-                          <hr />
-                        </>
-                      )
+                                </Col>
+                              </Row>
+                              <hr />
+                            </>
+                          ));
+                        }}
+                        placeholder="Press enter to add a new actor"
+                        onChange={(x: any) => setCast(x)}
+                        isRequired
+                      />
+                    </>
+                  ) : (
+                    <span></span>
                   )}
+                </div>
               </Card.Text>
             </Card>
-
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="p-3 mb-0 bg-light-subtle">
-                Review
-              </Card.Title>
-              <Card.Text className="">
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlTextarea1"
-                >
-                  <Form.Control as="textarea" rows={3} />
-                </Form.Group>
-
-                <Button className="float-end m-2">Publish</Button>
-              </Card.Text>
-            </Card>
-
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="pt-2 ps-2">
-                <Row className="w-auto mt-3">
-                  <Col className="d-flex col-4 pe-0 w-auto me-2">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <p className="mb-0 fw-bold">Vinh</p>
-
-                      <small className="mt-0 fw-light fs-6">
-                        April 12 at 2:28pm
-                      </small>
-                    </div>
-                  </Col>
-
-                  <Col className="pt-2">
-                    <i className="bi bi-trash float-end me-3 text-danger" />
-                    <i className="bi bi-pencil float-end me-3 text-success" />
-                  </Col>
-                </Row>
-              </Card.Title>
-
-              <Card.Text>
-                <p className="pt-2 ps-2">
-                  First of all, I have seen the original FMA and although it was
-                  very popular and original, the pacing and conclusion did not
-                  sit too well with me. Brotherhood is meant to be a remake of
-                  the original, this time sticking to the manga all the way
-                  through, but there were people who thought it would spoil the
-                  franchise. That myth should be dispelled, as there's only one
-                  word to describe this series - EPIC.12
-                </p>
-              </Card.Text>
-            </Card>
-
-            <Card className="bg-secondary my-3 rounded">
-              <Card.Title className="pt-2 ps-2">
-                <Row>
-                  <Col className="d-flex col-4 pe-0 w-auto me-2 mt-3">
-                    <Image src="/logo.png" className="w-lg h-md me-2" />
-                    <div>
-                      <p className="mb-0 fw-bold">Vinh</p>
-
-                      <small className="mt-0 fw-light fs-6">
-                        April 12 at 2:28pm
-                      </small>
-                    </div>
-                  </Col>
-
-                  <Col className="pt-2">
-                    <i className="bi bi-trash float-end me-3 text-danger" />
-                    <i className="bi bi-pencil float-end me-3 text-success" />
-                  </Col>
-                </Row>
-              </Card.Title>
-              <Card.Text>
-                <p className="pt-2 ps-2">
-                  Fullmetal Alchemist: Brotherhood gets an immense amount of
-                  praise in the MAL community. Now this is just the opinion of
-                  one guy. I'm certainly not the law of the land or anything.
-                  However, I personally feel as though calling FMA:B a
-                  masterpiece and the champion of all shows is a bit of a
-                  stretch. 12
-                </p>
-              </Card.Text>
-            </Card>
+            <Review filmId={movie.id} />
           </Col>
         </Row>
+        {editMode && (
+          <Button
+            className="position-fixed"
+            style={{ top: "50%", right: "0%" }}
+            onClick={onSubmit}
+          >
+            Submit
+          </Button>
+        )}
       </Container>
     );
   }

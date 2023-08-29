@@ -4,14 +4,59 @@ import { FilmUpdateModel } from "./FilmUpdateModel";
 import { useParams } from "react-router-dom";
 import { Film } from "../../configs/Model";
 
-export type FilmUpdateViewProps = {
-  movie: Film | undefined;
-  onSubmit: () => void;
-};
+export type FilmUpdateViewProps = any;
 
 export function FilmUpdate() {
   const { id } = useParams();
   const [movie, setMovie] = useState<Film | undefined>(undefined);
+  const [title, setTitle] = useState<any>();
+  const [date, setDate] = useState<any>();
+  const [rating, setRating] = useState<any>();
+  const [price, setPrice] = useState<any>();
+  const [overview, setOverview] = useState<any>();
+  const [poster, setPoster] = useState<any>();
+  const [genres, setGenre] = useState<any>();
+  const [casts, setCast] = useState<any>();
+  const [directors, setDirector] = useState<any>();
+  const [trailer, setTrailer] = useState<any>();
+  const [video, setVideo] = useState<any>();
+  const model = new FilmUpdateModel();
+
+  const funcs = {
+    setTitle: (x: any) => {
+      setTitle(x);
+    },
+    setDate: (x: any) => {
+      setDate(x);
+    },
+    setRating: (x: any) => {
+      setRating(x);
+    },
+    setPrice: (x: any) => {
+      setPrice(x);
+    },
+    setOverview: (x: any) => {
+      setOverview(x);
+    },
+    setPoster: (x: any) => {
+      setPoster(x);
+    },
+    setGenre: (x: any) => {
+      setGenre(x);
+    },
+    setCast: (x: any) => {
+      setCast(x);
+    },
+    setDirector: (x: any) => {
+      setDirector(x);
+    },
+    setTrailer: (x: any) => {
+      setTrailer(x);
+    },
+    setVideo: (x: any) => {
+      setVideo(x);
+    },
+  };
 
   useEffect(() => {
     if (id) {
@@ -43,7 +88,22 @@ export function FilmUpdate() {
     }
   }, [id]);
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    model.updateFilm({
+      id,
+      title,
+      date,
+      rating,
+      price,
+      overview,
+      poster,
+      genres,
+      casts,
+      directors,
+      trailer,
+      video,
+    });
+  };
 
-  return <FilmUpdateView movie={movie} onSubmit={onSubmit} />;
+  return <FilmUpdateView movie={movie} onSubmit={onSubmit} {...funcs} />;
 }

@@ -25,9 +25,17 @@ export class FilmCrudModel {
     }
   };
 
+  addFilm = async (email: string) => {
+    try {
+      await api.post(`/films/up-film`, { title: email });
+    } catch (err: any) {
+      throw err;
+    }
+  };
+
   delFilm = async (id: string) => {
     try {
-      await api.delete(`/films/${id}`);
+      await api.delete(`/films/dl-film/${id}`);
     } catch (err: any) {
       throw err;
     }

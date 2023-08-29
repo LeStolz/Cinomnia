@@ -43,4 +43,8 @@ export class FilmUpdateModel {
       return null;
     }
   }
+
+  async updateFilm(obj: any) {
+    api.put(`/films/update-film/${obj.id}`, obj);
+  }
 }

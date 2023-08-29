@@ -7,6 +7,7 @@ export type FilmCrudView = {
   getFilms: (search: string) => void;
   getFilm: (id: string) => any;
   delFilm: (id: string) => void;
+  addFilm: (id: string) => void;
 };
 
 export function FilmCrud() {
@@ -33,12 +34,21 @@ export function FilmCrud() {
     }
   };
 
+  const addFilm = async (id: string) => {
+    try {
+      await model.addFilm(id);
+    } catch (err: any) {
+      throw err;
+    }
+  };
+
   return (
     <FilmCrudView
       films={films}
       getFilms={getFilms}
       getFilm={getFilm}
       delFilm={delFilm}
+      addFilm={addFilm}
     />
   );
 }
