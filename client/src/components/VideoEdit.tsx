@@ -1,19 +1,33 @@
 import { useState } from "react";
-import { Button, Form, OverlayTrigger, Tooltip, Image } from "react-bootstrap";
+import { Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
+import ReactPlayer from "react-player";
 
-export function ImageEdit({
+export function VideoEdit({
   editMode,
   name,
   defaultValue,
   isRequired,
   className,
+  playing,
+  loop,
+  muted,
+  width,
   onChange,
 }: any) {
   const [editting, setEditting] = useState(false);
   const [input, setInput] = useState<any>();
 
   if (!editMode) {
-    return <Image src={defaultValue} className={className} />;
+    return (
+      <ReactPlayer
+        playing={playing}
+        loop={loop}
+        muted={muted}
+        width={width}
+        url={defaultValue}
+        className={className}
+      />
+    );
   }
 
   return (
@@ -29,11 +43,16 @@ export function ImageEdit({
         onChange={(e) => setInput(e.target.value)}
         hidden={!editting}
       />
-      <Image
-        src={input ? input : defaultValue}
-        className={className}
-        hidden={editting}
-      />
+      <div hidden={editting}>
+        <ReactPlayer
+          url={input ? input : defaultValue}
+          className={className}
+          playing={playing}
+          loop={loop}
+          muted={muted}
+          width={width}
+        />
+      </div>
 
       <OverlayTrigger
         placement="top"

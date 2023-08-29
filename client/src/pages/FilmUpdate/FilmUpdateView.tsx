@@ -1,18 +1,12 @@
-import { FormEvent } from "react";
 import { FilmDetailView } from "../FilmDetail/FilmDetailView";
-import { Form } from "react-router-dom";
 import { FilmUpdateViewProps } from "./FilmUpdate";
 
-export function FilmUpdateView({ movie, onSubmit }: FilmUpdateViewProps) {
-  const onSubmitWrapped = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    onSubmit();
-  };
-
+export function FilmUpdateView({
+  movie,
+  onSubmit,
+  ...rest
+}: FilmUpdateViewProps) {
   return (
-    <Form onSubmit={onSubmitWrapped}>
-      <FilmDetailView movie={movie} editMode />
-    </Form>
+    <FilmDetailView onSubmit={onSubmit} movie={movie} {...rest} editMode />
   );
 }

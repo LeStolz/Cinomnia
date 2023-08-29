@@ -7,14 +7,6 @@ import { Edit } from "../../components/Edit";
 import { MultiEdit } from "../../components/MultiEdit";
 import { api } from "../../utils/api";
 
-/*
-"review"
-"casts": [
-"trailers": [],
-"video_full":
-bought
-*/
-
 export function AccountView({
   onSignout,
   changeAdmin,

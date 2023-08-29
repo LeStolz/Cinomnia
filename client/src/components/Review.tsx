@@ -101,8 +101,10 @@ const Review: React.FC<ReviewProps> = ({ filmId }) => {
 
   return (
     <div>
-      <Card className="shadow border-0 bg-secondary my-3 rounded">
-        <Card.Title className="p-3 mb-0 bg-light-subtle">Review</Card.Title>
+      <Card className="shadow border-0 bg-secondary my-3 rounded-3">
+        <Card.Title className="p-3 mb-0 bg-light-subtle rounded-top-3">
+          Review
+        </Card.Title>
         <div className="p-2 d-flex">
           <Image
             className="rounded-circle shadow-1-strong me-3"
@@ -184,7 +186,7 @@ const Review: React.FC<ReviewProps> = ({ filmId }) => {
               </>
             ) : (
               <>
-                <Card className="mb-3 shadow">
+                <Card className="bg-secondary mb-3 shadow">
                   <Card.Body>
                     <Container className="d-flex flex-start">
                       <Image
@@ -200,7 +202,6 @@ const Review: React.FC<ReviewProps> = ({ filmId }) => {
                         <div className="d-flex justify-content-between align-items-center mb-3">
                           <Container>
                             <h6 className="text-primary fw-bold mb-0">
-                              {/* lara_stewart */}
                               {review?.user || "anonymous"}
                             </h6>
                             <span className="ms-2">{review.content}</span>
@@ -221,7 +222,6 @@ const Review: React.FC<ReviewProps> = ({ filmId }) => {
                             >
                               Delete
                             </Button>
-                            •
                             <Button
                               variant="link"
                               className="text-decoration-none"

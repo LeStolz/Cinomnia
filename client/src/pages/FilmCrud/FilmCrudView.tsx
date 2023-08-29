@@ -9,7 +9,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import { FilmCrudView } from "./FilmCrud";
-import { createRef, useEffect, useState } from "react";
+import { FormEvent, createRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export function FilmCrudView({
@@ -17,8 +17,11 @@ export function FilmCrudView({
   getFilms,
   getFilm,
   delFilm,
+  addFilm,
 }: FilmCrudView) {
   const searchRef = createRef<HTMLInputElement>();
+  const filmRef = createRef<HTMLInputElement>();
+
   const [show, setShow] = useState(false);
   const [prevSearch, setPrevSearch] = useState("");
   const [modalHeader, setModalHeader] = useState("");
@@ -29,6 +32,7 @@ export function FilmCrudView({
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const [adding, setAdding] = useState(false);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(onSearch, 500);
@@ -88,6 +92,33 @@ export function FilmCrudView({
     }
   };
 
+  const onAdd = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      await addFilm(filmRef?.current?.value!);
+    } catch (err: any) {
+      handleShow(
+        `Failed to add ${filmRef?.current?.value!}`,
+        err.response.data.error,
+        () => handleClose,
+        "Ok"
+      );
+
+      return;
+    }
+
+    setAdding(false);
+    handleShow(
+      `Added ${filmRef?.current?.value!}`,
+      `Successfully added ${filmRef?.current?.value!}`,
+      () => handleClose,
+      "Ok"
+    );
+
+    await onSearch();
+  };
+
   const delFilmWrapped = async (title: string, id: string) => {
     handleShow(
       `Delete ${title}`,
@@ -95,7 +126,7 @@ export function FilmCrudView({
       () => async () => {
         try {
           handleClose();
-          await delFilm(id);
+          await delFilm(title);
         } catch (err: any) {
           handleShow(
             `Failed to delete ${title}`,
@@ -172,14 +203,57 @@ export function FilmCrudView({
                 className="d-flex align-items-center bg-transparent p-0"
                 key={-1}
               >
-                <Button
-                  variant="dark"
-                  className="d-flex align-items-center w-100 rounded-0 px-3"
-                  onClick={() => navigate(`/film-update`)}
-                >
-                  <i className="bi bi-plus-circle me-3 fs-4"></i>
-                  <span className="fs-4">Add a new film</span>
-                </Button>
+                {adding ? (
+                  <Form
+                    className="w-100 d-flex align-items-center"
+                    onSubmit={onAdd}
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Film"
+                      aria-label="Film"
+                      className="rounded-2 w-100 mx-3 my-2"
+                      ref={filmRef}
+                      required
+                    />
+
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>Add</Tooltip>}
+                      trigger={["hover", "focus"]}
+                    >
+                      <Button
+                        type="submit"
+                        variant="outline-success"
+                        className="border-0 position-relative h-md w-md"
+                      >
+                        <i className="position-absolute-center bi bi-plus-circle"></i>
+                      </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>Cancel</Tooltip>}
+                      trigger={["hover", "focus"]}
+                    >
+                      <Button
+                        variant="outline-primary"
+                        className="border-0 position-relative h-md w-md me-3"
+                        onClick={() => setAdding(false)}
+                      >
+                        <i className="position-absolute-center bi bi-x-lg"></i>
+                      </Button>
+                    </OverlayTrigger>
+                  </Form>
+                ) : (
+                  <Button
+                    variant="dark"
+                    className="d-flex align-items-center w-100 rounded-0 px-3"
+                    onClick={() => setAdding(true)}
+                  >
+                    <i className="bi bi-plus-circle me-3 fs-4"></i>
+                    <span className="fs-4">Add a new film</span>
+                  </Button>
+                )}
               </ListGroup.Item>
               {loading ? (
                 <span className="fs-4 mt-2 text-center">
